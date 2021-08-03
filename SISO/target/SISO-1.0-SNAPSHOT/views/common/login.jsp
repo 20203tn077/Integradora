@@ -57,7 +57,7 @@
                 <div class="card shadow-sm">
                     <h5 class="card-header">Inicio de sesión</h5>
                     <div class="card-body">
-                        <form action="${context}/Login" method="POST" class="d-grid gap-3">
+                        <form action="${context}/Inicio" method="POST" class="d-grid gap-3">
                             <input type="hidden" value="access" name="action">
                             <div>
                                 <label for="usernameInput" class="form-label">Nombre de usuario</label>

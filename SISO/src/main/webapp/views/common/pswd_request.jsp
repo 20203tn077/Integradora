@@ -15,18 +15,56 @@
       <a class="navbar-brand" href="${context}/views/common/login.jsp">Sistema de Seguimiento a Oficios</a>
     </div>
   </nav>
-
+  <c:if test="${message != null}">
+    <c:if test="${messageType == 1}">
+      <div class="alert alert-primary alert-dismissible fade show m-3" role="alert">
+        <svg class="feather-24">
+          <use xlink:href="${context}/assets/icons/feather-sprite.svg#info" />
+        </svg>
+        <span> ${message}</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    </c:if>
+    <c:if test="${messageType == 2}">
+      <div class="alert alert-success alert-dismissible fade show m-3" role="alert">
+        <svg class="feather-24">
+          <use xlink:href="${context}/assets/icons/feather-sprite.svg#check-circle" />
+        </svg>
+        <span> ${message}</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    </c:if>
+    <c:if test="${messageType == 3}">
+      <div class="alert alert-warning alert-dismissible fade show m-3" role="alert">
+        <svg class="feather-24">
+          <use xlink:href="${context}/assets/icons/feather-sprite.svg#alert-circle" />
+        </svg>
+        <span> ${message}</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    </c:if>
+    <c:if test="${messageType == 4}">
+      <div class="alert alert-danger alert-dismissible fade show m-3" role="alert">
+        <svg class="feather-24">
+          <use xlink:href="${context}/assets/icons/feather-sprite.svg#alert-triangle" />
+        </svg>
+        <span> ${message}</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    </c:if>
+  </c:if>
   <div class="container mt-5">
     <div class="row">
       <div class="col-md-7 col-xl-5 mx-auto">
         <div class="card shadow-sm">
           <h5 class="card-header">Restablecer contraseña</h5>
           <div class="card-body">
-            <form action="asd" method="get" class="d-grid gap-3">
+            <form action="${context}/Restablecer_Contraseña" method="POST" class="d-grid gap-3">
+              <input type="hidden" name="action" value="newPasswordRequest">
               <div>
-                <label for="usernameInput" class="form-label">Ingresa el correo electrónico con el que se dió de alta
-                  tu usuario. Se te enviará un token para poder validar tu identidad.</label>
-                <input type="email" class="form-control" id="emailInput" required>
+                <p>Ingresa el correo electrónico con el que se dió de alta
+                  tu usuario.</p>
+                <input type="email" class="form-control" name="emailInput" required>
               </div>
               <button type="submit" class="btn btn-verde">
                 Recuperar contraseña

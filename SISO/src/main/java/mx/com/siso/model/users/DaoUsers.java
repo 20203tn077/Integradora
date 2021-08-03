@@ -207,7 +207,6 @@ public class DaoUsers {
 
     public boolean update(BeanUsers user) throws SQLException {
         boolean flag = false;
-        System.out.println(user.getId_user());
         try{
             con = ConnectionMySQL.getConnection();
             cstm = con.prepareCall("{call  modify_user(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
@@ -342,18 +341,19 @@ public class DaoUsers {
         }
         return resultado;
     }
-    public boolean checkEmail(BeanUsers user){
-        boolean flag = false;
+    public int checkEmail(BeanUsers user){
+        int id = -1;
         try {
             con = ConnectionMySQL.getConnection();
-            cstm = con.prepareCall("{call check_email(?,?,?)}");
+            cstm = con.prepareCall("{call check_email(?,?,?,?)}");
             cstm.setString(1, user.getEmail());
             cstm.setString(2, user.getToken());
             cstm.registerOutParameter(3, java.sql.Types.INTEGER);
+            cstm.registerOutParameter(4, java.sql.Types.INTEGER);
             rs = cstm.executeQuery();
             int errorEmail = cstm.getInt(3);
             if(errorEmail==0){
-                flag = true;
+                id = cstm.getInt(4);
             }
 
         }catch (SQLException e){
@@ -361,14 +361,14 @@ public class DaoUsers {
         } finally {
             ConnectionMySQL.closeConnection(con, cstm, rs);
         }
-        return flag;
+        return id;
     }
     public boolean checkToken(BeanUsers user){
         boolean flag = false;
         try {
             con = ConnectionMySQL.getConnection();
             cstm = con.prepareCall("{call check_token(?,?,?,?,?)}");
-            cstm.setString(1, user.getPasswordUser());
+            cstm.setInt(1, user.getId_user());
             cstm.setString(2, user.getToken());
             cstm.registerOutParameter(3, java.sql.Types.INTEGER);
             cstm.registerOutParameter(4, java.sql.Types.INTEGER);
