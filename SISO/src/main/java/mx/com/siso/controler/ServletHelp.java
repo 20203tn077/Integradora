@@ -18,7 +18,7 @@ import java.sql.SQLException;
 import java.util.Properties;
 import java.util.Random;
 
-@WebServlet(name = "ServletHelp", urlPatterns = {"/Inicio_Sesión", "/Inicio", "/Restablecer_Contraseña"})
+@WebServlet(name = "ServletHelp", urlPatterns = {"/Inicio_de_Sesión", "/Inicio", "/Restablecer_Contraseña"})
 public class ServletHelp extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -28,9 +28,7 @@ public class ServletHelp extends HttpServlet {
             case "login":
                 request.getSession().removeAttribute("sessionRole");
                 request.getSession().removeAttribute("sessionId");
-                break;
-            case "pswd_request":
-
+                request.getRequestDispatcher("/views/common/login.jsp").forward(request,response);
         }
     }
 
@@ -48,14 +46,16 @@ public class ServletHelp extends HttpServlet {
                 try {
                     result = new DaoUsers().login(loginBeanUser);
                     if (result[1] >= 1 && result[1] <= 4) {
+                        if (result[1] == 1 || result[1] == 2) {
+                            System.out.println("Id de usuario: " + result[0]);
+                        }
                         System.out.println("Tipo de usuario: " + result[1]);
-                        System.out.println("Id de usuario: " + result[0]);
                         request.setAttribute("access", true);
                     }
                     switch (result[1]) {
                         case 1:
                             request.setAttribute("recordList1", new DaoRecords().findRecordsByAssistant(result[0], (byte)1));
-                            request.setAttribute("recordList2", new DaoRecords().findRecordsByAssistant(result[0], (byte)1));
+                            request.setAttribute("recordList2", new DaoRecords().findRecordsByAssistant(result[0], (byte)2));
                             request.getRequestDispatcher("/views/assistant/record_list.jsp").forward(request, response);
                             break;
                         case 2:
@@ -94,8 +94,9 @@ public class ServletHelp extends HttpServlet {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-                request.setAttribute("sessionRole", result[1]);
-                request.setAttribute("sessionId", result[0]);
+                System.out.println("asdasdasd");
+                request.getSession().setAttribute("sessionRole", result[1]);
+                request.getSession().setAttribute("sessionId", result[0]);
                 break;
             case "newPasswordRequest":
                 int longitud = 10;

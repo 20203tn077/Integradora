@@ -6,7 +6,6 @@ public class BeanDepartment {
     private String description;
     private String telephoneNumber;
     private int currentDepartment;
-
     public BeanDepartment() {
     }
 

@@ -9,7 +9,7 @@
   <link href="${context}/assets/css/util.css" rel="stylesheet">
 </head>
 
-<body class="bg-light bg-gradient">
+<body class="bg-light">
   <nav class="navbar navbar-expand-lg navbar-dark bg-azul shadow">
     <div class="container-fluid">
       <a class="navbar-brand" href="${context}/views/common/login.jsp">Sistema de Seguimiento a Oficios</a>

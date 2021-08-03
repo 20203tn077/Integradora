@@ -157,13 +157,13 @@ public class DaoUsers {
         return listUsers;
     }
 
-    public BeanUsers findUserById(long id){
+    public BeanUsers findUserById(int id){
         BeanUsers beanUsers = null;
         try {
             // SELECT * FROM users AS U INNER JOIN persons AS P ON U.idPerson = P.id INNER JOIN roles AS R ON U.idRole = R.id;
             con = ConnectionMySQL.getConnection();
             cstm = con.prepareCall("{call find_user_byId(?)}");
-            cstm.setLong(1, id);
+            cstm.setInt(1, id);
             rs = cstm.executeQuery();
 
             if(rs.next()){

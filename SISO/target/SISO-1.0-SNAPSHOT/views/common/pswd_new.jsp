@@ -23,7 +23,7 @@
           <div class="card">
             <h5 class="card-header">Restablecer contraseña</h5>
             <div class="card-body">
-              <form action="/Inicio_Sesión" method="POST" class="d-grid gap-3">
+              <form action="${context}/Inicio_Sesión" method="POST" class="d-grid gap-3">
                 <input type="hidden" name="action" value="passwordChange">
                 <input type="hidden" name="recoveryId" value="${id}">
                 <div>
@@ -53,7 +53,7 @@
       <span> Error: No tienes acceso a este sitio.</span>
     </div>
   </c:if>
-  <script src="../assets/bootstrap/js/bootstrap.bundle.js"></script>
+  <script src="${context}/assets/js/bootstrap.bundle.js"></script>
 </body>
 
 </html>

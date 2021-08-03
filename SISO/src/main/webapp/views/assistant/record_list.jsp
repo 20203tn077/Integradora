@@ -21,11 +21,11 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <nav class="navbar-nav">
-                        <a class="nav-link active" href="#">Gestión de oficios</a>
-                        <a class="nav-link" href="#">Perfil</a>
+                        <a class="nav-link active" href="${context}/Gestión_de_Oficios?redirect=records">Gestión de oficios</a>
+                        <a class="nav-link" href="${context}/Perfil?redirect=profile">Perfil</a>
                     </nav>
                     <nav class="navbar-nav ms-auto">
-                        <a class="nav-link active" href="${context}/views/common/login.jsp">
+                        <a class="nav-link active" href="${context}/Inicio_de_Sesión?redirect=login">
                             <svg class="feather">
                                 <use xlink:href="${context}/assets/icons/feather-sprite.svg#log-out" />
                             </svg>

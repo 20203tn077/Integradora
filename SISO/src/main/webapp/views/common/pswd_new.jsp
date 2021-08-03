@@ -53,7 +53,7 @@
       <span> Error: No tienes acceso a este sitio.</span>
     </div>
   </c:if>
-  <script src="../assets/bootstrap/js/bootstrap.bundle.js"></script>
+  <script src="${context}/assets/js/bootstrap.bundle.js"></script>
 </body>
 
 </html>
