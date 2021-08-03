@@ -2,33 +2,33 @@
 
 <head>
     <title>SISO</title>
-    <link href="/assets/bootstrap/css/bootstrap.css" rel="stylesheet">
-    <link href="/assets/css/customcolors.css" rel="stylesheet">
-    <style>
-        .feather {
-            width: 16px;
-            height: 16px;
-            stroke: currentColor;
-            stroke-width: 2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            fill: none;
-            position: relative;
-            top: -2.5;
-        }
-
-        .btn-floating {
-            position: fixed;
-            bottom: 5rem;
-            right: 5rem;
-        }
-    </style>
+    <link href="/assets/css/bootstrap.css" rel="stylesheet">
+    <link href="/assets/css/util.css" rel="stylesheet">
 </head>
 
 <body class="bg-light bg-gradient">
     <nav class="navbar navbar-expand-lg navbar-dark bg-azul shadow">
         <div class="container-fluid">
-            <a class="navbar-brand" href="./login.html">Sistema de Seguimiento a Oficios</a>
+            <span class="navbar-brand">Sistema de Seguimiento a Oficios</span>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <nav class="navbar-nav">
+                    <a class="nav-link" href="#">Gestión de oficios</a>
+                    <a class="nav-link active" href="#">Perfil</a>
+                </nav>
+                <nav class="navbar-nav ms-auto">
+                    <a class="nav-link active" href="/views/common/login.jsp">
+                        <svg class="feather">
+                            <use xlink:href="/assets/icons/feather-sprite.svg#log-out" />
+                        </svg>
+                        <span> Salir</span>
+                    </a>
+                </nav>
+            </div>
         </div>
     </nav>
     <div class="container mt-4">
@@ -88,7 +88,83 @@
         </div>
 
     </div>
-    <script src="/assets/bootstrap/js/bootstrap.bundle.js"></script>
+    <div class="modal fade" tabindex="-1" id="attendedRecordModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Detalle del oficio</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <span class="fw-bold">
+                                    Número de oficio:
+                                </span>
+                                <p id="modal2RecordId"></p>
+                            </div>
+                            <div class="col-md-6">
+                                <span class="fw-bold">
+                                    Fecha de canalización:
+                                </span>
+                                <p id="modal2ChannellingDate"></p>
+                            </div>
+                            <div class="col-md-6">
+                                <span class="fw-bold">
+                                    Fecha de asignación:
+                                </span>
+                                <p id="modal2AssignmentDate"></p>
+                            </div>
+                            <div class="col-md-6">
+                                <span class="fw-bold">
+                                    Fecha de respuesta:
+                                </span>
+                                <p id="modal2ResponseDate"></p>
+                            </div>
+                            <div class="col-md-6">
+                                <span class="fw-bold">
+                                    Departamento:
+                                </span>
+                                <p id="modal2Department"></p>
+                            </div>
+                            <div class="col-md-6">
+                                <span class="fw-bold">
+                                    Prioridad:
+                                </span>
+                                <p>
+                                    <span id="modal2Priority"></span>
+                                </p>
+                            </div>
+                            <div class="col-md-6">
+                                <span class="fw-bold">
+                                    Comentario:
+                                </span>
+                                <p id="modal2Comment"></p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <h5>Acciones:</h5>
+                            <div class="col-md-6 col-lg-4 mb-3">
+                                <form action="/ServletRecords" method="POST" target="_blank" class="m-0">
+                                    <input type="hidden" value="getRecordById" name="action">
+                                    <input type="hidden" id="modal2RecordIdInput" name="recordIdInput">
+                                    <button type="submit" class="btn btn-primary w-100">
+                                        <svg class="feather">
+                                            <use xlink:href="/assets/icons/feather-sprite.svg#file-text" />
+                                        </svg>
+                                        <span> Visualizar archivo</span>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/assets/js/bootstrap.bundle.js"></script>
+    <script src="/assets/js/assistant/recordListUtil.js"></script>
 </body>
 
 </html>

@@ -387,13 +387,39 @@
   stroke-linejoin: round;
   fill: none;
   position: relative;
-  top: -2.5;
+  top: -2pt;
+}
+
+.feather-24 {
+  width: 24px;
+  height: 24px;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+  position: relative;
+  top: -2pt;
+}
+
+.feather-28 {
+  width: 28px;
+  height: 28px;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+  position: relative;
 }
 
 .btn-floating {
   position: fixed;
-  bottom: 5rem;
-  right: 5rem;
+  border-radius: 50% !important;
+  width: 4rem;
+  height: 4rem;
+  bottom: 4rem;
+  right: 4rem;
 }
 
 .table-container {

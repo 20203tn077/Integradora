@@ -8,10 +8,7 @@ import mx.com.siso.service.ConnectionMySQL;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,9 +21,10 @@ public class DaoRecords {
         List<BeanRecords> listMinutes = new ArrayList<>();
         try {
             con = ConnectionMySQL.getConnection();
-            cstm = con.prepareCall("{call view_records(?,?)}");
+            cstm = con.prepareCall("{call view_records(?,?,?)}");
             cstm.setInt(1, idUser);
-            cstm.registerOutParameter(2, java.sql.Types.INTEGER);
+            cstm.setInt(2, 0);
+            cstm.registerOutParameter(3, java.sql.Types.INTEGER);
             rs = cstm.executeQuery();
             int errorUser  = cstm.getInt(2);
             if(errorUser==0){
@@ -66,15 +64,16 @@ public class DaoRecords {
         return listMinutes;
     }
 
-    public List<BeanRecords> findRecordsByAssistant(int idUser){
+    public List<BeanRecords> findRecordsByAssistant(int idUser, byte tableType){
         List<BeanRecords> listMinutes = new ArrayList<>();
         try {
             con = ConnectionMySQL.getConnection();
-            cstm = con.prepareCall("{call view_records(?,?)}");
+            cstm = con.prepareCall("{call view_records(?,?,?)}");
             cstm.setInt(1, idUser);
-            cstm.registerOutParameter(2, java.sql.Types.INTEGER);
+            cstm.setByte(2, tableType);
+            cstm.registerOutParameter(3, java.sql.Types.INTEGER);
             rs = cstm.executeQuery();
-            int errorUser  = cstm.getInt(2);
+            int errorUser  = cstm.getInt(3);
             if(errorUser==0){
                 System.out.println("Consulta exitosa");
             }else{
@@ -95,15 +94,15 @@ public class DaoRecords {
                 beanRecords.setDateAssignment(rs.getTimestamp("assignment_date"));
                 beanRecords.setId_minutes(rs.getInt("records_id"));
                 beanRecords.setAttended(rs.getInt("attended"));
+                beanRecords.setDateResponse(rs.getTimestamp("response_date"));
+                beanRecords.setComment(rs.getString("comment"));
                 beanRecords.setDepartmentId(beanDepartment);
                 beanRecords.setUserId(beanUsers);
                 beanRecords.setPriorityId(beanPriority);
-
-
                 listMinutes.add(beanRecords);
             }
         }catch (SQLException e){
-            System.out.printf("Ha ocurrido un error: " + e.getMessage());
+            System.out.printf("findRecordsByAssistant - Ha ocurrido un error: " + e.getMessage());
         } finally {
             ConnectionMySQL.closeConnection(con, cstm, rs);
         }
@@ -169,7 +168,7 @@ public class DaoRecords {
         boolean flag = false;
         try {
             con = ConnectionMySQL.getConnection();
-            cstm = con.prepareCall("{call assign_record(?,?,?,?,?)}");
+            cstm = con.prepareCall("{call create_records(?,?,?,?,?)}");
             cstm.setInt(1,records.getId_minutes());
             cstm.setString(2,records.getUserId().getNameUser());
             cstm.registerOutParameter(3, java.sql.Types.INTEGER);
@@ -195,9 +194,10 @@ public class DaoRecords {
         List<BeanRecords> listMinutes = new ArrayList<>();
         try {
             con = ConnectionMySQL.getConnection();
-            cstm = con.prepareCall("{call view_records(?,?)}");
+            cstm = con.prepareCall("{call view_records(?,?,?)}");
             cstm.setInt(1, idUser);
-            cstm.registerOutParameter(2, java.sql.Types.INTEGER);
+            cstm.setInt(2, 0);
+            cstm.registerOutParameter(3, java.sql.Types.INTEGER);
             rs = cstm.executeQuery();
             int errorUser  = cstm.getInt(2);
             if(errorUser==0){
@@ -234,45 +234,5 @@ public class DaoRecords {
         }
         return listMinutes;
     }
-    public List<BeanRecords> findAllRecords(){
-        List<BeanRecords> listMinutes = new ArrayList<>();
-        try {
-            con = ConnectionMySQL.getConnection();
-            cstm = con.prepareCall("{call find_records_byOfi}");
-
-            rs = cstm.executeQuery();
-
-
-            while(rs.next()){
-                BeanUsers beanUsers =new BeanUsers();
-                BeanDepartment beanDepartment = new BeanDepartment();
-                BeanPriority beanPriority = new BeanPriority();
-                BeanRecords beanRecords = new BeanRecords();
-
-                beanPriority.setIdPriority(rs.getInt("priority_id"));
-                beanPriority.setNamePriority(rs.getString("priority_name"));
-                beanDepartment.setIdDepartment(rs.getInt("department_id"));
-                beanDepartment.setNameDepartment(rs.getString("department_name"));
-                beanUsers.setName(rs.getString("name"));
-                beanUsers.setId_user(rs.getInt("user_id"));
-                beanRecords.setDateChannelling(rs.getTimestamp("channelling_date"));
-                beanRecords.setDateAssignment(rs.getTimestamp("assignment_date"));
-                beanRecords.setId_minutes(rs.getInt("records_id"));
-                beanRecords.setAttended(rs.getInt("attended"));
-                beanRecords.setDepartmentId(beanDepartment);
-                beanRecords.setUserId(beanUsers);
-                beanRecords.setPriorityId(beanPriority);
-
-
-                listMinutes.add(beanRecords);
-            }
-        }catch (SQLException e){
-            System.out.printf("Ha ocurrido un error: " + e.getMessage());
-        } finally {
-            ConnectionMySQL.closeConnection(con, cstm, rs);
-        }
-        return listMinutes;
-    }
-
 
 }
