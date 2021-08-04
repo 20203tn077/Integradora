@@ -37,12 +37,48 @@ public class Servlet extends HttpServlet {
                         request.setAttribute("access",true);
                         request.setAttribute("user", new DaoUsers().findUserById(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId")))));
                         request.getRequestDispatcher("/views/assistant/profile.jsp").forward(request, response);
+                        break;
+                    case "dataModify":
                 }
                 break;
             case 2:
                 switch (redirect) {
-                    case "":
+                    case "records":
+                        request.setAttribute("recordList1", new DaoRecords().findAllRecordsByManager(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)1));
+                        request.setAttribute("recordList2", new DaoRecords().findAllRecordsByManager(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)2));
+                        request.setAttribute("recordList3", new DaoRecords().findAllRecordsByManager(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)3));
+                        request.setAttribute("access",true);
+                        request.getRequestDispatcher("/views/manager/record_list.jsp").forward(request, response);
                         break;
+                    case "assistants":
+                        request.setAttribute("assistantList", new DaoUsers().findAllAssitant(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId")))));
+                        request.setAttribute("access",true);
+                        request.getRequestDispatcher("/views/manager/assistant_list.jsp").forward(request, response);
+                        break;
+                    case "profile":
+                        request.setAttribute("user", new DaoUsers().findUserById(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId")))));
+                        request.setAttribute("access",true);
+                        request.getRequestDispatcher("/views/manager/profile.jsp").forward(request, response);
+                        break;
+                    case "dataModify":
+                        request.setAttribute("access",true);
+                        request.getRequestDispatcher("/views/manager/data_modify.jsp").forward(request, response);
+                        break;
+                    case "recordAssign":
+                        request.setAttribute("access",true);
+                        request.getRequestDispatcher("/views/manager/record_assign.jsp").forward(request, response);
+                        break;
+                    case "recordReassign":
+                        request.setAttribute("access",true);
+                        request.getRequestDispatcher("/views/manager/record_reassign.jsp").forward(request, response);
+                        break;
+                    case "assistantRegister":
+                        request.setAttribute("access",true);
+                        request.getRequestDispatcher("/views/manager/assistant_register.jsp").forward(request, response);
+                        break;
+                    case "assistantModify":
+                        request.setAttribute("access",true);
+                        request.getRequestDispatcher("/views/manager/assistant_modify.jsp").forward(request, response);
                 }
                 break;
             case 3:

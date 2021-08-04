@@ -190,16 +190,16 @@ public class DaoRecords {
         }
         return flag;
     }
-    public List<BeanRecords> findAllRecordsByManager(int idUser){
+    public List<BeanRecords> findAllRecordsByManager(int idUser, byte tableType){
         List<BeanRecords> listMinutes = new ArrayList<>();
         try {
             con = ConnectionMySQL.getConnection();
             cstm = con.prepareCall("{call view_records(?,?,?)}");
             cstm.setInt(1, idUser);
-            cstm.setInt(2, 0);
+            cstm.setInt(2, tableType);
             cstm.registerOutParameter(3, java.sql.Types.INTEGER);
             rs = cstm.executeQuery();
-            int errorUser  = cstm.getInt(2);
+            int errorUser  = cstm.getInt(3);
             if(errorUser==0){
                 System.out.println("Consulta exitosa");
             }else{
@@ -215,6 +215,8 @@ public class DaoRecords {
                 beanPriority.setIdPriority(rs.getInt("priority_id"));
                 beanPriority.setNamePriority(rs.getString("priority_name"));
                 beanUsers.setName(rs.getString("name"));
+                beanUsers.setLastname1(rs.getString("lastname_1"));
+                beanUsers.setLastname2(rs.getString("lastname_2"));
                 beanUsers.setId_user(rs.getInt("user_id"));
                 beanRecords.setDateChannelling(rs.getTimestamp("channelling_date"));
                 beanRecords.setDateAssignment(rs.getTimestamp("assignment_date"));

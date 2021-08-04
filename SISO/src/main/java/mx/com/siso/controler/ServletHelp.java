@@ -59,7 +59,10 @@ public class ServletHelp extends HttpServlet {
                             request.getRequestDispatcher("/views/assistant/record_list.jsp").forward(request, response);
                             break;
                         case 2:
-                            break;
+                            request.setAttribute("recordList1", new DaoRecords().findAllRecordsByManager(result[0], (byte)1));
+                            request.setAttribute("recordList2", new DaoRecords().findAllRecordsByManager(result[0], (byte)2));
+                            request.setAttribute("recordList3", new DaoRecords().findAllRecordsByManager(result[0], (byte)3));
+                            request.getRequestDispatcher("/views/manager/record_list.jsp").forward(request, response);
                         case 3:
                             break;
                         case 4:
@@ -70,16 +73,7 @@ public class ServletHelp extends HttpServlet {
                             request.setAttribute("message", "El usuario ingresado no es válido"); //Mensaje
                             request.getRequestDispatcher("/views/common/login.jsp").forward(request, response);
                     }
-                    /*if(result[1] == 1){
-                        request.setAttribute("recordList1", new DaoRecords().findRecordsByAssistant(result[0]));
-                        request.getRequestDispatcher("/views/users/mainAssistant.jsp").forward(request, response);
-                        request.getSession().setAttribute("usuariom2",nameUser2);
-                        request.getSession().setAttribute("contram2",password2);
-                    }else if(resultado[1] == 2){
-                        request.setAttribute("listMinutes", new DaoRecords().findAllRecordsByManager(resultado[0]));
-                        request.getRequestDispatcher("/views/users/mainManager.jsp").forward(request, response);
-                        request.getSession().setAttribute("usuariom",nameUser2);
-                        request.getSession().setAttribute("contram1",password2);
+                    /*
                     }else if(resultado[1] == 3){
                         request.setAttribute("listMinutes", new DaoRecords().findAllRecords(resultado[0]));
                         request.getRequestDispatcher("/views/users/mainOficialia.jsp").forward(request, response);
@@ -88,8 +82,6 @@ public class ServletHelp extends HttpServlet {
                     }else if(resultado[1] == 4){
                         request.setAttribute("listMinutes", new DaoRecords().findAllRecords(resultado[0]));
                         request.getRequestDispatcher("/views/users/mainAdmin.jsp").forward(request, response);
-                    }else{
-                        request.getRequestDispatcher("/views/users/login.jsp").forward(request, response);
                     }*/
                 } catch (SQLException e) {
                     e.printStackTrace();

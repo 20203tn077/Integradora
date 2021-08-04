@@ -397,20 +397,35 @@ public class DaoUsers {
         }
         return flag;
     }
-    public List<BeanUsers> findAllAssitant(){
+    public List<BeanUsers> findAllAssitant(int id){
         List<BeanUsers> listUsers = new ArrayList<>();
         try {
             // SELECT * FROM users AS U INNER JOIN persons AS P ON U.idPerson = P.id INNER JOIN roles AS R ON U.idRole = R.id;
             con = ConnectionMySQL.getConnection();
-            cstm = con.prepareCall("{call find_assistant}");
+            cstm = con.prepareCall("{call find_assistant(?)}");
+            cstm.setInt(1, id);
             rs = cstm.executeQuery();
 
             while(rs.next()){
+                BeanUser_type beanUserType =new BeanUser_type();
+                BeanDepartment beanDepartment = new BeanDepartment();
                 BeanUsers beanUsers = new BeanUsers();
+
+                beanDepartment.setIdDepartment(rs.getInt("department_id"));
+                beanDepartment.setNameDepartment(rs.getString("department_name"));
+                beanUserType.setIdType(rs.getInt("type_id"));
+                beanUserType.setNameType(rs.getString("type_name"));
 
                 beanUsers.setId_user(rs.getInt("user_id"));
                 beanUsers.setNameUser(rs.getString("username"));
                 beanUsers.setName(rs.getString("name"));
+                beanUsers.setLastname1(rs.getString("lastname_1"));
+                beanUsers.setLastname2(rs.getString("lastname_2"));
+                beanUsers.setEmail(rs.getString("email"));
+                beanUsers.setCurrentUser(rs.getInt("user_status"));
+                beanUsers.setDepartment_id(beanDepartment);
+                beanUsers.setType_id(beanUserType);
+
                 listUsers.add(beanUsers);
             }
         }catch (SQLException e){
