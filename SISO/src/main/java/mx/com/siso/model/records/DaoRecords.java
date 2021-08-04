@@ -17,16 +17,16 @@ public class DaoRecords {
     CallableStatement cstm;
     ResultSet rs;
 
-    public List<BeanRecords> findAllRecords(int idUser){
+    public List<BeanRecords> findAllRecords(int idUser, byte tableType){
         List<BeanRecords> listMinutes = new ArrayList<>();
         try {
             con = ConnectionMySQL.getConnection();
             cstm = con.prepareCall("{call view_records(?,?,?)}");
             cstm.setInt(1, idUser);
-            cstm.setInt(2, 0);
+            cstm.setByte(2, tableType);
             cstm.registerOutParameter(3, java.sql.Types.INTEGER);
             rs = cstm.executeQuery();
-            int errorUser  = cstm.getInt(2);
+            int errorUser  = cstm.getInt(3);
             if(errorUser==0){
                 System.out.println("Consulta exitosa");
             }else{
@@ -47,6 +47,7 @@ public class DaoRecords {
                 beanUsers.setId_user(rs.getInt("user_id"));
                 beanRecords.setDateChannelling(rs.getTimestamp("channelling_date"));
                 beanRecords.setDateAssignment(rs.getTimestamp("assignment_date"));
+                beanRecords.setDateResponse(rs.getTimestamp("response_date"));
                 beanRecords.setId_minutes(rs.getInt("records_id"));
                 beanRecords.setAttended(rs.getInt("attended"));
                 beanRecords.setDepartmentId(beanDepartment);

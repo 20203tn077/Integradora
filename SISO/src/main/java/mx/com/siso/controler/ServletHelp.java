@@ -63,7 +63,12 @@ public class ServletHelp extends HttpServlet {
                             request.setAttribute("recordList2", new DaoRecords().findAllRecordsByManager(result[0], (byte)2));
                             request.setAttribute("recordList3", new DaoRecords().findAllRecordsByManager(result[0], (byte)3));
                             request.getRequestDispatcher("/views/manager/record_list.jsp").forward(request, response);
+                            break;
                         case 3:
+                            request.setAttribute("recordList1", new DaoRecords().findAllRecords(result[0], (byte)1));
+                            request.setAttribute("recordList2", new DaoRecords().findAllRecords(result[0], (byte)2));
+                            request.setAttribute("access",true);
+                            request.getRequestDispatcher("/views/oficialia/record_list.jsp").forward(request, response);
                             break;
                         case 4:
                             break;

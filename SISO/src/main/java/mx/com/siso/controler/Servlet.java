@@ -83,8 +83,28 @@ public class Servlet extends HttpServlet {
                 break;
             case 3:
                 switch (redirect) {
-                    case "":
+                    case "records":
+                        request.setAttribute("recordList1", new DaoRecords().findAllRecords(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)1));
+                        request.setAttribute("recordList2", new DaoRecords().findAllRecords(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)2));
+                        request.setAttribute("access",true);
+                        request.getRequestDispatcher("/views/oficialia/record_list.jsp").forward(request, response);
                         break;
+                    case "profile":
+                        request.setAttribute("user", new DaoUsers().findUserById(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId")))));
+                        request.setAttribute("access",true);
+                        request.getRequestDispatcher("/views/oficialia/profile.jsp").forward(request, response);
+                        break;
+                    case "dataModify":
+                        request.setAttribute("access",true);
+                        request.getRequestDispatcher("/views/oficialia/data_modify.jsp").forward(request, response);
+                        break;
+                    case "recordRegister":
+                        request.setAttribute("access",true);
+                        request.getRequestDispatcher("/views/oficialia/record_register.jsp").forward(request, response);
+                        break;
+                    case "recordRechannelling":
+                        request.setAttribute("access",true);
+                        request.getRequestDispatcher("/views/oficialia/record_rechannelling.jsp").forward(request, response);
                 }
                 break;
             case 4:
