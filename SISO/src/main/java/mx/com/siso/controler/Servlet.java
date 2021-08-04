@@ -109,8 +109,39 @@ public class Servlet extends HttpServlet {
                 break;
             case 4:
                 switch (redirect) {
-                    case "":
+                    case "users":
+                        request.setAttribute("userList", new DaoUsers().findAllUsers());
+                        request.setAttribute("access",true);
+                        request.getRequestDispatcher("/views/admin/user_list.jsp").forward(request, response);
                         break;
+                    case "departments":
+                        request.setAttribute("departmentList", new DaoDepartment().findDepartment());
+                        request.setAttribute("access",true);
+                        request.getRequestDispatcher("/views/admin/department_list.jsp").forward(request, response);
+                        break;
+                    case "profile":
+                        request.setAttribute("access",true);
+                        request.getRequestDispatcher("/views/admin/profile.jsp").forward(request, response);
+                        break;
+                    case "dataModify":
+                        request.setAttribute("access",true);
+                        request.getRequestDispatcher("/views/admin/data_modify.jsp").forward(request, response);
+                        break;
+                    case "userRegister":
+                        request.setAttribute("access",true);
+                        request.getRequestDispatcher("/views/admin/user_register.jsp").forward(request, response);
+                        break;
+                    case "userModify":
+                        request.setAttribute("access",true);
+                        request.getRequestDispatcher("/views/admin/user_modify.jsp").forward(request, response);
+                        break;
+                    case "departmentRegister":
+                        request.setAttribute("access",true);
+                        request.getRequestDispatcher("/views/admin/department_register.jsp").forward(request, response);
+                        break;
+                    case "departmentModify":
+                        request.setAttribute("access",true);
+                        request.getRequestDispatcher("/views/admin/department_modify.jsp").forward(request, response);
                 }
                 break;
             default:

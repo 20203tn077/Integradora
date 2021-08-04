@@ -45,23 +45,20 @@ public class ServletHelp extends HttpServlet {
                 BeanUsers loginBeanUser = new BeanUsers(0, loginUsername, loginPassword, "", "", "", "", 0, "", null, null, null);
                 try {
                     result = new DaoUsers().login(loginBeanUser);
-                    if (result[1] >= 1 && result[1] <= 4) {
-                        if (result[1] == 1 || result[1] == 2) {
-                            System.out.println("Id de usuario: " + result[0]);
-                        }
-                        System.out.println("Tipo de usuario: " + result[1]);
-                        request.setAttribute("access", true);
-                    }
+                    System.out.println("Id de usuario: " + result[0]);
+                    System.out.println("Tipo de usuario: " + result[1]);
                     switch (result[1]) {
                         case 1:
                             request.setAttribute("recordList1", new DaoRecords().findRecordsByAssistant(result[0], (byte)1));
                             request.setAttribute("recordList2", new DaoRecords().findRecordsByAssistant(result[0], (byte)2));
+                            request.setAttribute("access", true);
                             request.getRequestDispatcher("/views/assistant/record_list.jsp").forward(request, response);
                             break;
                         case 2:
                             request.setAttribute("recordList1", new DaoRecords().findAllRecordsByManager(result[0], (byte)1));
                             request.setAttribute("recordList2", new DaoRecords().findAllRecordsByManager(result[0], (byte)2));
                             request.setAttribute("recordList3", new DaoRecords().findAllRecordsByManager(result[0], (byte)3));
+                            request.setAttribute("access", true);
                             request.getRequestDispatcher("/views/manager/record_list.jsp").forward(request, response);
                             break;
                         case 3:
@@ -71,6 +68,9 @@ public class ServletHelp extends HttpServlet {
                             request.getRequestDispatcher("/views/oficialia/record_list.jsp").forward(request, response);
                             break;
                         case 4:
+                            request.setAttribute("userList", new DaoUsers().findAllUsers());
+                            request.setAttribute("access", true);
+                            request.getRequestDispatcher("/views/admin/user_list.jsp").forward(request, response);
                             break;
                         default:
                             //Aquí va el código para aumentar los intentos fallidos
@@ -78,16 +78,6 @@ public class ServletHelp extends HttpServlet {
                             request.setAttribute("message", "El usuario ingresado no es válido"); //Mensaje
                             request.getRequestDispatcher("/views/common/login.jsp").forward(request, response);
                     }
-                    /*
-                    }else if(resultado[1] == 3){
-                        request.setAttribute("listMinutes", new DaoRecords().findAllRecords(resultado[0]));
-                        request.getRequestDispatcher("/views/users/mainOficialia.jsp").forward(request, response);
-                        request.getSession().setAttribute("usuariom",nameUser2);
-                        request.getSession().setAttribute("contram",password2);
-                    }else if(resultado[1] == 4){
-                        request.setAttribute("listMinutes", new DaoRecords().findAllRecords(resultado[0]));
-                        request.getRequestDispatcher("/views/users/mainAdmin.jsp").forward(request, response);
-                    }*/
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }

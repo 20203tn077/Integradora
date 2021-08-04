@@ -1,12 +1,16 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="context" value="${pageContext.request.contextPath}" />
 <html>
 
 <head>
     <title>SISO</title>
-    <link href="/assets/css/bootstrap.css" rel="stylesheet">
-    <link href="/assets/css/util.css" rel="stylesheet">
+    <link href="${context}/assets/css/bootstrap.css" rel="stylesheet">
+    <link href="${context}/assets/css/util.css" rel="stylesheet">
 </head>
 
-<body class="bg-light bg-gradient">
+<body class="bg-light">
+<c:if test="${access}">
     <nav class="navbar navbar-expand-lg navbar-dark bg-azul shadow">
         <div class="container-fluid">
             <span class="navbar-brand">Sistema de Seguimiento a Oficios</span>
@@ -17,14 +21,14 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <nav class="navbar-nav">
-                    <a class="nav-link active" href="/views/admin/user_list.html">Gestión de usuarios</a>
-                    <a class="nav-link" href="/views/admin/department_list.html">Gestión de departamentos</a>
-                    <a class="nav-link" href="/views/admin/profile.html">Perfil</a>
+                    <a class="nav-link active" href="${context}/Gestión_de_Usuarios?redirect=users">Gestión de usuarios</a>
+                    <a class="nav-link" href="${context}/Gestión_de_Departamentos?redirect=departments">Gestión de departamentos</a>
+                    <a class="nav-link" href="${context}/Perfil?redirect=profile">Perfil</a>
                 </nav>
                 <nav class="navbar-nav ms-auto">
-                    <a class="nav-link active" href="/views/common/login.html">
+                    <a class="nav-link active" href="${context}/Inicio_de_Sesión?redirect=login">
                         <svg class="feather">
-                            <use xlink:href="/assets/icons/feather-sprite.svg#log-out" />
+                            <use xlink:href="${context}/assets/icons/feather-sprite.svg#log-out" />
                         </svg>
                         <span> Salir</span>
                     </a>
@@ -32,6 +36,44 @@
             </div>
         </div>
     </nav>
+    <c:if test="${message != null}">
+      <c:if test="${messageType == 1}">
+        <div class="alert alert-primary alert-dismissible fade show m-3" role="alert">
+          <svg class="feather-24">
+            <use xlink:href="${context}/assets/icons/feather-sprite.svg#info" />
+          </svg>
+          <span> ${message}</span>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      </c:if>
+      <c:if test="${messageType == 2}">
+        <div class="alert alert-success alert-dismissible fade show m-3" role="alert">
+          <svg class="feather-24">
+            <use xlink:href="${context}/assets/icons/feather-sprite.svg#check-circle" />
+          </svg>
+          <span> ${message}</span>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      </c:if>
+      <c:if test="${messageType == 3}">
+        <div class="alert alert-warning alert-dismissible fade show m-3" role="alert">
+          <svg class="feather-24">
+            <use xlink:href="${context}/assets/icons/feather-sprite.svg#alert-circle" />
+          </svg>
+          <span> ${message}</span>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      </c:if>
+      <c:if test="${messageType == 4}">
+        <div class="alert alert-danger alert-dismissible fade show m-3" role="alert">
+          <svg class="feather-24">
+            <use xlink:href="${context}/assets/icons/feather-sprite.svg#alert-triangle" />
+          </svg>
+          <span> ${message}</span>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      </c:if>
+    </c:if>
     <div class="container mt-4">
         <div class="card shadow-sm">
             <h5 class="card-header">Gestión de usuarios</h5>
@@ -47,66 +89,14 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr role="button">
-                                <td>josepe</td>
-                                <td>José Eduardo Peñaloza García</td>
-                                <td>Responsable de departamento</td>
-                                <td>DACEA</td>
-                            </tr>
-                            <tr role="button">
-                                <td>josees</td>
-                                <td>José Miguel Estrada Ramirez</td>
-                                <td>Auxiliar</td>
-                                <td>DATIC</td>
-                            </tr>
-                            <tr role="button">
-                                <td>estebanmi</td>
-                                <td>Esteban Miranda Gonzales</td>
-                                <td>Responsable de departamento</td>
-                                <td>DAMI</td>
-                            </tr>
-                            <tr role="button">
-                                <td>mariaoc</td>
-                                <td>María Ocampo Arellano</td>
-                                <td>Auxiliar</td>
-                                <td>DATIC</td>
-                            </tr>
-                            <tr role="button">
-                                <td>silviama</td>
-                                <td>Silvia Manzanares Demetrio</td>
-                                <td>CDS</td>
-                                <td>Responsable de departamento</td>
-                            </tr>
-                            <tr role="button">
-                                <td>nathyes</td>
-                                <td>Nathaly Escalona Ruiz</td>
-                                <td>Responsable de departamento</td>
-                                <td>DATIC</td>
-                            </tr>
-                            <tr role="button">
-                                <td>pabloca</td>
-                                <td>Pablo Castrejón Flores</td>
-                                <td>Auxiliar</td>
-                                <td>DATIC</td>
-                            </tr>
-                            <tr role="button">
-                                <td>carlosdi</td>
-                                <td>Carlos Díaz Parencia</td>
-                                <td>Responsable de departamento</td>
-                                <td>Servicios Escolares</td>
-                            </tr>
-                            <tr role="button">
-                                <td>omarmo</td>
-                                <td>Omar Morales Demetrio</td>
-                                <td>Auxiliar</td>
-                                <td>DATIC</td>
-                            </tr>
-                            <tr role="button">
-                                <td>ricardocg</td>
-                                <td>Ricardo Cárdenas Guevara</td>
-                                <td>Auxiliar</td>
-                                <td>DATIC</td>
-                            </tr>
+                            <c:forEach items="${userList}" var="user">
+                                <tr role="button">
+                                    <td>${user.nameUser}</td>
+                                    <td>${user.name.concat(" ").concat(user.lastname1).concat(" ").concat(user.lastname2)}</td>
+                                    <td>${user.type_id.nameType}</td>
+                                    <td>${user.department_id.nameDepartment}</td>
+                                </tr>
+                            </c:forEach>
                         </tbody>
                     </table>
                 </div>
@@ -274,14 +264,16 @@
             </div>
         </div>
     </div>
+</c:if>
+<c:if test="${! access}">
+  <div class="alert alert-danger m-3">
+    <svg class="feather-24">
+      <use xlink:href="${context}/assets/icons/feather-sprite.svg#alert-triangle" />
+    </svg>
+    <span> Error: No tienes acceso a este sitio.</span>
+  </div>
+</c:if>
     <script src="/assets/js/bootstrap.bundle.js"></script>
-    <script src="/assets/js/assistant/recordListUtil.js"></script>
-    <script>
-        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl)
-        })
-    </script>
 </body>
 
 </html>
