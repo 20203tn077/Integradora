@@ -1,5 +1,6 @@
 package mx.com.siso.controler;
 
+import com.google.gson.Gson;
 import mx.com.siso.model.department.DaoDepartment;
 import mx.com.siso.model.records.DaoRecords;
 import mx.com.siso.model.users.BeanUsers;
@@ -30,13 +31,11 @@ public class Servlet extends HttpServlet {
                     case "records":
                         request.setAttribute("recordList1", new DaoRecords().findRecordsByAssistant(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)1));
                         request.setAttribute("recordList2", new DaoRecords().findRecordsByAssistant(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)2));
-                        request.setAttribute("access",true);
-                        request.getRequestDispatcher("/views/assistant/record_list.jsp").forward(request, response);
+                        redirect(request,response,"/views/assistant/record_list.jsp");
                         break;
                     case "profile":
-                        request.setAttribute("access",true);
                         request.setAttribute("user", new DaoUsers().findUserById(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId")))));
-                        request.getRequestDispatcher("/views/assistant/profile.jsp").forward(request, response);
+                        redirect(request,response,"/views/assistant/profile.jsp");
                         break;
                     case "dataModify":
                 }
@@ -47,38 +46,30 @@ public class Servlet extends HttpServlet {
                         request.setAttribute("recordList1", new DaoRecords().findAllRecordsByManager(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)1));
                         request.setAttribute("recordList2", new DaoRecords().findAllRecordsByManager(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)2));
                         request.setAttribute("recordList3", new DaoRecords().findAllRecordsByManager(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)3));
-                        request.setAttribute("access",true);
-                        request.getRequestDispatcher("/views/manager/record_list.jsp").forward(request, response);
+                        redirect(request,response,"/views/manager/record_list.jsp");
                         break;
                     case "assistants":
                         request.setAttribute("assistantList", new DaoUsers().findAllAssitant(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId")))));
-                        request.setAttribute("access",true);
-                        request.getRequestDispatcher("/views/manager/assistant_list.jsp").forward(request, response);
+                        redirect(request,response,"/views/manager/assistant_list.jsp");
                         break;
                     case "profile":
                         request.setAttribute("user", new DaoUsers().findUserById(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId")))));
-                        request.setAttribute("access",true);
-                        request.getRequestDispatcher("/views/manager/profile.jsp").forward(request, response);
+                        redirect(request,response,"/views/manager/profile.jsp");
                         break;
                     case "dataModify":
-                        request.setAttribute("access",true);
-                        request.getRequestDispatcher("/views/manager/data_modify.jsp").forward(request, response);
+                        redirect(request,response,"/views/manager/data_modify.jsp");
                         break;
                     case "recordAssign":
-                        request.setAttribute("access",true);
-                        request.getRequestDispatcher("/views/manager/record_assign.jsp").forward(request, response);
+                        redirect(request,response,"/views/manager/record_assign.jsp");
                         break;
                     case "recordReassign":
-                        request.setAttribute("access",true);
-                        request.getRequestDispatcher("/views/manager/record_reassign.jsp").forward(request, response);
+                        redirect(request,response,"/views/manager/record_reassign.jsp");
                         break;
                     case "assistantRegister":
-                        request.setAttribute("access",true);
-                        request.getRequestDispatcher("/views/manager/assistant_register.jsp").forward(request, response);
+                        redirect(request,response,"/views/manager/assistant_register.jsp");
                         break;
                     case "assistantModify":
-                        request.setAttribute("access",true);
-                        request.getRequestDispatcher("/views/manager/assistant_modify.jsp").forward(request, response);
+                        redirect(request,response,"/views/manager/assistant_modify.jsp");
                 }
                 break;
             case 3:
@@ -86,62 +77,49 @@ public class Servlet extends HttpServlet {
                     case "records":
                         request.setAttribute("recordList1", new DaoRecords().findAllRecords(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)1));
                         request.setAttribute("recordList2", new DaoRecords().findAllRecords(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)2));
-                        request.setAttribute("access",true);
-                        request.getRequestDispatcher("/views/oficialia/record_list.jsp").forward(request, response);
+                        redirect(request,response,"/views/oficialia/record_list.jsp");
                         break;
                     case "profile":
                         request.setAttribute("user", new DaoUsers().findUserById(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId")))));
-                        request.setAttribute("access",true);
-                        request.getRequestDispatcher("/views/oficialia/profile.jsp").forward(request, response);
+                        redirect(request,response,"/views/oficialia/profile.jsp");
                         break;
                     case "dataModify":
-                        request.setAttribute("access",true);
-                        request.getRequestDispatcher("/views/oficialia/data_modify.jsp").forward(request, response);
+                        redirect(request,response,"/views/oficialia/data_modify.jsp");
                         break;
                     case "recordRegister":
-                        request.setAttribute("access",true);
-                        request.getRequestDispatcher("/views/oficialia/record_register.jsp").forward(request, response);
+                        redirect(request,response,"/views/oficialia/record_register.jsp");
                         break;
                     case "recordRechannelling":
-                        request.setAttribute("access",true);
-                        request.getRequestDispatcher("/views/oficialia/record_rechannelling.jsp").forward(request, response);
+                        redirect(request,response,"/views/oficialia/record_rechannelling.jsp");
                 }
                 break;
             case 4:
                 switch (redirect) {
                     case "users":
                         request.setAttribute("userList", new DaoUsers().findAllUsers());
-                        request.setAttribute("access",true);
-                        request.getRequestDispatcher("/views/admin/user_list.jsp").forward(request, response);
+                        redirect(request,response,"/views/admin/user_list.jsp");
                         break;
                     case "departments":
                         request.setAttribute("departmentList", new DaoDepartment().findDepartment());
-                        request.setAttribute("access",true);
-                        request.getRequestDispatcher("/views/admin/department_list.jsp").forward(request, response);
+                        redirect(request,response,"/views/admin/department_list.jsp");
                         break;
                     case "profile":
-                        request.setAttribute("access",true);
-                        request.getRequestDispatcher("/views/admin/profile.jsp").forward(request, response);
+                        redirect(request,response,"/views/admin/profile.jsp");
                         break;
                     case "dataModify":
-                        request.setAttribute("access",true);
-                        request.getRequestDispatcher("/views/admin/data_modify.jsp").forward(request, response);
+                        redirect(request,response,"/views/admin/data_modify.jsp");
                         break;
                     case "userRegister":
-                        request.setAttribute("access",true);
-                        request.getRequestDispatcher("/views/admin/user_register.jsp").forward(request, response);
+                        redirect(request,response,"/views/admin/user_register.jsp");
                         break;
                     case "userModify":
-                        request.setAttribute("access",true);
-                        request.getRequestDispatcher("/views/admin/user_modify.jsp").forward(request, response);
+                        redirect(request,response,"/views/admin/user_modify.jsp");
                         break;
                     case "departmentRegister":
-                        request.setAttribute("access",true);
-                        request.getRequestDispatcher("/views/admin/department_register.jsp").forward(request, response);
+                        redirect(request,response,"/views/admin/department_register.jsp");
                         break;
                     case "departmentModify":
-                        request.setAttribute("access",true);
-                        request.getRequestDispatcher("/views/admin/department_modify.jsp").forward(request, response);
+                        redirect(request,response,"/views/admin/department_modify.jsp");
                 }
                 break;
             default:
@@ -185,5 +163,21 @@ public class Servlet extends HttpServlet {
 
         }
 
+    }
+
+    void redirect(HttpServletRequest request, HttpServletResponse response, String url, byte messageType, String message) throws ServletException, IOException {
+        request.setAttribute("messageType", messageType);
+        request.setAttribute("message", message);
+        request.setAttribute("access", true);
+        request.getRequestDispatcher(url).forward(request,response);
+    }
+
+    void redirect(HttpServletRequest request, HttpServletResponse response, String url) throws ServletException, IOException {
+        request.setAttribute("access", true);
+        request.getRequestDispatcher(url).forward(request,response);
+    }
+
+    void sendJSON (HttpServletResponse response, Object obj) throws IOException{
+        response.getWriter().write(new Gson().toJson(obj));
     }
 }

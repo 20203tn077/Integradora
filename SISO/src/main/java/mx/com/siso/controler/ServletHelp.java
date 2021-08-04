@@ -1,5 +1,6 @@
 package mx.com.siso.controler;
 
+import com.google.gson.Gson;
 import mx.com.siso.model.records.DaoRecords;
 import mx.com.siso.model.users.BeanUsers;
 import mx.com.siso.model.users.DaoUsers;
@@ -28,7 +29,7 @@ public class ServletHelp extends HttpServlet {
             case "login":
                 request.getSession().removeAttribute("sessionRole");
                 request.getSession().removeAttribute("sessionId");
-                request.getRequestDispatcher("/views/common/login.jsp").forward(request,response);
+                redirect(request,response,"/views/common/login.jsp");
         }
     }
 
@@ -51,32 +52,26 @@ public class ServletHelp extends HttpServlet {
                         case 1:
                             request.setAttribute("recordList1", new DaoRecords().findRecordsByAssistant(result[0], (byte)1));
                             request.setAttribute("recordList2", new DaoRecords().findRecordsByAssistant(result[0], (byte)2));
-                            request.setAttribute("access", true);
-                            request.getRequestDispatcher("/views/assistant/record_list.jsp").forward(request, response);
+                            redirect(request,response,"/views/assistant/record_list.jsp");
                             break;
                         case 2:
                             request.setAttribute("recordList1", new DaoRecords().findAllRecordsByManager(result[0], (byte)1));
                             request.setAttribute("recordList2", new DaoRecords().findAllRecordsByManager(result[0], (byte)2));
                             request.setAttribute("recordList3", new DaoRecords().findAllRecordsByManager(result[0], (byte)3));
-                            request.setAttribute("access", true);
-                            request.getRequestDispatcher("/views/manager/record_list.jsp").forward(request, response);
+                            redirect(request,response,"/views/manager/record_list.jsp");
                             break;
                         case 3:
                             request.setAttribute("recordList1", new DaoRecords().findAllRecords(result[0], (byte)1));
                             request.setAttribute("recordList2", new DaoRecords().findAllRecords(result[0], (byte)2));
-                            request.setAttribute("access",true);
-                            request.getRequestDispatcher("/views/oficialia/record_list.jsp").forward(request, response);
+                            redirect(request,response,"/views/oficialia/record_list.jsp");
                             break;
                         case 4:
                             request.setAttribute("userList", new DaoUsers().findAllUsers());
-                            request.setAttribute("access", true);
-                            request.getRequestDispatcher("/views/admin/user_list.jsp").forward(request, response);
+                            redirect(request,response,"/views/admin/user_list.jsp");
                             break;
                         default:
                             //Aquí va el código para aumentar los intentos fallidos
-                            request.setAttribute("messageType", 3); //Tipo de mensaje, varia el color y el ícono
-                            request.setAttribute("message", "El usuario ingresado no es válido"); //Mensaje
-                            request.getRequestDispatcher("/views/common/login.jsp").forward(request, response);
+                            redirect(request,response,"/views/common/login.jsp", (byte)3, "No se pudo iniciar sesión");
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -120,19 +115,16 @@ public class ServletHelp extends HttpServlet {
                         transport.connect("smtp.gmail.com", "sisowebutez@gmail.com", "sisoutez");
                         transport.sendMessage(message, message.getAllRecipients());
                         transport.close();
-                        request.setAttribute("access",true);
                         request.setAttribute("email", correo);
                         request.setAttribute("id", recoveryId);
                         request.getSession().setAttribute("recoveryId", recoveryId);
-                        request.getRequestDispatcher("/views/common/pswd_recover.jsp").forward(request, response);
+                        redirect(request,response,"/views/common/pswd_recover.jsp");
                     } catch (MessagingException me) {
                         me.printStackTrace();   //Si se produce un error
                     }
                 }else{
                     System.out.println("El correo no es valido");
-                    request.setAttribute("messageType", 3);
-                    request.setAttribute("message", "El correo ingresado no es válido");
-                    request.getRequestDispatcher("/views/common/pswd_request.jsp").forward(request, response);
+                    redirect(request,response,"/views/common/pswd_request.jsp", (byte)3, "El correo ingresado no es válido");
                 }
 break;
             case "tokenValidation":
@@ -143,17 +135,13 @@ break;
 
                 if(new DaoUsers().checkToken(beanUsers1)){
                     System.out.println("Token coincide con Id");
-                    request.setAttribute("access",true);
                     request.setAttribute("id", recoveryId2);
-                    request.getRequestDispatcher("/views/common/pswd_new.jsp").forward(request, response);
+                    redirect(request,response,"/views/common/pswd_new.jsp");
                 }else{
                     System.out.println("Token no coincide");
-                    request.setAttribute("messageType", 3);
-                    request.setAttribute("message", "El token ingresado no es válido");
-                    request.setAttribute("access",true);
                     request.setAttribute("email", recoveryEmail);
                     request.setAttribute("id", recoveryId2);
-                    request.getRequestDispatcher("/views/common/pswd_recover.jsp").forward(request, response);
+                    redirect(request,response,"/views/common/pswd_recover.jsp", (byte)3, "El token ingresado no es válido");
                 }
                 break;
             case "passwordChange":
@@ -165,19 +153,29 @@ break;
                     try {
                         if (new DaoUsers().update(passwordChangeUser)) {
                             request.getSession().removeAttribute("recoveryId");
-                            request.setAttribute("messageType", 2);
-                            request.setAttribute("message", "Se ha actualizado tu contraseña, inicia sesión de nuevo.");
-                            request.getRequestDispatcher("/views/common/login.jsp").forward(request, response);
+                            redirect(request,response,"/views/common/login.jsp", (byte)2, "Se ha actualizado tu contraseña, inicia sesión de nuevo.");
                         }
                     }catch (SQLException e) {
                         //No se pudo cambiar por alguna razón
-                        request.getRequestDispatcher("/views/common/login.jsp").forward(request, response);
+                        redirect(request,response,"/views/common/login.jsp");
                     }
                 } else {
                     //No coincide el token recibido con el que se intentaba cambiar
-                    request.getRequestDispatcher("/views/common/login.jsp").forward(request, response);
+                    redirect(request,response,"/views/common/login.jsp");
                 }
 
         }
+    }
+
+    void redirect(HttpServletRequest request, HttpServletResponse response, String url, byte messageType, String message) throws ServletException, IOException {
+        request.setAttribute("messageType", messageType);
+        request.setAttribute("message", message);
+        request.setAttribute("access", true);
+        request.getRequestDispatcher(url).forward(request,response);
+    }
+
+    void redirect(HttpServletRequest request, HttpServletResponse response, String url) throws ServletException, IOException {
+        request.setAttribute("access", true);
+        request.getRequestDispatcher(url).forward(request,response);
     }
 }
