@@ -1,50 +1,46 @@
-var modal1 = new bootstrap.Modal(document.getElementById('pendingRecordModal'), {})
-var modal2 = new bootstrap.Modal(document.getElementById('attendedRecordModal'), {})
+var context = document.getElementById("context").value;
+var modalDetails = new bootstrap.Modal(document.getElementById("modalDetails"), {});
 
-function showModal1(recordId, channellingDate, assignmentDate, department, priority) {
-    document.getElementById("modal1RecordId").innerHTML = recordId;
-    document.getElementById("modal1ChannellingDate").innerHTML = channellingDate;
-    document.getElementById("modal1AssignmentDate").innerHTML = assignmentDate;
-    document.getElementById("modal1Department").innerHTML = department;
-    document.getElementById("modal1Priority").innerHTML = priority;
-    document.getElementById("modal1RecordIdInput").value = recordId;
-    switch (priority) {
-        case "Normal":
-            document.getElementById("modal1Priority").className = "badge bg-success";
-            break;
-        case "Importante":
-            document.getElementById("modal1Priority").className = "badge bg-warning text-dark";
-            break;
-        case "Muy importante":
-            document.getElementById("modal1Priority").className = "badge bg-naranja";
-            break;
-        case "Urgente":
-            document.getElementById("modal1Priority").className = "badge bg-danger";
-    }
-    modal1.show();
-}
-
-function showModal2(recordId, channellingDate, assignmentDate, responseDate, department, priority, comment) {
-    document.getElementById("modal2RecordId").innerHTML = recordId;
-    document.getElementById("modal2ChannellingDate").innerHTML = channellingDate;
-    document.getElementById("modal2AssignmentDate").innerHTML = assignmentDate;
-    document.getElementById("modal2ResponseDate").innerHTML = responseDate;
-    document.getElementById("modal2Department").innerHTML = department;
-    document.getElementById("modal2Priority").innerHTML = priority;
-    document.getElementById("modal2RecordIdInput").value = recordId;
-    document.getElementById("modal2Comment").innerHTML = comment;
-    switch (priority) {
-        case "Normal":
-            document.getElementById("modal2Priority").className = "badge bg-success";
-            break;
-        case "Importante":
-            document.getElementById("modal2Priority").className = "badge bg-warning text-dark";
-            break;
-        case "Muy importante":
-            document.getElementById("modal2Priority").className = "badge bg-naranja";
-            break;
-        case "Urgente":
-            document.getElementById("modal2Priority").className = "badge bg-danger";
-    }
-    modal2.show();
+function showModalDetails(id) {
+    const request = new XMLHttpRequest();
+    request.open("POST", context+"/Servlet", true);
+    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    request.send("action=getRecordDetails&id="+id);
+    request.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            let record = JSON.parse(this.responseText);
+            document.getElementById("modalDetails_id").innerHTML = record.id_minutes;
+            document.getElementById("modalDetails_channelling").innerHTML = record.dateChannelling;
+            document.getElementById("modalDetails_assignment").innerHTML = record.dateAssignment;
+            document.getElementById("modalDetails_department").innerHTML = record.departmentId.nameDepartment;
+            switch (record.priorityId.idPriority) {
+                case 1:
+                    document.getElementById("modalDetails_priority").innerHTML = '<span class="badge bg-danger">' + record.priorityId.namePriority + '</span>';
+                    break;
+                case 2:
+                    document.getElementById("modalDetails_priority").innerHTML = '<span class="badge bg-naranja">' + record.priorityId.namePriority + '</span>';
+                    break;
+                case 3:
+                    document.getElementById("modalDetails_priority").innerHTML = '<span class="badge bg-warning text-dark">' + record.priorityId.namePriority + '</span>';
+                    break;
+                case 4:
+                    document.getElementById("modalDetails_priority").innerHTML = '<span class="badge bg-success">' + record.priorityId.namePriority + '</span>';
+            }
+            if (record.dateResponse != null) {
+                document.getElementById("modalDetails_responseContainer").style.display = "initial";
+                document.getElementById("modalDetails_response").innerHTML = record.dateResponse;
+                document.getElementById("modalDetails_commentContainer").style.display = "initial";
+                document.getElementById("modalDetails_comment").innerHTML = record.comment;
+                document.getElementById("modalDetails_attendButtonContainer").style.display = "none";
+                document.getElementById("modalDetails_responseButtonContainer").style.display = "initial";
+            } else {
+                document.getElementById("modalDetails_commentContainer").style.display = "none";
+                document.getElementById("modalDetails_responseContainer").style.display = "none";
+                document.getElementById("modalDetails_attendButtonContainer").style.display = "initial";
+                document.getElementById("modalDetails_responseButtonContainer").style.display = "none";
+            }
+            document.getElementById("modalDetails_viewForm").value = record.id_minutes;
+            modalDetails.show();
+        }
+    };
 }

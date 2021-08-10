@@ -24,6 +24,7 @@ public class ServletHelp extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
         String redirect = request.getParameter("redirect") != null ? request.getParameter("redirect") : "";
         switch (redirect) {
             case "login":
@@ -36,6 +37,7 @@ public class ServletHelp extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
         String action = request.getParameter("action") != null ? request.getParameter("action") : "";
         switch (action) {
             case "access":

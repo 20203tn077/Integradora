@@ -79,41 +79,41 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6">
-                            <p class="fw-bold m-0">
+                            <span class="fw-bold">
                                 Nombre de usuario:
-                            </p>
+                            </span>
                             <p>
                                 ${user.nameUser}
                             </p>
                         </div>
                         <div class="col-md-6">
-                            <p class="fw-bold m-0">
+                            <span class="fw-bold">
                                 Nombre:
-                            </p>
+                            </span>
                             <p>
                                 ${user.name.concat(" ").concat(user.lastname1).concat(" ").concat(user.lastname2)}
                             </p>
                         </div>
                         <div class="col-md-6">
-                            <p class="fw-bold m-0">
+                            <span class="fw-bold">
                                 Correo electrónico:
-                            </p>
+                            </span>
                             <p>
                                 ${user.email}
                             </p>
                         </div>
                         <div class="col-md-6">
-                            <p class="fw-bold m-0">
+                            <span class="fw-bold">
                                 Rol:
-                            </p>
+                            </span>
                             <p>
                                 ${user.type_id.nameType}
                             </p>
                         </div>
                         <div class="col-md-6">
-                            <p class="fw-bold m-0">
+                            <span class="fw-bold">
                                 Departamento:
-                            </p>
+                            </span>
                             <p>
                                 ${user.department_id.nameDepartment}
                             </p>

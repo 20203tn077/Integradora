@@ -140,12 +140,12 @@ public class DaoRecords {
         return flag;
     }
 
-    public byte[]  findRecordsById(int id){
+    public byte[]  findRecordFile(int id){
         byte[] b = null;
         byte[] datosPDF = null;
         try {
             con = ConnectionMySQL.getConnection();
-            cstm = con.prepareCall("{call  find_record_byId(?)}");
+            cstm = con.prepareCall("{call  find_record_file(?)}");
             cstm.setLong(1, id);
             rs = cstm.executeQuery();
 
@@ -216,6 +216,7 @@ public class DaoRecords {
                 beanPriority.setIdPriority(rs.getInt("priority_id"));
                 beanPriority.setNamePriority(rs.getString("priority_name"));
                 beanUsers.setName(rs.getString("name"));
+                beanUsers.setNameUser(rs.getString("username"));
                 beanUsers.setLastname1(rs.getString("lastname_1"));
                 beanUsers.setLastname2(rs.getString("lastname_2"));
                 beanUsers.setId_user(rs.getInt("user_id"));
@@ -238,4 +239,41 @@ public class DaoRecords {
         return listMinutes;
     }
 
+    public BeanRecords findRecordById(int id){
+        BeanRecords beanRecords = new BeanRecords();
+        try {
+            con = ConnectionMySQL.getConnection();
+            cstm = con.prepareCall("{call find_record_byId(?)}");
+            cstm.setInt(1, id);
+            rs = cstm.executeQuery();
+            if(rs.next()){
+                BeanUsers beanUsers =new BeanUsers();
+                BeanDepartment beanDepartment = new BeanDepartment();
+                BeanPriority beanPriority = new BeanPriority();
+                beanDepartment.setIdDepartment(rs.getInt("department_id"));
+                beanDepartment.setNameDepartment(rs.getString("department_name"));
+                beanPriority.setIdPriority(rs.getInt("priority_id"));
+                beanPriority.setNamePriority(rs.getString("priority_name"));
+                beanUsers.setName(rs.getString("name"));
+                beanUsers.setLastname1(rs.getString("lastname_1"));
+                beanUsers.setLastname2(rs.getString("lastname_2"));
+                beanUsers.setId_user(rs.getInt("user_id"));
+                beanUsers.setNameUser(rs.getString("username"));
+                beanRecords.setDateChannelling(rs.getTimestamp("channelling_date"));
+                beanRecords.setDateAssignment(rs.getTimestamp("assignment_date"));
+                beanRecords.setDateResponse(rs.getTimestamp("response_date"));
+                beanRecords.setComment(rs.getString("comment"));
+                beanRecords.setId_minutes(rs.getInt("records_id"));
+                beanRecords.setAttended(rs.getInt("attended"));
+                beanRecords.setDepartmentId(beanDepartment);
+                beanRecords.setUserId(beanUsers);
+                beanRecords.setPriorityId(beanPriority);
+            }
+        }catch (SQLException e){
+            System.out.printf("Ha ocurrido un error: " + e.getMessage());
+        } finally {
+            ConnectionMySQL.closeConnection(con, cstm, rs);
+        }
+        return beanRecords;
+    }
 }

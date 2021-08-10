@@ -10,6 +10,9 @@
 </head>
 
 <body class="bg-light">
+
+<!--////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+
 <c:if test="${access}">
     <nav class="navbar navbar-expand-lg navbar-dark bg-azul shadow">
         <div class="container-fluid">
@@ -36,6 +39,9 @@
             </div>
         </div>
     </nav>
+
+<!--////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+
     <c:if test="${message != null}">
       <c:if test="${messageType == 1}">
         <div class="alert alert-primary alert-dismissible fade show m-3" role="alert">
@@ -74,11 +80,14 @@
         </div>
       </c:if>
     </c:if>
+
+<!--////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+
     <div class="container mt-4">
         <div class="card shadow-sm">
             <h5 class="card-header">Gestión de departamentos</h5>
             <div class="card-body" height="100px">
-                <div class="table-container">
+
                     <table class="table table-azul table-striped table-hover border text-center">
                         <thead class="thead-azul display-none">
                             <tr>
@@ -89,7 +98,7 @@
                         </thead>
                         <tbody class="align-middle">
                             <c:forEach items="${departmentList}" var="department">
-                                <tr>
+                                <tr role="button" onclick="showModalDetails('${department.idDepartment}')">
                                     <td>
                                         ${department.nameDepartment}
                                     </td>
@@ -103,163 +112,113 @@
                             </c:forEach>
                         </tbody>
                     </table>
-                </div>
+
             </div>
         </div>
     </div>
+
+<!--////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+
     <button type="button" class="btn btn-verde btn-floating shadow" data-bs-toggle="tooltip" data-bs-placement="left" title="Nuevo departamento">
         <svg class="feather-28">
-            <use xlink:href="/assets/icons/feather-sprite.svg#plus" />
+            <use xlink:href="${context}/assets/icons/feather-sprite.svg#plus" />
         </svg>
     </button>
-    <div class="modal fade" tabindex="-1" id="pendingRecordModal">
+    
+<!--////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+
+    <div class="modal fade" tabindex="-1" id="modalDetails">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Detalle del oficio</h5>
+                    <h5 class="modal-title">Departamento</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <span class="fw-bold">
-                                    Número de oficio:
-                                </span>
-                                <p id="modal1RecordId"></p>
-                            </div>
-                            <div class="col-md-6">
-                                <span class="fw-bold">
-                                    Fecha de canalización:
-                                </span>
-                                <p id="modal1ChannellingDate"></p>
-                            </div>
-                            <div class="col-md-6">
-                                <span class="fw-bold">
-                                    Fecha de asignación:
-                                </span>
-                                <p id="modal1AssignmentDate"></p>
-                            </div>
-                            <div class="col-md-6">
-                                <span class="fw-bold">
-                                    Departamento:
-                                </span>
-                                <p id="modal1Department"></p>
-                            </div>
-                            <div class="col-md-6">
-                                <span class="fw-bold">
-                                    Prioridad:
-                                </span>
-                                <p>
-                                    <span id="modal1Priority"></span>
-                                </p>
-                            </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <span class="fw-bold">
+                                Nombre:
+                            </span>
+                            <p id="modalDetails_name"></p>
                         </div>
-                        <div class="row">
-                            <h5>Acciones:</h5>
-                            <div class="col-md-6 col-lg-4 mb-3">
-                                <form action="/SISO_war/ServletRecords" method="POST" target="_blank" class="m-0">
-                                    <input type="hidden" value="getRecordById" name="action">
-                                    <input type="hidden" id="modal1RecordIdInput" name="recordIdInput">
-                                    <button type="submit" class="btn btn-primary w-100">
-                                        <svg class="feather">
-                                            <use xlink:href="/assets/icons/feather-sprite.svg#file-text" />
-                                        </svg>
-                                        <span> Visualizar archivo</span>
-                                    </button>
-                                </form>
-                            </div>
-                            <div class="col-md-6 col-lg-4 mb-3">
-                                <button type="button" class="btn btn-primary w-100">
-                                    <svg class="feather">
-                                        <use xlink:href="/assets/icons/feather-sprite.svg#edit" />
-                                    </svg>
-                                    <span> Atender oficio</span>
-                                </button>
-                            </div>
-                            <div class="col-md-6 col-lg-4 mb-3">
-                                <button type="button" class="btn btn-primary w-100">
-                                    <svg class="feather">
-                                        <use xlink:href="/assets/icons/feather-sprite.svg#edit" />
-                                    </svg>
-                                    <span> Atender oficio</span>
-                                </button>
-                            </div>
+                        <div class="col-md-6">
+                            <span class="fw-bold">
+                                Descripción:
+                            </span>
+                            <p id="modalDetails_description"></p>
+                        </div>
+                        <div class="col-md-6">
+                            <span class="fw-bold">
+                                Número de teléfono:
+                            </span>
+                            <p id="modalDetails_phone"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="row w-100">
+                        <div class="p-1 col-md-6 col-lg-4">
+                            <a href="#" class="btn btn-verde w-100">
+                                <svg class="feather">
+                                    <use xlink:href="${context}/assets/icons/feather-sprite.svg#edit" />
+                                </svg>
+                                <span> Modificar departamento</span>
+                            </a>
+                        </div>
+                        <div class="p-1 col-md-6 col-lg-4" data-bs-target="#modalDelete" data-bs-toggle="modal"
+                            data-bs-dismiss="modal">
+                            <button type="button" class="btn btn-danger w-100" onclick="showModalDelete()">
+                                <svg class="feather">
+                                    <use xlink:href="${context}/assets/icons/feather-sprite.svg#trash-2" />
+                                </svg>
+                                <span> Eliminar departamento</span>
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="modal fade" tabindex="-1" id="attendedRecordModal">
-        <div class="modal-dialog modal-lg">
+
+<!--////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+
+    <div class="modal fade" tabindex="-1" id="modalDelete">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Detalle del oficio</h5>
+                    <h5 class="modal-title">Eliminar departamento</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <span class="fw-bold">
-                                    Número de oficio:
-                                </span>
-                                <p id="modal2RecordId"></p>
-                            </div>
-                            <div class="col-md-6">
-                                <span class="fw-bold">
-                                    Fecha de canalización:
-                                </span>
-                                <p id="modal2ChannellingDate"></p>
-                            </div>
-                            <div class="col-md-6">
-                                <span class="fw-bold">
-                                    Fecha de asignación:
-                                </span>
-                                <p id="modal2AssignmentDate"></p>
-                            </div>
-                            <div class="col-md-6">
-                                <span class="fw-bold">
-                                    Fecha de respuesta:
-                                </span>
-                                <p id="modal2ResponseDate"></p>
-                            </div>
-                            <div class="col-md-6">
-                                <span class="fw-bold">
-                                    Departamento:
-                                </span>
-                                <p id="modal2Department"></p>
-                            </div>
-                            <div class="col-md-6">
-                                <span class="fw-bold">
-                                    Prioridad:
-                                </span>
-                                <p>
-                                    <span id="modal2Priority"></span>
-                                </p>
-                            </div>
-                            <div class="col-md-6">
-                                <span class="fw-bold">
-                                    Comentario:
-                                </span>
-                                <p id="modal2Comment"></p>
-                            </div>
+                    <div class="row">
+                        <div class="col">
+                            <p>¿Desea eliminar el departamento <span id="modalDelete_name"></span>?</p>
                         </div>
-                        <div class="row">
-                            <h5>Acciones:</h5>
-                            <div class="col-md-6 col-lg-4 mb-3">
-                                <form action="/ServletRecords" method="POST" target="_blank" class="m-0">
-                                    <input type="hidden" value="getRecordById" name="action">
-                                    <input type="hidden" id="modal2RecordIdInput" name="recordIdInput">
-                                    <button type="submit" class="btn btn-primary w-100">
-                                        <svg class="feather">
-                                            <use xlink:href="/assets/icons/feather-sprite.svg#file-text" />
-                                        </svg>
-                                        <span> Visualizar archivo</span>
-                                    </button>
-                                </form>
-                            </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="row w-100">
+                        <div class="p-1 col-md-6 col-lg-4">
+                            <button class="btn btn-secondary w-100" data-bs-target="#modalDetails"
+                                data-bs-toggle="modal" data-bs-dismiss="modal">
+                                <svg class="feather">
+                                    <use xlink:href="${context}/assets/icons/feather-sprite.svg#x" />
+                                </svg>
+                                <span> Cancelar</span>
+                            </button>
+                        </div>
+                        <div class="p-1 col-md-6 col-lg-4">
+                            <form action="${context}/Gestión_de_Departamentos" method="post" class="d-inline">
+                                <input type="hidden" name="action" value="deleteDepartment">
+                                <input type="hidden" name="id" id="modalDelete_formId">
+                                <button type="submit" class="btn btn-danger w-100">
+                                    <svg class="feather">
+                                        <use xlink:href="${context}/assets/icons/feather-sprite.svg#trash-2" />
+                                    </svg>
+                                    <span> Eliminar</span>
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -267,6 +226,9 @@
         </div>
     </div>
 </c:if>
+
+<!--////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+
 <c:if test="${! access}">
   <div class="alert alert-danger m-3">
     <svg class="feather-24">
@@ -275,7 +237,12 @@
     <span> Error: No tienes acceso a este sitio.</span>
   </div>
 </c:if>
-    <script src="/assets/js/bootstrap.bundle.js"></script>
+
+<!--////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+
+<input type="hidden" id="context" value="${context}">
+    <script src="${context}/assets/js/bootstrap.bundle.js"></script>
+    <script src="${context}/assets/js/admin/departmentListUtil.js"></script>
 </body>
 
 </html>

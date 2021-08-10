@@ -263,12 +263,12 @@ public class DaoUsers {
         return flag;
     }
 
-    public boolean delete(BeanUsers user) throws SQLException {
+    public boolean delete(int id) {
         boolean flag = false;
         try{
             con = ConnectionMySQL.getConnection();
             cstm = con.prepareCall("{call delete_user(?,?)}");
-            cstm.setInt(1, user.getId_user());
+            cstm.setInt(1, id);
             cstm.registerOutParameter(2, java.sql.Types.INTEGER);
             flag = cstm.execute();
             int errorCurrent = cstm.getInt(2);
@@ -364,6 +364,9 @@ public class DaoUsers {
         return id;
     }
     public boolean checkToken(BeanUsers user){
+        System.out.println(user.getId_user());
+        System.out.println(user.getToken());
+
         boolean flag = false;
         try {
             con = ConnectionMySQL.getConnection();
@@ -378,13 +381,16 @@ public class DaoUsers {
             int errorToken = cstm.getInt(3);
             int errorHour = cstm.getInt(4);
             int success = cstm.getInt(5);
+            System.out.println(success);
             if(success==1){
                 flag = true;
             }else{
                 if(errorToken==1){
                     flag = false;
+                    System.out.println("Errortoken");
                 }else{
                     if(errorHour==1){
+                        System.out.println("ErrorHour");
                         flag = false;
                     }
                 }

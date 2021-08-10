@@ -134,12 +134,12 @@ public class DaoDepartment {
         return flag;
     }
 
-    public boolean delete(BeanDepartment department) throws SQLException {
+    public boolean delete(int id){
         boolean flag = false;
         try{
             con = ConnectionMySQL.getConnection();
             cstm = con.prepareCall("{call delete_department(?,?)}");
-            cstm.setInt(1, department.getIdDepartment());
+            cstm.setInt(1, id);
             cstm.registerOutParameter(2, java.sql.Types.INTEGER);
             flag = cstm.execute();
             int errorCurrent = cstm.getInt(2);
