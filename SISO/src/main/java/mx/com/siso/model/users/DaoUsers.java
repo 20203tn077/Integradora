@@ -286,54 +286,39 @@ public class DaoUsers {
         return flag;
     }
     public int[] login(BeanUsers user) throws SQLException {
-        int resultado[] = new int[2];
+        int resultado[] = new int[4];
         int error1 = 0, error2=0;
         try{
             con = ConnectionMySQL.getConnection();
-            cstm = con.prepareCall("{call login(?,?,?,?,?,?,?,?)}");
+            cstm = con.prepareCall("{call login(?,?,?,?,?,?)}");
             cstm.setString(1, user.getNameUser());
             cstm.setString(2, user.getPasswordUser());
             cstm.registerOutParameter(3, java.sql.Types.INTEGER);
             cstm.registerOutParameter(4, java.sql.Types.INTEGER);
             cstm.registerOutParameter(5, java.sql.Types.INTEGER);
             cstm.registerOutParameter(6, java.sql.Types.INTEGER);
-            cstm.registerOutParameter(7, java.sql.Types.INTEGER);
-            cstm.registerOutParameter(8, java.sql.Types.INTEGER);
             cstm.execute();
 
             resultado[0] = cstm.getInt(3);
             resultado[1] = cstm.getInt(4);
             int errorNameUser = cstm.getInt(5);
             int errorPassUser = cstm.getInt(6);
-            int errorNameAdmin = cstm.getInt(7);
-            int errorPassAdmin = cstm.getInt(8);
+            System.out.println(errorPassUser);
             if(resultado[1]!=0){
                 System.out.println("Se accedio correctamente");
                 System.out.println("El usuario es un tipo: "  + resultado[1]);
             }else{
-                if(errorNameUser==0 && errorNameAdmin==1){
-                    if(errorPassUser==0){
-                    }else{
-                        System.out.println("La contraseña es incorrecta");
+                if(errorNameUser  == 1){
+                    resultado[2] = 1;
+                }else{
+                    resultado[2] = 0;
+                    if (errorPassUser == 1){
+                        resultado[3] = 1;
+                    } else {
+                        resultado[3] = 0;
                     }
-                }else if(errorNameUser==1 && errorNameAdmin==1){
-                    error1 = 1;
                 }
-                if(errorNameAdmin==0 && errorNameUser==1){
-                    if(errorPassAdmin==0){
-                    }else{
-                        System.out.println("La contraseña es incorrecta");
-                    }
-                }else if(errorNameAdmin==1 && errorNameUser==1){
-                    error2 = 1;
-                }
-
             }
-
-            if(error1==1 && error2==1){
-                System.out.println("El usuario no existe");
-            }
-
         }catch(SQLException e){
             System.out.println("Error: " + e);
         }finally{
@@ -441,6 +426,69 @@ public class DaoUsers {
         }
         return listUsers;
     }
+    public int findIdByUsername(String username){
+        int  resultado = 0;
+        try {
+            con = ConnectionMySQL.getConnection();
+            cstm = con.prepareCall("{call find_idByUsername(?, ?)}");
+            cstm.setString(1, username);
+            cstm.setInt(2, java.sql.Types.INTEGER);
+            cstm.execute();
+            resultado = cstm.getInt(2);
+
+        }catch (SQLException e){
+            logger.error("Ha ocurrido un error: " + e.getMessage());
+        } finally {
+            ConnectionMySQL.closeConnection(con, cstm, rs);
+        }
+        return resultado;
+    }
+    public int[] findAttempts(int id){
+        int[] resultado = new int[2];
+        try {
+            System.out.println("El id es: " + id);
+            con = ConnectionMySQL.getConnection();
+            cstm = con.prepareCall("{call find_attempts(?, ?,?)}");
+            cstm.setInt(1, id);
+            cstm.setInt(2, java.sql.Types.INTEGER);
+            cstm.setString(3, String.valueOf(java.sql.Types.VARCHAR));
+            cstm.execute();
+            resultado[0] = cstm.getInt(2);
+            System.out.println("Los intentos son: " + resultado[0]);
+            resultado[1] = Integer.parseInt(cstm.getString(3));
+            System.out.println("Los minutos son: " + resultado[1]);
+        }catch (SQLException e){
+            logger.error("Ha ocurrido un error: " + e.getMessage());
+        } finally {
+            ConnectionMySQL.closeConnection(con, cstm, rs);
+        }
+        return resultado;
+    }
+    public void restartAttempts(int id){
+        try {
+            con = ConnectionMySQL.getConnection();
+            cstm = con.prepareCall("{call restart_attempts(?)}");
+            cstm.setInt(1, id);
+            cstm.execute();
+        }catch (SQLException e){
+            logger.error("Ha ocurrido un error: " + e.getMessage());
+        } finally {
+            ConnectionMySQL.closeConnection(con, cstm, rs);
+        }
+    }
+    public void increaseAttempts(int id){
+        try {
+            con = ConnectionMySQL.getConnection();
+            cstm = con.prepareCall("{call increase_attempts(?)}");
+            cstm.setInt(1, id);
+            cstm.execute();
+        }catch (SQLException e){
+            logger.error("Ha ocurrido un error: " + e.getMessage());
+        } finally {
+            ConnectionMySQL.closeConnection(con, cstm, rs);
+        }
+    }
+
 
 }
 

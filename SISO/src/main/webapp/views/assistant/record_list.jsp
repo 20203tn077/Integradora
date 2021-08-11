@@ -42,6 +42,47 @@
 
         <!--////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
 
+        <c:if test="${message != null}">
+            <c:if test="${messageType == 1}">
+                <div class="alert alert-primary alert-dismissible fade show m-3" role="alert">
+                    <svg class="feather-24">
+                        <use xlink:href="${context}/assets/icons/feather-sprite.svg#info" />
+                    </svg>
+                    <span> ${message}</span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </c:if>
+            <c:if test="${messageType == 2}">
+                <div class="alert alert-success alert-dismissible fade show m-3" role="alert">
+                    <svg class="feather-24">
+                        <use xlink:href="${context}/assets/icons/feather-sprite.svg#check-circle" />
+                    </svg>
+                    <span> ${message}</span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </c:if>
+            <c:if test="${messageType == 3}">
+                <div class="alert alert-warning alert-dismissible fade show m-3" role="alert">
+                    <svg class="feather-24">
+                        <use xlink:href="${context}/assets/icons/feather-sprite.svg#alert-circle" />
+                    </svg>
+                    <span> ${message}</span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </c:if>
+            <c:if test="${messageType == 4}">
+                <div class="alert alert-danger alert-dismissible fade show m-3" role="alert">
+                    <svg class="feather-24">
+                        <use xlink:href="${context}/assets/icons/feather-sprite.svg#alert-triangle" />
+                    </svg>
+                    <span> ${message}</span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </c:if>
+        </c:if>
+
+        <!--////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+
         <div class="container mt-4">
             <div class="card shadow-sm">
                 <h5 class="card-header">Gestión de oficios</h5>
@@ -185,12 +226,17 @@
                                 </form>
                             </div>
                             <div class="p-1 col-md-6 col-lg-4" id="modalDetails_attendButtonContainer">
-                                <a href="#" class="btn btn-verde w-100">
-                                    <svg class="feather">
-                                        <use xlink:href="${context}/assets/icons/feather-sprite.svg#edit" />
-                                    </svg>
-                                    <span> Atender oficio</span>
-                                </a>
+                                <form action="${context}/Atender_Oficio" method="post">
+                                    <input type="hidden" name="action" value="redirect">
+                                        <input type="hidden" name="redirect" value="recordAttend">
+                                        <input type="hidden" name="id" id="modalDetails_attendId">
+                                    <button type="submit" class="btn btn-verde w-100">
+                                        <svg class="feather">
+                                            <use xlink:href="${context}/assets/icons/feather-sprite.svg#edit" />
+                                        </svg>
+                                        <span> Atender oficio</span>
+                                    </button>
+                                </form>
                             </div>
                             <div class="p-1 col-md-6 col-lg-4" data-bs-target="#modalDelete" data-bs-toggle="modal"
                                 data-bs-dismiss="modal" id="modalDetails_responseButtonContainer">

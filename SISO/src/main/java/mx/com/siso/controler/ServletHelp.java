@@ -41,46 +41,80 @@ public class ServletHelp extends HttpServlet {
         String action = request.getParameter("action") != null ? request.getParameter("action") : "";
         switch (action) {
             case "access":
-                int[] result = new int[2];
+                int resultado2[] = new int[2];
+                int result[] = new int[4];
+
                 String loginUsername = request.getParameter("usernameInput") != null ? request.getParameter("usernameInput") : "";
                 String loginPassword = request.getParameter("passwordInput") != null ? request.getParameter("passwordInput") : "";
+                int idUser2 = new DaoUsers().findIdByUsername(loginUsername);
 
                 BeanUsers loginBeanUser = new BeanUsers(0, loginUsername, loginPassword, "", "", "", "", 0, "", null, null, null);
-                try {
-                    result = new DaoUsers().login(loginBeanUser);
-                    System.out.println("Id de usuario: " + result[0]);
-                    System.out.println("Tipo de usuario: " + result[1]);
-                    switch (result[1]) {
-                        case 1:
-                            request.setAttribute("recordList1", new DaoRecords().findRecordsByAssistant(result[0], (byte)1));
-                            request.setAttribute("recordList2", new DaoRecords().findRecordsByAssistant(result[0], (byte)2));
-                            redirect(request,response,"/views/assistant/record_list.jsp");
-                            break;
-                        case 2:
-                            request.setAttribute("recordList1", new DaoRecords().findAllRecordsByManager(result[0], (byte)1));
-                            request.setAttribute("recordList2", new DaoRecords().findAllRecordsByManager(result[0], (byte)2));
-                            request.setAttribute("recordList3", new DaoRecords().findAllRecordsByManager(result[0], (byte)3));
-                            redirect(request,response,"/views/manager/record_list.jsp");
-                            break;
-                        case 3:
-                            request.setAttribute("recordList1", new DaoRecords().findAllRecords(result[0], (byte)1));
-                            request.setAttribute("recordList2", new DaoRecords().findAllRecords(result[0], (byte)2));
-                            redirect(request,response,"/views/oficialia/record_list.jsp");
-                            break;
-                        case 4:
-                            request.setAttribute("userList", new DaoUsers().findAllUsers());
-                            redirect(request,response,"/views/admin/user_list.jsp");
-                            break;
-                        default:
-                            //Aquí va el código para aumentar los intentos fallidos
-                            redirect(request,response,"/views/common/login.jsp", (byte)3, "No se pudo iniciar sesión");
+
+                if (idUser2 != 0 && idUser2 != -1){
+                    resultado2 = new DaoUsers().findAttempts(idUser2);
+                    if (resultado2[0] == 3 && resultado2[1] > 30){
+                        new DaoUsers().restartAttempts(idUser2);
                     }
-                } catch (SQLException e) {
-                    e.printStackTrace();
+                    resultado2 = new DaoUsers().findAttempts(idUser2);
+                    if (resultado2[0] < 3 && resultado2[1] == -1){
+                        try {
+                            result = new DaoUsers().login(loginBeanUser);
+                            System.out.println("Id de usuario: " + result[0]);
+                            System.out.println("Tipo de usuario: " + result[1]);
+                            if (result[3] != 0){
+                                new DaoUsers().increaseAttempts(result[0]);
+                                redirect(request,response,"/views/common/login.jsp", (byte)3, "Contraseña incorrecta, llevas " + (resultado2[0] + 1) + " intentos fallidos");
+                            }else {
+                                new DaoUsers().restartAttempts(result[0]);
+                                System.out.println("Contraseña correcta");
+                                System.out.println("Tipo de usuario: " + result[1]);
+                                System.out.println("Id de usuario: " + result[0]);
+
+                                switch (result[1]) {
+                                    case 1:
+                                        request.setAttribute("recordList1", new DaoRecords().findRecordsByAssistant(result[0], (byte)1));
+                                        request.setAttribute("recordList2", new DaoRecords().findRecordsByAssistant(result[0], (byte)2));
+                                        redirect(request,response,"/views/assistant/record_list.jsp");
+                                        break;
+                                    case 2:
+                                        request.setAttribute("recordList1", new DaoRecords().findAllRecordsByManager(result[0], (byte)1));
+                                        request.setAttribute("recordList2", new DaoRecords().findAllRecordsByManager(result[0], (byte)2));
+                                        request.setAttribute("recordList3", new DaoRecords().findAllRecordsByManager(result[0], (byte)3));
+                                        redirect(request,response,"/views/manager/record_list.jsp");
+                                        break;
+                                    case 3:
+                                        request.setAttribute("recordList1", new DaoRecords().findAllRecords(result[0], (byte)1));
+                                        request.setAttribute("recordList2", new DaoRecords().findAllRecords(result[0], (byte)2));
+                                        redirect(request,response,"/views/oficialia/record_list.jsp");
+                                    default:
+                                }
+                                request.getSession().setAttribute("sessionRole", result[1]);
+                                request.getSession().setAttribute("sessionId", result[0]);
+                            }
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    }else if (resultado2[0] == 3 && resultado2[1] >= 0 && resultado2[1] < 31){
+                        redirect(request,response,"/views/common/login.jsp", (byte)4, "Su cuenta ha sido bloqueada temporalmente");
+                    }
+                } else if (idUser2 == -1) {
+                    try {
+                        result = new DaoUsers().login(loginBeanUser);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                    if (result[3] != 0){
+                        System.out.println("Contraseña incorrecta");
+                        request.getRequestDispatcher("/views/users/login.jsp").forward(request, response);
+
+                    }else {
+                        request.setAttribute("userList", new DaoUsers().findAllUsers());
+                        redirect(request,response,"/views/admin/user_list.jsp");
+                        request.getSession().setAttribute("sessionRole", result[1]);
+                    }
+                } else {
+                    redirect(request,response,"/views/common/login.jsp", (byte)3, "El usuario ingresado no existe");
                 }
-                System.out.println("asdasdasd");
-                request.getSession().setAttribute("sessionRole", result[1]);
-                request.getSession().setAttribute("sessionId", result[0]);
                 break;
             case "newPasswordRequest":
                 int longitud = 10;

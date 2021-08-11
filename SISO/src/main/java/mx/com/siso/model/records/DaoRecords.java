@@ -109,8 +109,8 @@ public class DaoRecords {
         }
         return listMinutes;
     }
-    public boolean createRecord(BeanRecords minute) throws SQLException {
-        boolean flag = false;
+    public int[] createRecord(BeanRecords minute) throws SQLException {
+        int[] resultado = new int[3];
         try {
             con = ConnectionMySQL.getConnection();
             cstm = con.prepareCall("{call create_records(?,?,?,?,?)}");
@@ -119,25 +119,28 @@ public class DaoRecords {
             cstm.setInt(3,minute.getPriorityId().getIdPriority());
             cstm.registerOutParameter(4, java.sql.Types.INTEGER);
             cstm.registerOutParameter(5, java.sql.Types.INTEGER);
-            flag = cstm.execute();
+            cstm.execute();
             int errorDepartament = cstm.getInt(4);
             int errorPriority = cstm.getInt(5);
             if(errorDepartament==0 && errorPriority==0){
                 System.out.println("Se registro correctamente");
+                resultado[0] = 1;
             }else{
                 if(errorDepartament==1){
                     System.out.println("El departamento no existe");
+                    resultado[1] = 1;
                 }
                 if(errorPriority==1){
                     System.out.println("La prioridad no existe");
+                    resultado[2] = 1;
                 }
             }
         }catch (SQLException e){
             System.out.printf("Ha ocurrido un error: " + e.getMessage());
         } finally {
-            con.close();
+            ConnectionMySQL.closeConnection(con, cstm);
         }
-        return flag;
+        return resultado;
     }
 
     public byte[]  findRecordFile(int id){
@@ -165,13 +168,13 @@ public class DaoRecords {
         }
         return datosPDF;
     }
-    public boolean assignRecord(BeanRecords records) throws SQLException {
-        boolean flag = false;
+    public int[] assignRecord(BeanRecords records) throws SQLException {
+        int[] resultado = new int[4];
         try {
             con = ConnectionMySQL.getConnection();
-            cstm = con.prepareCall("{call create_records(?,?,?,?,?)}");
+            cstm = con.prepareCall("{call assign_record(?,?,?,?,?)}");
             cstm.setInt(1,records.getId_minutes());
-            cstm.setString(2,records.getUserId().getNameUser());
+            cstm.setInt(2,records.getUserId().getId_user());
             cstm.registerOutParameter(3, java.sql.Types.INTEGER);
             cstm.registerOutParameter(4, java.sql.Types.INTEGER);
             cstm.registerOutParameter(5, java.sql.Types.INTEGER);
@@ -180,16 +183,25 @@ public class DaoRecords {
             int errorRecord = cstm.getInt(4);
             int errorAssignment = cstm.getInt(5);
             if(errorUser==0 && errorRecord==0 && errorAssignment == 0) {
-                flag = true;
+                resultado[0] = 1;
             }else{
-                flag = false;
+                if (errorUser == 1) {
+                    resultado[1] = 1;
+                }
+                if (errorRecord == 1){
+                    resultado[2] = 1;
+                }else {
+                    if (errorAssignment == 1){
+                        resultado[3] = 1;
+                    }
+                }
             }
         }catch (SQLException e){
             System.out.printf("Ha ocurrido un error: " + e.getMessage());
         } finally {
-            con.close();
+            ConnectionMySQL.closeConnection(con, cstm);
         }
-        return flag;
+        return resultado;
     }
     public List<BeanRecords> findAllRecordsByManager(int idUser, byte tableType){
         List<BeanRecords> listMinutes = new ArrayList<>();

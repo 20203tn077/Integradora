@@ -34,6 +34,7 @@ function showModalDetails(id) {
                     document.getElementById("modalDetails_assignButtonContainer").style.display = "initial";
                     document.getElementById("modalDetails_reassignButtonContainer").style.display = "none";
                     document.getElementById("modalDetails_responseButtonContainer").style.display = "none";
+                    document.getElementById("modalDetails_assignId").value = record.id_minutes;
                 } else {
                     document.getElementById("modalDetails_assignmentContainer").style.display = "initial";
                     document.getElementById("modalDetails_responseContainer").style.display = "none";

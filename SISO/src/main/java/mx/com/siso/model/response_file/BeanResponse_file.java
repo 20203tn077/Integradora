@@ -7,13 +7,13 @@ import java.io.InputStream;
 public class BeanResponse_file {
 
     private int id_response;
-    private InputStream fileResponse;
+    private String fileResponse;
     private BeanRecords minutes_id;
 
     public BeanResponse_file() {
     }
 
-    public BeanResponse_file(int id_response, InputStream fileResponse, BeanRecords minutes_id) {
+    public BeanResponse_file(int id_response, String fileResponse, BeanRecords minutes_id) {
         this.id_response = id_response;
         this.fileResponse = fileResponse;
         this.minutes_id = minutes_id;
@@ -27,11 +27,11 @@ public class BeanResponse_file {
         this.id_response = id_response;
     }
 
-    public InputStream getFileResponse() {
+    public String getFileResponse() {
         return fileResponse;
     }
 
-    public void setFileResponse(InputStream fileResponse) {
+    public void setFileResponse(String fileResponse) {
         this.fileResponse = fileResponse;
     }
 

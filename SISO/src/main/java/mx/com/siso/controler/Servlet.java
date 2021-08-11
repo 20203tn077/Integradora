@@ -3,8 +3,12 @@ package mx.com.siso.controler;
 import com.google.gson.Gson;
 import mx.com.siso.model.department.BeanDepartment;
 import mx.com.siso.model.department.DaoDepartment;
+import mx.com.siso.model.priority.BeanPriority;
+import mx.com.siso.model.priority.DaoPriority;
 import mx.com.siso.model.records.BeanRecords;
 import mx.com.siso.model.records.DaoRecords;
+import mx.com.siso.model.response_file.BeanResponse_file;
+import mx.com.siso.model.response_file.DaoResponse;
 import mx.com.siso.model.users.BeanUsers;
 import mx.com.siso.model.users.DaoUsers;
 
@@ -12,10 +16,12 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
+@MultipartConfig(maxFileSize = 16177215)
 @WebServlet(name = "Servlet", urlPatterns = {"/Servlet", "/Gestión_de_Oficios", "/Gestión_de_Usuarios", "/Gestión_de_Auxiliares", "/Gestión_de_Departamentos", "/Modificar_Oficio", "/Modificar_Usuario", "/Modificar_Auxiliar", "/Modificar_Departamento", "/Nuevo_Oficio", "/Nuevo_Usuario", "/Nuevo_Auxiliar", "/Nuevo_Departamento", "/Perfil", "/Modificar_Datos", "/Canalizar_Oficio", "/Asignar_Oficio", "/Atender_Oficio", "/Visualizar_Oficio"})
 public class Servlet extends HttpServlet {
     @Override
@@ -64,9 +70,6 @@ public class Servlet extends HttpServlet {
                     case "dataModify":
                         redirect(request,response,"/views/manager/data_modify.jsp");
                         break;
-                    case "recordAssign":
-                        redirect(request,response,"/views/manager/record_assign.jsp");
-                        break;
                     case "recordReassign":
                         redirect(request,response,"/views/manager/record_reassign.jsp");
                         break;
@@ -92,6 +95,8 @@ public class Servlet extends HttpServlet {
                         redirect(request,response,"/views/oficialia/data_modify.jsp");
                         break;
                     case "recordRegister":
+                        request.setAttribute("departmentList", new DaoDepartment().findDepartment());
+                        request.setAttribute("priorityList", new DaoPriority().findPriority());
                         redirect(request,response,"/views/oficialia/record_register.jsp");
                         break;
                     case "recordRechannelling":
@@ -140,18 +145,84 @@ public class Servlet extends HttpServlet {
         String action = request.getParameter("action") != null ? request.getParameter("action") : "";
         System.out.println("pruebaaa" + action);
         String sessionRole = String.valueOf(request.getSession().getAttribute("sessionRole") != null ? request.getSession().getAttribute("sessionRole") : "");
-        System.out.println(sessionRole);
         //División de acciones disponibles en función del rol de la sesión
         switch (sessionRole) {
             case "1":
                 switch (action) {
+                    case "redirect":
+                        String redirect = request.getParameter("redirect") != null ? request.getParameter("redirect") : "";
+                        switch (redirect) {
+                            case "recordAttend":
+                                request.setAttribute("recordId", request.getParameter("id"));
+                                redirect(request,response,"/views/assistant/record_attend.jsp");
+                                break;
+                        }
+                        break;
                     case "getRecordDetails":
                         sendJSON(response, new DaoRecords().findRecordById(Integer.parseInt(request.getParameter("id"))));
+                        break;
+                    case "attendRecord":
+                        boolean flag = false;
+                        int[] resultado = new int[3];
+                        BeanResponse_file beanResponse_file = null;
+                        int idRecord = Integer.parseInt(request.getParameter("recordId")!= null ? request.getParameter("recordId") : "");
+                        String comment = request.getParameter("commentInput")!= null ? request.getParameter("commentInput") : "";
+                        BeanRecords beanRecords = new BeanRecords(idRecord,null,0,null,null,null,comment,0,null,null,null);
+                        InputStream inputStream = null;
+                        System.out.println(idRecord);
+                        System.out.println(comment);
+                        Collection<Part> fileParts = request.getParts().stream().filter(part -> "filesInput".equals(part.getName()) && part.getSize() > 0).collect(Collectors.toList());
+                        for (Part filePart : fileParts) {
+                            inputStream  = filePart.getInputStream();
+                            int size = inputStream.available();
+                            byte[] bytes = new byte[size];
+                            inputStream.read(bytes);
+                            String file = Base64.getEncoder().encodeToString(bytes);
+                            beanResponse_file = new BeanResponse_file(0,file,beanRecords);
+                            try {
+                                resultado = new DaoResponse().createResponse(beanResponse_file);
+                                flag = true;
+                            } catch (SQLException e) {
+                                e.printStackTrace();
+                            }
+                            if(resultado[0] == 1){
+                                request.setAttribute("recordList1", new DaoRecords().findRecordsByAssistant(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)1));
+                                request.setAttribute("recordList2", new DaoRecords().findRecordsByAssistant(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)2));
+                                redirect(request,response,"/views/assistant/record_list.jsp", (byte)2, "El oficio se atendió correctamente");
+                            }else {
+                                if (resultado[1] == 1){
+                                    System.out.println("No existe el oficio");
+                                }else {
+                                    if (resultado[2] == 1) {
+                                        System.out.println("El oficio ya esta atendido");
+                                    }
+                                }
+                            }
+                        }
+                        try {
+                            if (flag){
+                                new DaoResponse().changeAttended(beanResponse_file);
+                                idRecord = 0;
+                                int resultado2[] = new int[2];
+                            }
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
                         break;
                 }
                 break;
             case "2":
                 switch (action) {
+                    case "redirect":
+                        String redirect = request.getParameter("redirect") != null ? request.getParameter("redirect") : "";
+                        switch (redirect) {
+                            case "recordAssign":
+                                request.setAttribute("assistantList", new DaoUsers().findAllAssitant(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId")))));
+                                request.setAttribute("recordId", request.getParameter("id"));
+                                redirect(request,response,"/views/manager/record_assign.jsp");
+                                break;
+                        }
+                        break;
                     case "getAssistantDetails":
                         BeanUsers assistant = new DaoUsers().findUserById(Integer.parseInt(request.getParameter("id")));
                         assistant.setPasswordUser("");
@@ -165,11 +236,90 @@ public class Servlet extends HttpServlet {
                     case "getRecordDetails":
                         sendJSON(response, new DaoRecords().findRecordById(Integer.parseInt(request.getParameter("id"))));
                         break;
+                    case "assignRecord":
+                        int[] resultado3 = new int[4];
+                        int idAssistant = request.getParameter("assistantInput") != null ? Integer.parseInt(request.getParameter("assistantInput")) : 0;
+                        int idRecord = Integer.parseInt(request.getParameter("recordId") != null ? request.getParameter("recordId") : "");
+                        BeanUsers beanUsers = new BeanUsers();
+                        beanUsers.setId_user(idAssistant);
+                        BeanRecords beanRecords = new BeanRecords(idRecord, null, 0, null, null, null, "", 0, null, beanUsers, null);
+                        try {
+                            resultado3 = new DaoRecords().assignRecord(beanRecords);
+                            if(resultado3[0] == 1) {
+                                request.setAttribute("recordList1", new DaoRecords().findAllRecordsByManager(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)1));
+                                request.setAttribute("recordList2", new DaoRecords().findAllRecordsByManager(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)2));
+                                request.setAttribute("recordList3", new DaoRecords().findAllRecordsByManager(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)3));
+                                redirect(request,response,"/views/manager/record_list.jsp", (byte)2, "El oficio se asignó de forma correcta");
+                            }else{
+                                if (resultado3[1] == 1) {
+                                    System.out.println("El usuario no existe");
+                                }
+                                if (resultado3[2] == 1){
+                                    System.out.println("El oficio no existe");
+                                }else {
+                                    if (resultado3[3] == 1){
+                                        System.out.println("El oficio ya esta asignado");
+                                    }
+                                }
+                            }
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        }
+                        break;
                 }
                 break;
             case "3":
                 switch (action) {
-                    case "":
+                    case "redirect":
+                        String redirect = request.getParameter("redirect") != null ? request.getParameter("redirect") : "";
+                        switch (redirect) {
+                            case "recordAssign":
+                                request.setAttribute("assistantList", new DaoUsers().findAllAssitant(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId")))));
+                                request.setAttribute("recordId", request.getParameter("id"));
+                                redirect(request,response,"/views/manager/record_assign.jsp");
+                                break;
+                        }
+                        break;
+                    case "createRecord":
+                        int[] resultado2 = new int[3];
+                        int department = Integer.parseInt(request.getParameter("departmentInput")!= null ? request.getParameter("departmentInput") : "0");
+                        int priority = Integer.parseInt(request.getParameter("priorityInput")!= null ? request.getParameter("priorityInput") : "0");
+                        BeanDepartment beanDepartment = new BeanDepartment(department, "", "","",0);
+                        BeanPriority beanPriority = new BeanPriority(priority, "");
+                        InputStream inputStream = null;
+                        System.out.println(department);
+                        System.out.println(priority);
+                        try {
+                            Part filePart = request.getPart("fileInput");
+                            if (filePart.getSize() > 0) {
+                                System.out.println(filePart.getName());
+                                System.out.println(filePart.getSize());
+                                System.out.println(filePart.getContentType());
+                                inputStream = filePart.getInputStream();
+                                BeanRecords beanRecords = new BeanRecords(0, inputStream, 0, null, null, null,"", 0, beanDepartment, null, beanPriority);
+                                resultado2 = new DaoRecords().createRecord(beanRecords);
+                                if(resultado2[0] == 1){
+                                    request.setAttribute("recordList1", new DaoRecords().findAllRecords(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)1));
+                                    request.setAttribute("recordList2", new DaoRecords().findAllRecords(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)2));
+                                    redirect(request,response,"/views/oficialia/record_list.jsp", (byte)3, "El oficio se registró correctamente");
+                                }else{
+                                    if(resultado2[1] == 1){
+                                        request.setAttribute("departmentList", new DaoDepartment().findDepartment());
+                                        request.setAttribute("priorityList", new DaoPriority().findPriority());
+                                        redirect(request,response,"/views/oficialia/record_register.jsp", (byte)3, "El departamento seleccionado no existe");
+                                    }
+                                    if(resultado2[2] == 1){
+                                        request.setAttribute("departmentList", new DaoDepartment().findDepartment());
+                                        request.setAttribute("priorityList", new DaoPriority().findPriority());
+                                        redirect(request,response,"/views/oficialia/record_register.jsp", (byte)3, "La prioridad seleccionada no existe");
+                                    }
+                                    System.out.println("pruebaif");
+                                }
+                            }
+                            System.out.println("pruebasize");
+                        } catch (Exception ex) {
+                            System.out.println("fichero: "+ ex.getMessage());
+                        }
                         break;
                     case "getRecordDetails":
                         sendJSON(response, new DaoRecords().findRecordById(Integer.parseInt(request.getParameter("id"))));
@@ -178,6 +328,16 @@ public class Servlet extends HttpServlet {
                 break;
             case "4":
                 switch (action) {
+                    case "redirect":
+                        String redirect = request.getParameter("redirect") != null ? request.getParameter("redirect") : "";
+                        switch (redirect) {
+                            case "recordAssign":
+                                request.setAttribute("assistantList", new DaoUsers().findAllAssitant(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId")))));
+                                request.setAttribute("recordId", request.getParameter("id"));
+                                redirect(request,response,"/views/manager/record_assign.jsp");
+                                break;
+                        }
+                        break;
                     case "getUserDetails":
                         BeanUsers user = new DaoUsers().findUserById(Integer.parseInt(request.getParameter("id")));
                         user.setPasswordUser("");

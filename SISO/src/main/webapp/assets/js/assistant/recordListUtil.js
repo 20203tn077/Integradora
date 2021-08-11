@@ -38,6 +38,7 @@ function showModalDetails(id) {
                 document.getElementById("modalDetails_responseContainer").style.display = "none";
                 document.getElementById("modalDetails_attendButtonContainer").style.display = "initial";
                 document.getElementById("modalDetails_responseButtonContainer").style.display = "none";
+                document.getElementById("modalDetails_attendId").value = record.id_minutes;
             }
             document.getElementById("modalDetails_viewForm").value = record.id_minutes;
             modalDetails.show();
