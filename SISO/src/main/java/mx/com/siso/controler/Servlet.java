@@ -22,7 +22,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @MultipartConfig(maxFileSize = 16177215)
-@WebServlet(name = "Servlet", urlPatterns = {"/Servlet", "/Gestión_de_Oficios", "/Gestión_de_Usuarios", "/Gestión_de_Auxiliares", "/Gestión_de_Departamentos", "/Modificar_Oficio", "/Modificar_Usuario", "/Modificar_Auxiliar", "/Modificar_Departamento", "/Nuevo_Oficio", "/Nuevo_Usuario", "/Nuevo_Auxiliar", "/Nuevo_Departamento", "/Perfil", "/Modificar_Datos", "/Canalizar_Oficio", "/Asignar_Oficio", "/Atender_Oficio", "/Visualizar_Oficio"})
+@WebServlet(name = "Servlet", urlPatterns = {"/Servlet", "/Gestión_de_Oficios", "/Gestión_de_Usuarios", "/Gestión_de_Auxiliares", "/Gestión_de_Departamentos", "/Modificar_Oficio", "/Modificar_Usuario", "/Modificar_Auxiliar", "/Modificar_Departamento", "/Nuevo_Oficio", "/Nuevo_Usuario", "/Nuevo_Auxiliar", "/Nuevo_Departamento", "/Perfil", "/Modificar_Datos", "/Canalizar_Oficio", "/Asignar_Oficio", "/Atender_Oficio", "/Visualizar_Oficio", "/Visualizar_Archivo"})
 public class Servlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -158,9 +158,6 @@ public class Servlet extends HttpServlet {
                                 break;
                         }
                         break;
-                    case "getRecordDetails":
-                        sendJSON(response, new DaoRecords().findRecordById(Integer.parseInt(request.getParameter("id"))));
-                        break;
                     case "attendRecord":
                         boolean flag = false;
                         int[] resultado = new int[3];
@@ -168,45 +165,61 @@ public class Servlet extends HttpServlet {
                         int idRecord = Integer.parseInt(request.getParameter("recordId")!= null ? request.getParameter("recordId") : "");
                         String comment = request.getParameter("commentInput")!= null ? request.getParameter("commentInput") : "";
                         BeanRecords beanRecords = new BeanRecords(idRecord,null,0,null,null,null,comment,0,null,null,null);
+                        beanResponse_file = new BeanResponse_file(0, "", beanRecords);
                         InputStream inputStream = null;
                         System.out.println(idRecord);
                         System.out.println(comment);
                         Collection<Part> fileParts = request.getParts().stream().filter(part -> "filesInput".equals(part.getName()) && part.getSize() > 0).collect(Collectors.toList());
-                        for (Part filePart : fileParts) {
-                            inputStream  = filePart.getInputStream();
-                            int size = inputStream.available();
-                            byte[] bytes = new byte[size];
-                            inputStream.read(bytes);
-                            String file = Base64.getEncoder().encodeToString(bytes);
-                            beanResponse_file = new BeanResponse_file(0,file,beanRecords);
+                        if(fileParts.size() == 0){
+                            System.out.println("En caso de que no haya ingresado un PDF pero si un comentario");
                             try {
-                                resultado = new DaoResponse().createResponse(beanResponse_file);
-                                flag = true;
+                                resultado = new DaoResponse().createResponse(beanResponse_file, inputStream);
+                                if(resultado[0] == 1){
+                                    new DaoResponse().changeAttended(beanResponse_file);
+                                    request.setAttribute("recordList1", new DaoRecords().findRecordsByAssistant(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)1));
+                                    request.setAttribute("recordList2", new DaoRecords().findRecordsByAssistant(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)2));
+                                    redirect(request,response,"/views/assistant/record_list.jsp", (byte)2, "El oficio se atendió correctamente");
+                                }else {
+                                    request.setAttribute("recordList1", new DaoRecords().findRecordsByAssistant(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)1));
+                                    request.setAttribute("recordList2", new DaoRecords().findRecordsByAssistant(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)2));
+                                    redirect(request,response,"/views/assistant/record_list.jsp", (byte)2, "El oficio no se atendió correctamente");
+                                }
+
                             } catch (SQLException e) {
                                 e.printStackTrace();
                             }
-                            if(resultado[0] == 1){
-                                request.setAttribute("recordList1", new DaoRecords().findRecordsByAssistant(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)1));
-                                request.setAttribute("recordList2", new DaoRecords().findRecordsByAssistant(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)2));
-                                redirect(request,response,"/views/assistant/record_list.jsp", (byte)2, "El oficio se atendió correctamente");
-                            }else {
-                                if (resultado[1] == 1){
-                                    System.out.println("No existe el oficio");
-                                }else {
-                                    if (resultado[2] == 1) {
-                                        System.out.println("El oficio ya esta atendido");
-                                    }
+                        }else{
+                            System.out.println("En caso de que haya ingresado un PDF y un comentario");
+                            for (Part filePart : fileParts) {
+                                System.out.println(filePart.getSize());
+                                inputStream  = filePart.getInputStream();
+                                beanResponse_file = new BeanResponse_file(0,null,beanRecords);
+                                try {
+                                    resultado = new DaoResponse().createResponse(beanResponse_file, inputStream);
+                                    flag = true;
+
+                                } catch (SQLException e) {
+                                    e.printStackTrace();
                                 }
                             }
-                        }
-                        try {
+                            System.out.println(resultado[0]);
                             if (flag){
-                                new DaoResponse().changeAttended(beanResponse_file);
-                                idRecord = 0;
-                                int resultado2[] = new int[2];
+                                if(resultado[0] == 1){
+                                    try {
+                                        new DaoResponse().changeAttended(beanResponse_file);
+                                        request.setAttribute("recordList1", new DaoRecords().findRecordsByAssistant(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)1));
+                                        request.setAttribute("recordList2", new DaoRecords().findRecordsByAssistant(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)2));
+                                        redirect(request,response,"/views/assistant/record_list.jsp", (byte)2, "El oficio se atendió correctamente");
+                                    } catch (SQLException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                }else {
+                                    request.setAttribute("recordList1", new DaoRecords().findRecordsByAssistant(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)1));
+                                    request.setAttribute("recordList2", new DaoRecords().findRecordsByAssistant(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)2));
+                                    redirect(request,response,"/views/assistant/record_list.jsp", (byte)2, "El oficio no se atendió correctamente");
+                                }
                             }
-                        } catch (SQLException e) {
-                            e.printStackTrace();
                         }
                         break;
                 }
@@ -232,9 +245,6 @@ public class Servlet extends HttpServlet {
                         new DaoUsers().delete(Integer.parseInt(request.getParameter("id")));
                         request.setAttribute("assistantList", new DaoUsers().findAllAssitant(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId")))));
                         redirect(request, response, "/views/manager/assistant_list.jsp", (byte)2, "El auxiliar ha sido eliminado");
-                        break;
-                    case "getRecordDetails":
-                        sendJSON(response, new DaoRecords().findRecordById(Integer.parseInt(request.getParameter("id"))));
                         break;
                     case "assignRecord":
                         int[] resultado3 = new int[4];
@@ -301,7 +311,7 @@ public class Servlet extends HttpServlet {
                                 if(resultado2[0] == 1){
                                     request.setAttribute("recordList1", new DaoRecords().findAllRecords(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)1));
                                     request.setAttribute("recordList2", new DaoRecords().findAllRecords(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)2));
-                                    redirect(request,response,"/views/oficialia/record_list.jsp", (byte)3, "El oficio se registró correctamente");
+                                    redirect(request,response,"/views/oficialia/record_list.jsp", (byte)2, "El oficio se registró correctamente");
                                 }else{
                                     if(resultado2[1] == 1){
                                         request.setAttribute("departmentList", new DaoDepartment().findDepartment());
@@ -320,9 +330,6 @@ public class Servlet extends HttpServlet {
                         } catch (Exception ex) {
                             System.out.println("fichero: "+ ex.getMessage());
                         }
-                        break;
-                    case "getRecordDetails":
-                        sendJSON(response, new DaoRecords().findRecordById(Integer.parseInt(request.getParameter("id"))));
                         break;
                 }
                 break;
@@ -367,6 +374,17 @@ public class Servlet extends HttpServlet {
                     response.setContentType("application/pdf");
                     int recordId = Integer.parseInt(request.getParameter("id") != null ? request.getParameter("id") : "");
                     response.getOutputStream().write(new DaoRecords().findRecordFile(recordId));
+                    break;
+                case "getRecordDetails":
+                    sendJSON(response, new DaoRecords().findRecordById(Integer.parseInt(request.getParameter("id"))));
+                    break;
+                case "getResponseList":
+                    sendJSON(response, new DaoResponse().findResponse(Integer.parseInt(request.getParameter("id"))));
+                    break;
+                case "viewResponseFile":
+                    response.setContentType("application/pdf");
+                    int responseId = Integer.parseInt(request.getParameter("id") != null ? request.getParameter("id") : "");
+                    response.getOutputStream().write(Base64.getDecoder().decode(new DaoResponse().findResponseById(responseId)));
                     break;
             }
         }

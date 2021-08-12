@@ -3,10 +3,10 @@ var modalDetails = new bootstrap.Modal(document.getElementById("modalDetails"), 
 
 function showModalDetails(id) {
     const request = new XMLHttpRequest();
-    request.open("POST", context+"/Servlet", true);
+    request.open("POST", context + "/Servlet", true);
     request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    request.send("action=getRecordDetails&id="+id);
-    request.onreadystatechange = function() {
+    request.send("action=getRecordDetails&id=" + id);
+    request.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             let record = JSON.parse(this.responseText);
             document.getElementById("modalDetails_id").innerHTML = record.id_minutes;
@@ -42,6 +42,33 @@ function showModalDetails(id) {
             }
             document.getElementById("modalDetails_viewForm").value = record.id_minutes;
             modalDetails.show();
+            if (record.attended == 1) {
+                request.open("POST", context + "/Servlet", true);
+                request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                request.send("action=getResponseList&id=" + id);
+                request.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        let files = JSON.parse(this.responseText);
+                        document.getElementById("modalFiles_content").innerHTML = "";
+                        let count = 1;
+                        for (let file of files) {
+                            document.getElementById("modalFiles_content").innerHTML +=
+                            '<form action="' + context + '/Visualizar_Archivo" method="post" class="d-inline" target="_blank">' +
+                                '<input type="hidden" name="id" value="' + file.id_response + '">' +
+                                '<input type="hidden" name="action" value="viewResponseFile">' +
+                                '<button class="btn btn-file m-2">' +
+                                '<svg class="feather-48">' +
+                                '<use xlink:href="' + context + '/assets/icons/feather-sprite.svg#file"/>' +
+                                '</svg>' +
+                                '<br>' +
+                                '<span>Archivo ' + count + '</span>' +
+                                '</button>' +
+                                '</form>';
+                                count++;
+                        }
+                    }
+                };
+            }
         }
     };
 }

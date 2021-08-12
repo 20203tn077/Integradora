@@ -89,7 +89,7 @@
                 <div class="card-body" height="100px">
                     <h5>Pendientes:</h5>
                     <div class="table-container">
-                        <table class="table table-azul table-striped table-hover border text-center">
+                        <table class="table table-azul table-striped table-hover border text-center m-0">
                             <thead class="thead-azul display-none">
                                 <tr>
                                     <th>No. de Oficio</th>
@@ -98,38 +98,46 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <c:forEach items="${recordList1}" var="record">
-                                    <tr role="button" onclick="showModalDetails('${record.id_minutes}')">
-                                        <td>${record.id_minutes}</td>
-                                        <td>
-                                            ${record.dateAssignment}
-                                        </td>
-                                        <td>
-                                            <c:if test="${record.priorityId.idPriority == 1}">
-                                                <span
-                                                    class="badge bg-danger w-100">${record.priorityId.namePriority}</span>
-                                            </c:if>
-                                            <c:if test="${record.priorityId.idPriority == 2}">
-                                                <span
-                                                    class="badge bg-naranja w-100">${record.priorityId.namePriority}</span>
-                                            </c:if>
-                                            <c:if test="${record.priorityId.idPriority == 3}">
-                                                <span
-                                                    class="badge bg-warning w-100 text-dark">${record.priorityId.namePriority}</span>
-                                            </c:if>
-                                            <c:if test="${record.priorityId.idPriority == 4}">
-                                                <span
-                                                    class="badge bg-success w-100">${record.priorityId.namePriority}</span>
-                                            </c:if>
-                                        </td>
-                                    </tr>
-                                </c:forEach>
+                                <c:choose>
+                                    <c:when test="${empty recordList1}">
+                                        <td colspan="3">Sin oficios</td>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <c:forEach items="${recordList1}" var="record">
+                                            <tr role="button" onclick="showModalDetails('${record.id_minutes}')">
+                                                <td>${record.id_minutes}</td>
+                                                <td>
+                                                    ${record.dateAssignment}
+                                                </td>
+                                                <td>
+                                                    <c:if test="${record.priorityId.idPriority == 1}">
+                                                        <span
+                                                            class="badge bg-danger w-100">${record.priorityId.namePriority}</span>
+                                                    </c:if>
+                                                    <c:if test="${record.priorityId.idPriority == 2}">
+                                                        <span
+                                                            class="badge bg-naranja w-100">${record.priorityId.namePriority}</span>
+                                                    </c:if>
+                                                    <c:if test="${record.priorityId.idPriority == 3}">
+                                                        <span
+                                                            class="badge bg-warning w-100 text-dark">${record.priorityId.namePriority}</span>
+                                                    </c:if>
+                                                    <c:if test="${record.priorityId.idPriority == 4}">
+                                                        <span
+                                                            class="badge bg-success w-100">${record.priorityId.namePriority}</span>
+                                                    </c:if>
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
+                                    </c:otherwise>
+                                </c:choose>
                             </tbody>
                         </table>
                     </div>
-                    <h5 class="mt-3">Atendidos:</h5>
+                    <hr>
+                    <h5>Atendidos:</h5>
                     <div class="table-container">
-                        <table class="table table-azul table-striped table-hover border text-center">
+                        <table class="table table-azul table-striped table-hover border text-center m-0">
                             <thead class="thead-azul display-none">
                                 <tr>
                                     <th>No. de Oficio</th>
@@ -138,17 +146,24 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <c:forEach items="${recordList2}" var="record">
-                                    <tr role="button" onclick="showModalDetails('${record.id_minutes}')">
-                                        <td>${record.id_minutes}</td>
-                                        <td>
-                                            ${record.dateAssignment}
-                                        </td>
-                                        <td>
-                                            ${record.dateChannelling}
-                                        </td>
-                                    </tr>
-                                </c:forEach>
+                                <c:choose>
+                                    <c:when test="${empty recordList2}">
+                                        <td colspan="3">Sin oficios</td>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <c:forEach items="${recordList2}" var="record">
+                                            <tr role="button" onclick="showModalDetails('${record.id_minutes}')">
+                                                <td>${record.id_minutes}</td>
+                                                <td>
+                                                    ${record.dateAssignment}
+                                                </td>
+                                                <td>
+                                                    ${record.dateChannelling}
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
+                                    </c:otherwise>
+                                </c:choose>
                             </tbody>
                         </table>
                     </div>
@@ -214,7 +229,8 @@
                     <div class="modal-footer">
                         <div class="row w-100">
                             <div class="p-1 col-md-6 col-lg-4">
-                                <form action="${context}/Visualizar_Oficio" method="post" class="d-inline" target="_blank">
+                                <form action="${context}/Visualizar_Oficio" method="post" class="d-inline"
+                                    target="_blank">
                                     <input type="hidden" name="action" value="viewRecordFile">
                                     <input type="hidden" name="id" id="modalDetails_viewForm">
                                     <button type="submit" class="btn btn-primary w-100">
@@ -228,8 +244,8 @@
                             <div class="p-1 col-md-6 col-lg-4" id="modalDetails_attendButtonContainer">
                                 <form action="${context}/Atender_Oficio" method="post">
                                     <input type="hidden" name="action" value="redirect">
-                                        <input type="hidden" name="redirect" value="recordAttend">
-                                        <input type="hidden" name="id" id="modalDetails_attendId">
+                                    <input type="hidden" name="redirect" value="recordAttend">
+                                    <input type="hidden" name="id" id="modalDetails_attendId">
                                     <button type="submit" class="btn btn-verde w-100">
                                         <svg class="feather">
                                             <use xlink:href="${context}/assets/icons/feather-sprite.svg#edit" />
@@ -240,7 +256,8 @@
                             </div>
                             <div class="p-1 col-md-6 col-lg-4" data-bs-target="#modalDelete" data-bs-toggle="modal"
                                 data-bs-dismiss="modal" id="modalDetails_responseButtonContainer">
-                                <button type="button" class="btn btn-verde w-100">
+                                <button type="button" class="btn btn-verde w-100" data-bs-target="#modalFiles"
+                                    data-bs-toggle="modal" data-bs-dismiss="modal">
                                     <svg class="feather">
                                         <use xlink:href="${context}/assets/icons/feather-sprite.svg#folder" />
                                     </svg>
@@ -252,9 +269,36 @@
                 </div>
             </div>
         </div>
-    </c:if>
 
         <!--////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+
+        <div class="modal fade" tabindex="-1" id="modalFiles">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Archivos de respuesta</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="modalFiles_content"></div>
+                    <div class="modal-footer">
+                        <div class="row w-100">
+                            <div class="p-1 col-md-4 col-lg-3">
+                                <button class="btn btn-primary w-100" data-bs-target="#modalDetails"
+                                    data-bs-toggle="modal" data-bs-dismiss="modal">
+                                    <svg class="feather">
+                                        <use xlink:href="${context}/assets/icons/feather-sprite.svg#arrow-left" />
+                                    </svg>
+                                    <span> Regresar</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </c:if>
+
+    <!--////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
 
     <c:if test="${! access}">
         <div class="alert alert-danger m-3">

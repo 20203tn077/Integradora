@@ -413,6 +413,17 @@
   position: relative;
 }
 
+.feather-48 {
+  width: 48px;
+  height: 48px;
+  stroke: currentColor;
+  stroke-width: 1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+  position: relative;
+}
+
 .btn-floating {
   position: fixed;
   border-radius: 50% !important;
@@ -420,6 +431,32 @@
   height: 4rem;
   bottom: 4rem;
   right: 4rem;
+}
+
+.btn-file {
+  color: #6c757d;
+  background-color: #ffffff;
+  border-color: #6c757d;
+}
+.btn-file:hover {
+  color: #6c757d;
+  background-color: #f8f9fa;
+  border-color: #6c757d;
+}
+.btn-check:focus + .btn-file, .btn-file:focus {
+  box-shadow: 0 0 0 0.25rem rgba(108, 117, 125, 0.5);
+}
+.btn-check:checked + .btn-file, .btn-check:active + .btn-file, .btn-file:active, .btn-file.active, .btn-file.dropdown-toggle.show {
+  color: #6c757d;
+  background-color: #f8f9fa;
+  border-color: #6c757d;
+}
+.btn-check:checked + .btn-file:focus, .btn-check:active + .btn-file:focus, .btn-file:active:focus, .btn-file.active:focus, .btn-file.dropdown-toggle.show:focus {
+  box-shadow: 0 0 0 0.25rem rgba(108, 117, 125, 0.5);
+}
+.btn-file:disabled, .btn-file.disabled {
+  color: #6c757d;
+  background-color: transparent;
 }
 
 .table-container {

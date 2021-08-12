@@ -90,7 +90,7 @@
                             </div>
                             <div class="col-md-6 col-xl-4">
                                 <label class="form-label">Archivos de respuesta (opcional):</label>
-                                <input type="file" class="form-control" name="filesInput" multiple>
+                                <input type="file" class="form-control" name="filesInput" multiple accept=".pdf">
                             </div>
                         </div>
                         <hr>

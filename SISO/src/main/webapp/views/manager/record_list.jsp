@@ -11,7 +11,7 @@
 
 <body class="bg-light">
 
-<!--////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+    <!--////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
 
     <c:if test="${access}">
         <nav class="navbar navbar-expand-lg navbar-dark bg-azul shadow">
@@ -24,8 +24,10 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <nav class="navbar-nav">
-                        <a class="nav-link active" href="${context}/Gestión_de_Oficios?redirect=records">Gestión de oficios</a>
-                        <a class="nav-link" href="${context}/Gestión_de_Auxiliares?redirect=assistants">Gestión de auxiliares</a>
+                        <a class="nav-link active" href="${context}/Gestión_de_Oficios?redirect=records">Gestión de
+                            oficios</a>
+                        <a class="nav-link" href="${context}/Gestión_de_Auxiliares?redirect=assistants">Gestión de
+                            auxiliares</a>
                         <a class="nav-link" href="${context}/Perfil?redirect=profile">Perfil</a>
                     </nav>
                     <nav class="navbar-nav ms-auto">
@@ -40,7 +42,7 @@
             </div>
         </nav>
 
-<!--////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+        <!--////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
 
         <c:if test="${message != null}">
             <c:if test="${messageType == 1}">
@@ -81,7 +83,7 @@
             </c:if>
         </c:if>
 
-<!--////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+        <!--////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
 
         <div class="container mt-4">
             <div class="card shadow-sm">
@@ -89,7 +91,7 @@
                 <div class="card-body" height="100px">
                     <h5>Pendientes:</h5>
                     <div class="table-container">
-                        <table class="table table-azul table-striped table-hover border text-center">
+                        <table class="table table-azul table-striped table-hover border text-center m-0">
                             <thead class="thead-azul display-none">
                                 <tr>
                                     <th>No. de Oficio</th>
@@ -98,40 +100,52 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <c:forEach items="${recordList1}" var="record">
-                                    <tr role="button" onclick="showModalDetails('${record.id_minutes}')">
-                                    <td>${record.id_minutes}</td>
-                                    <td>
-                                        ${record.dateChannelling}
-                                    </td>
-                                    <c:if test="${record.priorityId.idPriority == 1}">
-                                        <td>
-                                            <span class="badge bg-danger w-100">${record.priorityId.namePriority}</span>
-                                        </td>
-                                    </c:if>
-                                    <c:if test="${record.priorityId.idPriority == 2}">
-                                        <td>
-                                            <span class="badge bg-naranja w-100">${record.priorityId.namePriority}</span>
-                                        </td>
-                                    </c:if>
-                                    <c:if test="${record.priorityId.idPriority == 3}">
-                                        <td>
-                                            <span class="badge bg-warning w-100">${record.priorityId.namePriority}</span>
-                                        </td>
-                                    </c:if>
-                                    <c:if test="${record.priorityId.idPriority == 4}">
-                                        <td>
-                                            <span class="badge bg-success w-100">${record.priorityId.namePriority}</span>
-                                        </td>
-                                    </c:if>
-                                </tr>
-                                </c:forEach>
+                                <c:choose>
+                                    <c:when test="${empty recordList1}">
+                                        <td colspan="3">Sin oficios</td>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <c:forEach items="${recordList1}" var="record">
+                                            <tr role="button" onclick="showModalDetails('${record.id_minutes}')">
+                                                <td>${record.id_minutes}</td>
+                                                <td>
+                                                    ${record.dateChannelling}
+                                                </td>
+                                                <c:if test="${record.priorityId.idPriority == 1}">
+                                                    <td>
+                                                        <span
+                                                            class="badge bg-danger w-100">${record.priorityId.namePriority}</span>
+                                                    </td>
+                                                </c:if>
+                                                <c:if test="${record.priorityId.idPriority == 2}">
+                                                    <td>
+                                                        <span
+                                                            class="badge bg-naranja w-100">${record.priorityId.namePriority}</span>
+                                                    </td>
+                                                </c:if>
+                                                <c:if test="${record.priorityId.idPriority == 3}">
+                                                    <td>
+                                                        <span
+                                                            class="badge bg-warning w-100">${record.priorityId.namePriority}</span>
+                                                    </td>
+                                                </c:if>
+                                                <c:if test="${record.priorityId.idPriority == 4}">
+                                                    <td>
+                                                        <span
+                                                            class="badge bg-success w-100">${record.priorityId.namePriority}</span>
+                                                    </td>
+                                                </c:if>
+                                            </tr>
+                                        </c:forEach>
+                                    </c:otherwise>
+                                </c:choose>
+
                             </tbody>
                         </table>
                     </div>
                     <h5>Asignados:</h5>
                     <div class="table-container">
-                        <table class="table table-azul table-striped table-hover border text-center">
+                        <table class="table table-azul table-striped table-hover border text-center m-0">
                             <thead class="thead-azul display-none">
                                 <tr>
                                     <th>No. de Oficio</th>
@@ -141,27 +155,36 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <c:forEach items="${recordList2}" var="record">
-                                    <tr role="button"
-                                    onclick="showModalDetails('${record.id_minutes}')">
-                                    <td>${record.id_minutes}</td>
-                                    <td>
-                                        ${record.dateChannelling}
-                                    </td>
-                                    <td>
-                                        ${record.dateAssignment}
-                                    </td>
-                                    <td>
-                                        ${record.userId.name.concat(" ").concat(record.userId.lastname1).concat(" ").concat(record.userId.lastname2)}
-                                    </td>
-                                </tr>
-                                </c:forEach>
+                                <c:choose>
+                                    <c:when test="${empty recordList2}">
+                                        <td colspan="3">Sin oficios</td>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <c:forEach items="${recordList2}" var="record">
+                                            <tr role="button" onclick="showModalDetails('${record.id_minutes}')">
+                                                <td>${record.id_minutes}</td>
+                                                <td>
+                                                    ${record.dateChannelling}
+                                                </td>
+                                                <td>
+                                                    ${record.dateAssignment}
+                                                </td>
+                                                <td>
+                                                    ${record.userId.name.concat("
+                                                    ").concat(record.userId.lastname1).concat("
+                                                    ").concat(record.userId.lastname2)}
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
+                                    </c:otherwise>
+                                </c:choose>
+
                             </tbody>
                         </table>
                     </div>
                     <h5>Atendidos:</h5>
                     <div class="table-container">
-                        <table class="table table-azul table-striped table-hover border text-center">
+                        <table class="table table-azul table-striped table-hover border text-center m-0">
                             <thead class="thead-azul display-none">
                                 <tr>
                                     <th>No. de Oficio</th>
@@ -170,18 +193,25 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <c:forEach items="${recordList3}" var="record">
-                                    <tr role="button"
-                                    onclick="showModalDetails('${record.id_minutes}')">
-                                    <td>${record.id_minutes}</td>
-                                    <td>
-                                        ${record.dateAssignment}
-                                    </td>
-                                    <td>
-                                        ${record.dateChannelling}
-                                    </td>
-                                </tr>
-                                </c:forEach>
+                                <c:choose>
+                                    <c:when test="${empty recordList3}">
+                                        <td colspan="3">Sin oficios</td>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <c:forEach items="${recordList3}" var="record">
+                                            <tr role="button" onclick="showModalDetails('${record.id_minutes}')">
+                                                <td>${record.id_minutes}</td>
+                                                <td>
+                                                    ${record.dateAssignment}
+                                                </td>
+                                                <td>
+                                                    ${record.dateChannelling}
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
+                                    </c:otherwise>
+                                </c:choose>
+
                             </tbody>
                         </table>
                     </div>
@@ -189,117 +219,143 @@
             </div>
         </div>
 
-<!--////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+        <!--////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
 
-<div class="modal fade" tabindex="-1" id="modalDetails">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Auxiliar</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <span class="fw-bold">
-                            Número de oficio:
-                        </span>
-                        <p id="modalDetails_id"></p>
+        <div class="modal fade" tabindex="-1" id="modalDetails">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Auxiliar</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="col-md-6">
-                        <span class="fw-bold">
-                            Fecha de canalización:
-                        </span>
-                        <p id="modalDetails_channelling"></p>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <span class="fw-bold">
+                                    Número de oficio:
+                                </span>
+                                <p id="modalDetails_id"></p>
+                            </div>
+                            <div class="col-md-6">
+                                <span class="fw-bold">
+                                    Fecha de canalización:
+                                </span>
+                                <p id="modalDetails_channelling"></p>
+                            </div>
+                            <div class="col-md-6" id="modalDetails_assignmentContainer">
+                                <span class="fw-bold">
+                                    Fecha de asignación:
+                                </span>
+                                <p id="modalDetails_assignment"></p>
+                            </div>
+                            <div class="col-md-6" id="modalDetails_responseContainer">
+                                <span class="fw-bold">
+                                    Fecha de respuesta:
+                                </span>
+                                <p id="modalDetails_response"></p>
+                            </div>
+                            <div class="col-md-6">
+                                <span class="fw-bold">
+                                    Prioridad:
+                                </span>
+                                <p id="modalDetails_priority"></p>
+                            </div>
+                            <div class="col-md-6">
+                                <span class="fw-bold">
+                                    Departamento:
+                                </span>
+                                <p id="modalDetails_department"></p>
+                            </div>
+                            <div class="col-md-6" id="modalDetails_commentContainer">
+                                <span class="fw-bold">
+                                    Comentario:
+                                </span>
+                                <p id="modalDetails_comment"></p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-6" id="modalDetails_assignmentContainer">
-                        <span class="fw-bold">
-                            Fecha de asignación:
-                        </span>
-                        <p id="modalDetails_assignment"></p>
-                    </div>
-                    <div class="col-md-6" id="modalDetails_responseContainer">
-                        <span class="fw-bold">
-                            Fecha de respuesta:
-                        </span>
-                        <p id="modalDetails_response"></p>
-                    </div>
-                    <div class="col-md-6">
-                        <span class="fw-bold">
-                            Prioridad:
-                        </span>
-                        <p id="modalDetails_priority"></p>
-                    </div>
-                    <div class="col-md-6">
-                        <span class="fw-bold">
-                            Departamento:
-                        </span>
-                        <p id="modalDetails_department"></p>
-                    </div>
-                    <div class="col-md-6" id="modalDetails_commentContainer">
-                        <span class="fw-bold">
-                            Comentario:
-                        </span>
-                        <p id="modalDetails_comment"></p>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <div class="row w-100">
-                    <div class="p-1 col-md-6 col-lg-4">
-                        <form action="${context}/Visualizar_Oficio" method="post" class="d-inline" target="_blank">
-                            <input type="hidden" name="action" value="viewRecordFile">
-                            <input type="hidden" name="id" id="modalDetails_viewForm">
-                            <button type="submit" class="btn btn-primary w-100">
-                                <svg class="feather">
-                                    <use xlink:href="${context}/assets/icons/feather-sprite.svg#file-text" />
-                                </svg>
-                                <span> Visualizar oficio</span>
-                            </button>
-                        </form>
-                    </div>
-                    <div class="p-1 col-md-6 col-lg-4" id="modalDetails_assignButtonContainer">
-                        <form action="${context}/Asignar_Oficio" method="post">
-                            <input type="hidden" name="action" value="redirect">
-                                <input type="hidden" name="redirect" value="recordAssign">
-                                <input type="hidden" name="id" id="modalDetails_assignId">
-                            <button type="submit" class="btn btn-verde w-100">
-                                <svg class="feather">
-                                    <use xlink:href="${context}/assets/icons/feather-sprite.svg#edit" />
-                                </svg>
-                                <span> Asignar oficio</span>
-                            </button>
-                        </form>
-                    </div>
-                    <div class="p-1 col-md-6 col-lg-4" id="modalDetails_reassignButtonContainer">
-                        <a href="#" class="btn btn-verde w-100">
-                            <svg class="feather">
-                                <use xlink:href="${context}/assets/icons/feather-sprite.svg#edit" />
-                            </svg>
-                            <span> Reasignar oficio</span>
-                        </a>
-                    </div>
-                    <div class="p-1 col-md-6 col-lg-4" data-bs-target="#modalDelete" data-bs-toggle="modal"
-                        data-bs-dismiss="modal" id="modalDetails_responseButtonContainer">
-                        <button type="button" class="btn btn-verde w-100">
-                            <svg class="feather">
-                                <use xlink:href="${context}/assets/icons/feather-sprite.svg#folder" />
-                            </svg>
-                            <span> Archivos de respuesta</span>
-                        </button>
+                    <div class="modal-footer">
+                        <div class="row w-100">
+                            <div class="p-1 col-md-6 col-lg-4">
+                                <form action="${context}/Visualizar_Oficio" method="post" class="d-inline"
+                                    target="_blank">
+                                    <input type="hidden" name="action" value="viewRecordFile">
+                                    <input type="hidden" name="id" id="modalDetails_viewForm">
+                                    <button type="submit" class="btn btn-primary w-100">
+                                        <svg class="feather">
+                                            <use xlink:href="${context}/assets/icons/feather-sprite.svg#file-text" />
+                                        </svg>
+                                        <span> Visualizar oficio</span>
+                                    </button>
+                                </form>
+                            </div>
+                            <div class="p-1 col-md-6 col-lg-4" id="modalDetails_assignButtonContainer">
+                                <form action="${context}/Asignar_Oficio" method="post">
+                                    <input type="hidden" name="action" value="redirect">
+                                    <input type="hidden" name="redirect" value="recordAssign">
+                                    <input type="hidden" name="id" id="modalDetails_assignId">
+                                    <button type="submit" class="btn btn-verde w-100">
+                                        <svg class="feather">
+                                            <use xlink:href="${context}/assets/icons/feather-sprite.svg#edit" />
+                                        </svg>
+                                        <span> Asignar oficio</span>
+                                    </button>
+                                </form>
+                            </div>
+                            <div class="p-1 col-md-6 col-lg-4" id="modalDetails_reassignButtonContainer">
+                                <a href="#" class="btn btn-verde w-100">
+                                    <svg class="feather">
+                                        <use xlink:href="${context}/assets/icons/feather-sprite.svg#edit" />
+                                    </svg>
+                                    <span> Reasignar oficio</span>
+                                </a>
+                            </div>
+                            <div class="p-1 col-md-6 col-lg-4" data-bs-target="#modalDelete" data-bs-toggle="modal"
+                                data-bs-dismiss="modal" id="modalDetails_responseButtonContainer">
+                                <button type="button" class="btn btn-verde w-100" data-bs-target="#modalFiles"
+                                    data-bs-toggle="modal" data-bs-dismiss="modal">
+                                    <svg class="feather">
+                                        <use xlink:href="${context}/assets/icons/feather-sprite.svg#folder" />
+                                    </svg>
+                                    <span> Archivos de respuesta</span>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
 
-<!--////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+        <!--////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
 
+        <div class="modal fade" tabindex="-1" id="modalFiles">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Archivos de respuesta</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="modalFiles_content"></div>
+                    <div class="modal-footer">
+                        <div class="row w-100">
+                            <div class="p-1 col-md-4 col-lg-3">
+                                <button class="btn btn-primary w-100" data-bs-target="#modalDetails"
+                                    data-bs-toggle="modal" data-bs-dismiss="modal">
+                                    <svg class="feather">
+                                        <use xlink:href="${context}/assets/icons/feather-sprite.svg#arrow-left" />
+                                    </svg>
+                                    <span> Regresar</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </c:if>
 
-<!--////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+    <!--////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
 
     <c:if test="${! access}">
         <div class="alert alert-danger m-3">
@@ -310,7 +366,7 @@
         </div>
     </c:if>
 
-<!--////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+    <!--////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
 
     <input type="hidden" id="context" value="${context}">
     <script src="${context}/assets/js/bootstrap.bundle.js"></script>
