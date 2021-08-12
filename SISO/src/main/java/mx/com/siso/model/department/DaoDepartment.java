@@ -3,6 +3,7 @@ package mx.com.siso.model.department;
 import mx.com.siso.model.user_type.BeanUser_type;
 import mx.com.siso.model.users.BeanUsers;
 import mx.com.siso.service.ConnectionMySQL;
+import mx.com.siso.tool.Formatter;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -30,7 +31,7 @@ public class DaoDepartment {
                 beanDepartment.setIdDepartment(rs.getInt("department_id"));
                 beanDepartment.setNameDepartment(rs.getString("department_name"));
                 beanDepartment.setDescription(rs.getString("description"));
-                beanDepartment.setTelephoneNumber(rs.getString("phone_number"));
+                beanDepartment.setTelephoneNumber(Formatter.formatPhone(rs.getString("phone_number")));
                 beanDepartment.setCurrentDepartment(rs.getInt("department_status"));
 
 
@@ -85,7 +86,7 @@ public class DaoDepartment {
                 beanDepartment.setIdDepartment(rs.getInt("department_id"));
                 beanDepartment.setNameDepartment(rs.getString("department_name"));
                 beanDepartment.setDescription(rs.getString("description"));
-                beanDepartment.setTelephoneNumber(rs.getString("phone_number"));
+                beanDepartment.setTelephoneNumber(Formatter.formatPhone(rs.getString("phone_number")));
 
 
             }

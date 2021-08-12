@@ -12,9 +12,9 @@ public class BeanRecords {
     private int id_minutes;
     private InputStream fileMinutes;
     private int attended;
-    private Timestamp dateChannelling;
-    private Timestamp dateAssignment;
-    private Timestamp dateResponse;
+    private String dateChannelling;
+    private String dateAssignment;
+    private String dateResponse;
     private String comment;
     private int currentMinutes;
     private BeanDepartment departmentId;
@@ -24,7 +24,7 @@ public class BeanRecords {
     public BeanRecords() {
     }
 
-    public BeanRecords(int id_minutes, InputStream fileMinutes, int attended, Timestamp dateChannelling, Timestamp dateAssignment, Timestamp dateResponse, String comment, int currentMinutes, BeanDepartment departmentId, BeanUsers userId, BeanPriority priorityId) {
+    public BeanRecords(int id_minutes, InputStream fileMinutes, int attended, String dateChannelling, String dateAssignment, String dateResponse, String comment, int currentMinutes, BeanDepartment departmentId, BeanUsers userId, BeanPriority priorityId) {
         this.id_minutes = id_minutes;
         this.fileMinutes = fileMinutes;
         this.attended = attended;
@@ -62,27 +62,27 @@ public class BeanRecords {
         this.attended = attended;
     }
 
-    public Date getDateChannelling() {
+    public String getDateChannelling() {
         return dateChannelling;
     }
 
-    public void setDateChannelling(Timestamp dateChannelling) {
+    public void setDateChannelling(String dateChannelling) {
         this.dateChannelling = dateChannelling;
     }
 
-    public Date getDateAssignment() {
+    public String getDateAssignment() {
         return dateAssignment;
     }
 
-    public void setDateAssignment(Timestamp dateAssignment) {
+    public void setDateAssignment(String dateAssignment) {
         this.dateAssignment = dateAssignment;
     }
 
-    public Date getDateResponse() {
+    public String getDateResponse() {
         return dateResponse;
     }
 
-    public void setDateResponse(Timestamp dateResponse) {
+    public void setDateResponse(String dateResponse) {
         this.dateResponse = dateResponse;
     }
 

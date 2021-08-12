@@ -65,8 +65,9 @@ function showModalDetails(id) {
                     if (this.readyState == 4 && this.status == 200) {
                         let files = JSON.parse(this.responseText);
                         document.getElementById("modalFiles_content").innerHTML = "";
-                        let count = 1;
+                        let count = 0;
                         for (let file of files) {
+                            count++;
                             document.getElementById("modalFiles_content").innerHTML +=
                             '<form action="' + context + '/Visualizar_Archivo" method="post" class="d-inline" target="_blank">' +
                                 '<input type="hidden" name="id" value="' + file.id_response + '">' +
@@ -79,7 +80,9 @@ function showModalDetails(id) {
                                 '<span>Archivo ' + count + '</span>' +
                                 '</button>' +
                                 '</form>';
-                                count++;
+                        }
+                        if (count == 0) {
+                            document.getElementById("modalFiles_content").innerHTML = "Sin archivos de respuesta";
                         }
                     }
                 };

@@ -158,7 +158,7 @@
                                                     ${record.dateAssignment}
                                                 </td>
                                                 <td>
-                                                    ${record.dateChannelling}
+                                                    ${record.dateResponse}
                                                 </td>
                                             </tr>
                                         </c:forEach>

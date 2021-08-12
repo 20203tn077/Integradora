@@ -101,7 +101,7 @@
                             <tbody>
                                 <c:choose>
                                     <c:when test="${empty recordList1}">
-                                        <td colspan="3">Sin oficios</td>
+                                        <td colspan="4">Sin oficios</td>
                                     </c:when>
                                     <c:otherwise>
                                         <c:forEach items="${recordList1}" var="record">

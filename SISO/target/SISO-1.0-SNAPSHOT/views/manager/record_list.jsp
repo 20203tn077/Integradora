@@ -157,7 +157,7 @@
                             <tbody>
                                 <c:choose>
                                     <c:when test="${empty recordList2}">
-                                        <td colspan="3">Sin oficios</td>
+                                        <td colspan="4">Sin oficios</td>
                                     </c:when>
                                     <c:otherwise>
                                         <c:forEach items="${recordList2}" var="record">
@@ -205,7 +205,7 @@
                                                     ${record.dateAssignment}
                                                 </td>
                                                 <td>
-                                                    ${record.dateChannelling}
+                                                    ${record.dateResponse}
                                                 </td>
                                             </tr>
                                         </c:forEach>
