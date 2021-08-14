@@ -126,7 +126,7 @@
 
         <!--////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
 
-        <a href="/views/admin/user_register.html">
+        <a href="${context}/Nuevo_Usuario?redirect=userRegister">
             <button type="button" class="btn btn-verde btn-floating shadow" data-bs-toggle="tooltip"
                 data-bs-placement="left" title="Nuevo usuario">
                 <svg class="feather-28">

@@ -467,6 +467,16 @@
   overflow-y: auto;
 }
 
-.clickable {
-  cursor: pointer;
+.foto-perfil {
+  width: 160px;
+  height: 160px;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: butt;
+  stroke-linejoin: round;
+  fill: #5F82AB;
+  position: relative;
+  background-color: #E4EBF2;
+  /* color: #1B314B; */
+  color: #5F82AB;
 }

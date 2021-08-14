@@ -128,12 +128,14 @@
 
         <!--////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
 
-        <button type="button" class="btn btn-verde btn-floating shadow" data-bs-toggle="tooltip"
+        <a href="${context}/Nuevo_Departamento?redirect=departmentRegister">
+            <button type="button" class="btn btn-verde btn-floating shadow" data-bs-toggle="tooltip"
             data-bs-placement="left" title="Nuevo departamento">
             <svg class="feather-28">
                 <use xlink:href="${context}/assets/icons/feather-sprite.svg#plus" />
             </svg>
         </button>
+        </a>
 
         <!--////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
 

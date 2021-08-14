@@ -61,6 +61,7 @@ public class DaoDepartment {
                 System.out.println("El departamento ya existe");
             } else {
                 System.out.println("Se registro correctamente");
+                flag = true;
             }
 
         } catch (SQLException e) {

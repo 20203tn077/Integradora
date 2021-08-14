@@ -76,148 +76,114 @@
     </c:if>
     <div class="container mt-4">
         <div class="card shadow-sm">
-            <h5 class="card-header">Nuevo usuario</h5>
+            <h5 class="card-header">Modificar datos</h5>
             <div class="card-body">
-                <form action="" method="get">
-                    <div class="row ">
-                        <div class="col-md-6 col-xl-4 mb-3">
-                            <label for="usernameInput" class="form-label">Nombre de usuario:</label>
-                            <input type="text" class="form-control" id="usernameInput" required>
+                <form action="${context}/Gestión_de_Usuarios" method="POST" class="m-0">
+                    <input type="hidden" name="action" value="registerUser">
+                    <div class="row gy-3">
+                        <div class="col-md-6 col-xl-4">
+                            <label class="form-label">Nombre de usuario:</label>
+                            <input type="text" class="form-control" id="usernameInput" name="usernameInput">
                         </div>
-                        <div class="col-md-6 col-xl-4 mb-3">
-                            <label for="usernameInput" class="form-label">Nombre(s):</label>
-                            <input type="text" class="form-control" id="usernameInput" required>
+                        <div class="col-md-6 col-xl-4">
+                            <label class="form-label">Nombre(s):</label>
+                            <input type="text" class="form-control" id="nameInput" name="nameInput">
                         </div>
-                        <div class="col-md-6 col-xl-4 mb-3">
-                            <label for="usernameInput" class="form-label">Primer apellido:</label>
-                            <input type="text" class="form-control" id="usernameInput" required>
+                        <div class="col-md-6 col-xl-4">
+                            <label class="form-label">Primer apellido:</label>
+                            <input type="text" class="form-control" id="lastname1Input" name="lastname1Input">
                         </div>
-                        <div class="col-md-6 col-xl-4 mb-3">
-                            <label for="usernameInput" class="form-label">Segundo apellido:</label>
-                            <input type="text" class="form-control" id="usernameInput" required>
+                        <div class="col-md-6 col-xl-4">
+                            <label class="form-label">Segundo apellido:</label>
+                            <input type="text" class="form-control" id="lastname1Input" name="lastname2Input">
                         </div>
-                        <div class="col-md-6 col-xl-4 mb-3">
-                            <label for="usernameInput" class="form-label">Correlo electrónico:</label>
-                            <input type="email" class="form-control" id="usernameInput" required>
+                        <div class="col-md-6 col-xl-4">
+                            <label class="form-label">Correlo electrónico:</label>
+                            <input type="email" class="form-control" id="emailInput" name="emailInput">
                         </div>
-                        <div class="col-md-6 col-xl-4 mb-3">
-                            <label for="usernameInput" class="form-label">Rol:</label>
-                            <select class="form-select" aria-label="Default select example">
-                                <option selected>Seleccione un rol...</option>
-                                <option value="1">Auxiliar</option>
-                                <option value="2">Responsable de departamento</option>
-                                <option value="3">Responsable de la oficialía de partes</option>
-                            </select>
+                        <div class="col-md-6 col-xl-4">
+                            <label class="form-label">Contraseña:</label>
+                            <input type="password" class="form-control" id="passwordInput" name="passwordInput">
                         </div>
-                        <div class="col-md-6 col-xl-4 mb-3">
-                            <label for="usernameInput" class="form-label">Departamento:</label>
-                            <select class="form-select" aria-label="Default select example">
-                                <label for="usernameInput" class="form-label">Departamento:</label>
-                                <option selected>Seleccione un departamento...</option>
-                                <option value="1">DATIC</option>
-                                <option value="2">DAMI</option>
-                                <option value="3">DACEA</option>
-                                <option value="3">CDS</option>
-                                <option value="3">Servicios Escolares</option>
-                            </select>
+                        <div class="col-md-6 col-xl-4">
+                            <label class="form-label">Confimar contraseña:</label>
+                            <input type="password" class="form-control">
                         </div>
-                        <div class="col-md-6 col-xl-4 mb-3">
-                            <label for="usernameInput" class="form-label">Contraseña:</label>
-                            <input type="password" class="form-control" id="usernameInput" required>
+                        <div class="col-md-6 col-xl-4">
+                            <label class="form-label">Rol:</label>
+                            <select class="form-select" aria-label="Default select example" id="roleInput" name="roleInput">
+                                <option value="" selected>Selecciona un rol...</option>
+                                <c:forEach items="${roleList}" var="role">
+                                    <option value="${role.idType}">${role.nameType}</option>
+                                </c:forEach>
+                              </select>
                         </div>
-                        <div class="col-md-6 col-xl-4 mb-3">
-                            <label for="usernameInput" class="form-label">Confimar contraseña:</label>
-                            <input type="password" class="form-control" id="usernameInput" required>
+                        <div class="col-md-6 col-xl-4">
+                            <label class="form-label">Área:</label>
+                            <select class="form-select" aria-label="Default select example" id="departmentInput" name="departmentInput">
+                                <option value="" selected>Selecciona un área</option>
+                                <c:forEach items="${departmentList}" var="department">
+                                    <option value="${department.idDepartment}">${department.nameDepartment}</option>
+                                </c:forEach>
+                              </select>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col">
-                            <button class="btn btn-verde ">
-                                <svg class="feather">
-                                    <use xlink:href="/assets/icons/feather-sprite.svg#check" />
-                                </svg>
-                                Guardar cambios
-                            </button>
-                            <button class="btn btn-secondary">
-                                Cancelar
-                            </button>
-                        </div>
-                    </div>
+                    <button type="submit">enviar</button>
                 </form>
-
+            </div>
+            <div class="card-footer bg-white">
+                <div class="row">
+                    <div class="p-1 col-md-4 col-xl-3">
+                        <button type="button" class="btn btn-secondary w-100" data-bs-toggle="modal" data-bs-target="#modalExit">
+                            <svg class="feather">
+                                <use xlink:href="${context}/assets/icons/feather-sprite.svg#x" />
+                            </svg>
+                            <span> Cancelar</span>
+                        </button>
+                    </div>
+                    <div class="p-1 col-md-4 col-xl-3">
+                        <button class="btn btn-verde w-100">
+                            <svg class="feather">
+                                <use xlink:href="${context}/assets/icons/feather-sprite.svg#check" />
+                            </svg>
+                            Guardar cambios
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
-
     </div>
-    <div class="modal fade" tabindex="-1" id="attendedRecordModal">
-        <div class="modal-dialog modal-lg">
+    <div class="modal fade" tabindex="-1" id="modalExit">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Detalle del oficio</h5>
+                    <h5 class="modal-title">Abandonar asignación</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <span class="fw-bold">
-                                    Número de oficio:
-                                </span>
-                                <p id="modal2RecordId"></p>
-                            </div>
-                            <div class="col-md-6">
-                                <span class="fw-bold">
-                                    Fecha de canalización:
-                                </span>
-                                <p id="modal2ChannellingDate"></p>
-                            </div>
-                            <div class="col-md-6">
-                                <span class="fw-bold">
-                                    Fecha de asignación:
-                                </span>
-                                <p id="modal2AssignmentDate"></p>
-                            </div>
-                            <div class="col-md-6">
-                                <span class="fw-bold">
-                                    Fecha de respuesta:
-                                </span>
-                                <p id="modal2ResponseDate"></p>
-                            </div>
-                            <div class="col-md-6">
-                                <span class="fw-bold">
-                                    Departamento:
-                                </span>
-                                <p id="modal2Department"></p>
-                            </div>
-                            <div class="col-md-6">
-                                <span class="fw-bold">
-                                    Prioridad:
-                                </span>
-                                <p>
-                                    <span id="modal2Priority"></span>
-                                </p>
-                            </div>
-                            <div class="col-md-6">
-                                <span class="fw-bold">
-                                    Comentario:
-                                </span>
-                                <p id="modal2Comment"></p>
-                            </div>
+                    <div class="row">
+                        <div class="col">
+                            <p>¿Deseas abandonar el la asignación del oficio?</p>
                         </div>
-                        <div class="row">
-                            <h5>Acciones:</h5>
-                            <div class="col-md-6 col-lg-4 mb-3">
-                                <form action="/ServletRecords" method="POST" target="_blank" class="m-0">
-                                    <input type="hidden" value="getRecordById" name="action">
-                                    <input type="hidden" id="modal2RecordIdInput" name="recordIdInput">
-                                    <button type="submit" class="btn btn-primary w-100">
-                                        <svg class="feather">
-                                            <use xlink:href="/assets/icons/feather-sprite.svg#file-text" />
-                                        </svg>
-                                        <span> Visualizar archivo</span>
-                                    </button>
-                                </form>
-                            </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="row w-100">
+                        <div class="p-1 col-md-6 col-lg-4">
+                            <button class="btn btn-secondary w-100" data-bs-dismiss="modal">
+                                <svg class="feather">
+                                    <use xlink:href="${context}/assets/icons/feather-sprite.svg#x" />
+                                </svg>
+                                <span> Cancelar</span>
+                            </button>
+                        </div>
+                        <div class="p-1 col-md-6 col-lg-4">
+                                <a class="btn btn-verde w-100" href="${context}/Gestión_de_Usuarios?redirect=users">
+                                    <svg class="feather">
+                                        <use xlink:href="${context}/assets/icons/feather-sprite.svg#corner-up-left" />
+                                    </svg>
+                                    <span> Salir</span>
+                                </a>
                         </div>
                     </div>
                 </div>
@@ -233,7 +199,7 @@
     <span> Error: No tienes acceso a este sitio.</span>
   </div>
 </c:if>
-    <script src="/assets/js/bootstrap.bundle.js"></script>
+    <script src="${context}/assets/js/bootstrap.bundle.js"></script>
 </body>
 
 </html>

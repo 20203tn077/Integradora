@@ -139,6 +139,7 @@
                             </tbody>
                         </table>
                     </div>
+                    <hr>
                     <h5>Atendidos:</h5>
                     <div class="table-container">
                         <table class="table table-azul table-striped table-hover border text-center m-0">

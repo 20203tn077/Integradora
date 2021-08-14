@@ -15,13 +15,15 @@ public class BeanUsers {
     private int currentUser;
     private String token;
     private Date hour_token;
+    private int attempts;
+    private String block_date;
     private BeanDepartment department_id;
     private BeanUser_type type_id;
 
     public BeanUsers() {
     }
 
-    public BeanUsers(int id_user, String nameUser, String passwordUser, String name, String lastname1, String lastname2, String email, int currentUser, String token, Date hour_token, BeanDepartment department_id, BeanUser_type type_id) {
+    public BeanUsers(int id_user, String nameUser, String passwordUser, String name, String lastname1, String lastname2, String email, int currentUser, String token, Date hour_token, int attempts, String block_date, BeanDepartment department_id, BeanUser_type type_id) {
         this.id_user = id_user;
         this.nameUser = nameUser;
         this.passwordUser = passwordUser;
@@ -32,6 +34,8 @@ public class BeanUsers {
         this.currentUser = currentUser;
         this.token = token;
         this.hour_token = hour_token;
+        this.attempts = attempts;
+        this.block_date = block_date;
         this.department_id = department_id;
         this.type_id = type_id;
     }
@@ -114,6 +118,22 @@ public class BeanUsers {
 
     public void setHour_token(Date hour_token) {
         this.hour_token = hour_token;
+    }
+
+    public int getAttempts() {
+        return attempts;
+    }
+
+    public void setAttempts(int attempts) {
+        this.attempts = attempts;
+    }
+
+    public String getBlock_date() {
+        return block_date;
+    }
+
+    public void setBlock_date(String block_date) {
+        this.block_date = block_date;
     }
 
     public BeanDepartment getDepartment_id() {

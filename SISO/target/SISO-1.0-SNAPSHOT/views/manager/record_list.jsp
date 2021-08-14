@@ -143,6 +143,7 @@
                             </tbody>
                         </table>
                     </div>
+                    <hr>
                     <h5>Asignados:</h5>
                     <div class="table-container">
                         <table class="table table-azul table-striped table-hover border text-center m-0">
@@ -151,7 +152,7 @@
                                     <th>No. de Oficio</th>
                                     <th>Fecha de canalización</th>
                                     <th>Fecha de asignación</th>
-                                    <th>Auxiliar</th>
+                                    <th>Auxiliar asignado</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -182,6 +183,7 @@
                             </tbody>
                         </table>
                     </div>
+                    <hr>
                     <h5>Atendidos:</h5>
                     <div class="table-container">
                         <table class="table table-azul table-striped table-hover border text-center m-0">
@@ -247,6 +249,12 @@
                                     Fecha de asignación:
                                 </span>
                                 <p id="modalDetails_assignment"></p>
+                            </div>
+                            <div class="col-md-6" id="modalDetails_assistantContainer">
+                                <span class="fw-bold">
+                                    Auxiliar asignado:
+                                </span>
+                                <p id="modalDetails_assistant"></p>
                             </div>
                             <div class="col-md-6" id="modalDetails_responseContainer">
                                 <span class="fw-bold">

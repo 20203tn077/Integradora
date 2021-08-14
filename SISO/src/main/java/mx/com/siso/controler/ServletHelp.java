@@ -48,7 +48,9 @@ public class ServletHelp extends HttpServlet {
                 String loginPassword = request.getParameter("passwordInput") != null ? request.getParameter("passwordInput") : "";
                 int idUser2 = new DaoUsers().findIdByUsername(loginUsername);
 
-                BeanUsers loginBeanUser = new BeanUsers(0, loginUsername, loginPassword, "", "", "", "", 0, "", null, null, null);
+                BeanUsers loginBeanUser = new BeanUsers();
+                loginBeanUser.setNameUser(loginUsername);
+                loginBeanUser.setPasswordUser(loginPassword);
 
                 if (idUser2 != 0 && idUser2 != -1){
                     resultado2 = new DaoUsers().findAttempts(idUser2);
@@ -105,8 +107,7 @@ public class ServletHelp extends HttpServlet {
                     }
                     if (result[3] != 0){
                         System.out.println("Contraseña incorrecta");
-                        request.getRequestDispatcher("/views/users/login.jsp").forward(request, response);
-
+                        redirect(request,response,"/views/common/login.jsp", (byte)3, "Contraseña incorrecta");
                     }else {
                         request.setAttribute("userList", new DaoUsers().findAllUsers());
                         redirect(request,response,"/views/admin/user_list.jsp");
@@ -129,7 +130,9 @@ public class ServletHelp extends HttpServlet {
                 }
                 String parseToken = String.valueOf(token);
                 String correo = request.getParameter("emailInput") != null ? request.getParameter("emailInput") : "";
-                BeanUsers beanUsers = new BeanUsers(0,"","","","","",correo,0,parseToken,null,null,null);
+                BeanUsers beanUsers = new BeanUsers();
+                beanUsers.setEmail(correo);
+                beanUsers.setToken(parseToken);
                 Properties props = System.getProperties();
                 int recoveryId = new DaoUsers().checkEmail(beanUsers);
                 if(recoveryId != -1) {
@@ -167,7 +170,9 @@ break;
                 String recoveryToken = request.getParameter("tokenInput") != null ? request.getParameter("tokenInput") : "";
                 String recoveryEmail= request.getParameter("recoveryEmail") != null ? request.getParameter("recoveryEmail") : "";
                 int recoveryId2 = request.getParameter("recoveryId") != null ? Integer.parseInt(request.getParameter("recoveryId")) : -1;
-                BeanUsers beanUsers1 = new BeanUsers(recoveryId2,"","","","","","",0,recoveryToken,null,null,null);
+                BeanUsers beanUsers1 = new BeanUsers();
+                beanUsers1.setId_user(recoveryId2);
+                beanUsers1.setToken(recoveryToken);
 
                 if(new DaoUsers().checkToken(beanUsers1)){
                     System.out.println("Token coincide con Id");
@@ -186,15 +191,11 @@ break;
                 if (Integer.parseInt(String.valueOf(request.getSession().getAttribute("recoveryId"))) == recoveryId3) {
                     BeanUsers passwordChangeUser = new DaoUsers().findUserById(recoveryId3);
                     passwordChangeUser.setPasswordUser(recoveryPassword);
-                    try {
-                        if (new DaoUsers().update(passwordChangeUser)) {
+
+                        if (new DaoUsers().update(passwordChangeUser)[0] == 1) {
                             request.getSession().removeAttribute("recoveryId");
                             redirect(request,response,"/views/common/login.jsp", (byte)2, "Se ha actualizado tu contraseña, inicia sesión de nuevo.");
                         }
-                    }catch (SQLException e) {
-                        //No se pudo cambiar por alguna razón
-                        redirect(request,response,"/views/common/login.jsp");
-                    }
                 } else {
                     //No coincide el token recibido con el que se intentaba cambiar
                     redirect(request,response,"/views/common/login.jsp");

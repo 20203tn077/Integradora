@@ -79,130 +79,68 @@
                 <h5 class="card-header">Perfil</h5>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-6">
-                            <p class="fw-bold m-0">
-                                Nombre de usuario:
-                            </p>
-                            <p>
-                                ${user.nameUser}
-                            </p>
+                        <div class="col-md-3">
+                            <div class="img-thumbnail d-inline-flex">
+                                <svg class="feather-160 foto-perfil">
+                                    <use xlink:href="${context}/assets/icons/feather-sprite.svg#user" />
+                                </svg>
+                            </div>
                         </div>
-                        <div class="col-md-6">
-                            <p class="fw-bold m-0">
-                                Nombre:
-                            </p>
-                            <p>
-                                ${user.name.concat(" ").concat(user.lastname1).concat(" ").concat(user.lastname2)}
-                            </p>
-                        </div>
-                        <div class="col-md-6">
-                            <p class="fw-bold m-0">
-                                Correo electrónico:
-                            </p>
-                            <p>
-                                ${user.email}
-                            </p>
-                        </div>
-                        <div class="col-md-6">
-                            <p class="fw-bold m-0">
-                                Rol:
-                            </p>
-                            <p>
-                                ${user.type_id.nameType}
-                            </p>
-                        </div>
-                        <div class="col-md-6">
-                            <p class="fw-bold m-0">
-                                Departamento:
-                            </p>
-                            <p>
-                                ${user.department_id.nameDepartment}
-                            </p>
+                        <div class="col">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p class="fw-bold m-0">
+                                        Nombre de usuario:
+                                    </p>
+                                    <p>
+                                        ${user.nameUser}
+                                    </p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p class="fw-bold m-0">
+                                        Nombre:
+                                    </p>
+                                    <p>
+                                        ${user.name.concat(" ").concat(user.lastname1).concat(" ").concat(user.lastname2)}
+                                    </p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p class="fw-bold m-0">
+                                        Correo electrónico:
+                                    </p>
+                                    <p>
+                                        ${user.email}
+                                    </p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p class="fw-bold m-0">
+                                        Rol:
+                                    </p>
+                                    <p>
+                                        ${user.type_id.nameType}
+                                    </p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p class="fw-bold m-0">
+                                        Departamento:
+                                    </p>
+                                    <p>
+                                        ${user.department_id.nameDepartment}
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                </div>
+                <div class="card-footer bg-white">
                     <div class="row">
-                        <div class="col" height="1000px">
-                            <button class="btn btn-verde">
+                        <div class="p-1 col-md-4 col-xl-3">
+                            <a href="${context}/Modificar_Datos?redirect=dataModify" class="btn btn-verde w-100">
                                 <svg class="feather">
                                     <use xlink:href="${context}/assets/icons/feather-sprite.svg#edit" />
                                 </svg>
                                 <span> Modificar datos</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal fade" tabindex="-1" id="attendedRecordModal">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Detalle del oficio</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <span class="fw-bold">
-                                        Número de oficio:
-                                    </span>
-                                    <p id="modal2RecordId"></p>
-                                </div>
-                                <div class="col-md-6">
-                                    <span class="fw-bold">
-                                        Fecha de canalización:
-                                    </span>
-                                    <p id="modal2ChannellingDate"></p>
-                                </div>
-                                <div class="col-md-6">
-                                    <span class="fw-bold">
-                                        Fecha de asignación:
-                                    </span>
-                                    <p id="modal2AssignmentDate"></p>
-                                </div>
-                                <div class="col-md-6">
-                                    <span class="fw-bold">
-                                        Fecha de respuesta:
-                                    </span>
-                                    <p id="modal2ResponseDate"></p>
-                                </div>
-                                <div class="col-md-6">
-                                    <span class="fw-bold">
-                                        Departamento:
-                                    </span>
-                                    <p id="modal2Department"></p>
-                                </div>
-                                <div class="col-md-6">
-                                    <span class="fw-bold">
-                                        Prioridad:
-                                    </span>
-                                    <p>
-                                        <span id="modal2Priority"></span>
-                                    </p>
-                                </div>
-                                <div class="col-md-6">
-                                    <span class="fw-bold">
-                                        Comentario:
-                                    </span>
-                                    <p id="modal2Comment"></p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <h5>Acciones:</h5>
-                                <div class="col-md-6 col-lg-4 mb-3">
-                                    <form action="${context}/ServletRecords" method="POST" target="_blank" class="m-0">
-                                        <input type="hidden" value="getRecordById" name="action">
-                                        <input type="hidden" id="modal2RecordIdInput" name="recordIdInput">
-                                        <button type="submit" class="btn btn-primary w-100">
-                                            <svg class="feather">
-                                                <use xlink:href="${context}/assets/icons/feather-sprite.svg#file-text" />
-                                            </svg>
-                                            <span> Visualizar archivo</span>
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
+                            </a>
                         </div>
                     </div>
                 </div>

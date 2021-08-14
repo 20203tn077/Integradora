@@ -1,6 +1,8 @@
 package mx.com.siso.controler;
 
 import com.google.gson.Gson;
+import mx.com.siso.model.administrador.BeanAdministrador;
+import mx.com.siso.model.administrador.DaoAdministrator;
 import mx.com.siso.model.department.BeanDepartment;
 import mx.com.siso.model.department.DaoDepartment;
 import mx.com.siso.model.priority.BeanPriority;
@@ -9,6 +11,8 @@ import mx.com.siso.model.records.BeanRecords;
 import mx.com.siso.model.records.DaoRecords;
 import mx.com.siso.model.response_file.BeanResponse_file;
 import mx.com.siso.model.response_file.DaoResponse;
+import mx.com.siso.model.user_type.BeanUser_type;
+import mx.com.siso.model.user_type.DaoUser_type;
 import mx.com.siso.model.users.BeanUsers;
 import mx.com.siso.model.users.DaoUsers;
 
@@ -49,6 +53,11 @@ public class Servlet extends HttpServlet {
                         redirect(request,response,"/views/assistant/profile.jsp");
                         break;
                     case "dataModify":
+                        BeanUsers user = new DaoUsers().findUserById(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))));
+                        user.setPasswordUser(null);
+                        request.setAttribute("user", user);
+                        redirect(request,response,"/views/assistant/data_modify.jsp");
+                        break;
                 }
                 break;
             case 2:
@@ -68,6 +77,9 @@ public class Servlet extends HttpServlet {
                         redirect(request,response,"/views/manager/profile.jsp");
                         break;
                     case "dataModify":
+                        BeanUsers user = new DaoUsers().findUserById(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))));
+                        user.setPasswordUser(null);
+                        request.setAttribute("user", user);
                         redirect(request,response,"/views/manager/data_modify.jsp");
                         break;
                     case "recordReassign":
@@ -92,6 +104,9 @@ public class Servlet extends HttpServlet {
                         redirect(request,response,"/views/oficialia/profile.jsp");
                         break;
                     case "dataModify":
+                        BeanUsers user = new DaoUsers().findUserById(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))));
+                        user.setPasswordUser(null);
+                        request.setAttribute("user", user);
                         redirect(request,response,"/views/oficialia/data_modify.jsp");
                         break;
                     case "recordRegister":
@@ -114,12 +129,20 @@ public class Servlet extends HttpServlet {
                         redirect(request,response,"/views/admin/department_list.jsp");
                         break;
                     case "profile":
+                        BeanAdministrador beanAdministrador1 = new DaoAdministrator().findAdministrator();
+                        beanAdministrador1.setPasswordAdmin(null);
+                        request.setAttribute("admin", beanAdministrador1);
                         redirect(request,response,"/views/admin/profile.jsp");
                         break;
                     case "dataModify":
+                        BeanAdministrador beanAdministrador2 = new DaoAdministrator().findAdministrator();
+                        beanAdministrador2.setPasswordAdmin(null);
+                        request.setAttribute("admin", beanAdministrador2);
                         redirect(request,response,"/views/admin/data_modify.jsp");
                         break;
                     case "userRegister":
+                        request.setAttribute("departmentList", new DaoDepartment().findDepartment());
+                        request.setAttribute("roleList", new DaoUser_type().findUserType());
                         redirect(request,response,"/views/admin/user_register.jsp");
                         break;
                     case "userModify":
@@ -133,7 +156,7 @@ public class Servlet extends HttpServlet {
                 }
                 break;
             default:
-
+                redirect(request, response, "/views/common/login.jsp", (byte)1, "La sesión ha expirado, vuelve a iniciar sesión");
         }
     }
 
@@ -238,7 +261,7 @@ public class Servlet extends HttpServlet {
                         break;
                     case "getAssistantDetails":
                         BeanUsers assistant = new DaoUsers().findUserById(Integer.parseInt(request.getParameter("id")));
-                        assistant.setPasswordUser("");
+                        assistant.setPasswordUser(null);
                         sendJSON(response, assistant);
                         break;
                     case "deleteAssistant":
@@ -363,10 +386,91 @@ public class Servlet extends HttpServlet {
                         request.setAttribute("departmentList", new DaoDepartment().findDepartment());
                         redirect(request, response, "/views/admin/department_list.jsp", (byte)2, "El departamento ha sido eliminado");
                         break;
+                    case "modifyData":
+                        BeanAdministrador beanAdministrador = new DaoAdministrator().findAdministrator();
+                        String id = beanAdministrador.getNameAdmin();
+                        beanAdministrador.setNameAdmin(request.getParameter("usernameInput"));
+                        if (request.getParameter("passwordInput")!="") {
+                            beanAdministrador.setPasswordAdmin(request.getParameter("passwordInput"));
+                        }
+                        if (new DaoAdministrator().update(beanAdministrador, id)){
+                            BeanAdministrador beanAdministrador1 = new DaoAdministrator().findAdministrator();
+                            beanAdministrador1.setPasswordAdmin(null);
+                            request.setAttribute("admin", beanAdministrador1);
+                            redirect(request,response,"/views/admin/profile.jsp",(byte)2,"Se ha actualizado correctamente");
+                        }else {
+                            BeanAdministrador beanAdministrador1 = new DaoAdministrator().findAdministrator();
+                            beanAdministrador1.setPasswordAdmin(null);
+                            request.setAttribute("admin", beanAdministrador1);
+                            redirect(request,response,"/views/admin/data_modify.jsp",(byte)3,"El nombre de usuario ya está registrado");
+                        }
+                        break;
+                    case "registerUser":
+                        int resultado3;
+                        String nameUser = request.getParameter("usernameInput") != null ? request.getParameter("usernameInput") : "";
+                        String password = request.getParameter("passwordInput")!= null ? request.getParameter("passwordInput") : "";
+                        String name = request.getParameter("nameInput")!= null ? request.getParameter("nameInput") : "";
+                        String lastname1 = request.getParameter("lastname1Input")!= null ? request.getParameter("lastname1Input") : "";
+                        String lastname2 = request.getParameter("lastname2Input")!= null ? request.getParameter("lastname2Input") : "";
+                        int departmentId = Integer.parseInt(request.getParameter("departmentInput")!= "" ? request.getParameter("departmentInput") : "0");
+                        int type = Integer.parseInt(request.getParameter("roleInput")!= null ? request.getParameter("roleInput") : "0");
+                        String email = request.getParameter("emailInput")!= null ? request.getParameter("emailInput") : "";
+
+                        BeanUser_type beanUser_type = new BeanUser_type(type, "");
+                        BeanDepartment beanDepartment = new BeanDepartment(departmentId, "", "", "", 0);
+                        BeanUsers beanUsers = new BeanUsers(0, nameUser, password, name, lastname1, lastname2, email,0, "", null,0, "", beanDepartment, beanUser_type);
+
+                        try {
+                            resultado3 = new DaoUsers().create(beanUsers);
+                            switch (resultado3){
+                                case 1:
+                                    request.setAttribute("userList", new DaoUsers().findAllUsers());
+                                    redirect(request,response,"/views/admin/user_list.jsp", (byte)2, "Se ha registrado correctamente");
+                                    break;
+                                case 2:
+                                    request.setAttribute("departmentList", new DaoDepartment().findDepartment());
+                                    request.setAttribute("roleList", new DaoUser_type().findUserType());
+                                    redirect(request,response,"/views/admin/user_register.jsp", (byte)3, "El nombre de usuario ya está registrado");
+                                    break;
+                                case 3:
+                                    request.setAttribute("departmentList", new DaoDepartment().findDepartment());
+                                    request.setAttribute("roleList", new DaoUser_type().findUserType());
+                                    redirect(request,response,"/views/admin/user_register.jsp", (byte)3, "El correo ya está registrado");
+                                    break;
+                                case 4:
+                                    request.setAttribute("departmentList", new DaoDepartment().findDepartment());
+                                    request.setAttribute("roleList", new DaoUser_type().findUserType());
+                                    redirect(request,response,"/views/admin/user_register.jsp", (byte)3, "El nombre de usuario y el correo ya están registrados");
+                                    break;
+                            }
+
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        }
+                        break;
+                    case "registerDepartment":
+                        String nameDepartment = request.getParameter("nameInput") != null ? request.getParameter("nameInput") : "";
+                        String description = request.getParameter("descriptionInput")!= null ? request.getParameter("descriptionInput") : "";
+                        String telephoneNumber = request.getParameter("phoneInput")!= null ? request.getParameter("phoneInput") : "";
+
+                        BeanDepartment beanDepartment1 = new BeanDepartment(0, nameDepartment, description, telephoneNumber, 0);
+
+                        try {
+                            if(new DaoDepartment().create(beanDepartment1)){
+                                request.setAttribute("departmentList", new DaoDepartment().findDepartment());
+                                redirect(request,response,"/views/admin/department_list.jsp", (byte)2, "Departamento registrado correctamente");
+                                break;
+                            } else {
+                                redirect(request,response,"/views/admin/department_register.jsp", (byte)3, "Departamento no registrado");
+                            }
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        }
+                        break;
                 }
                 break;
             default:
-
+                redirect(request, response, "/views/common/login.jsp", (byte)1, "La sesión ha expirado, vuelve a iniciar sesión");
         }
         if (sessionRole.equals("1") ||sessionRole.equals("2") ||sessionRole.equals("3")) {
             switch (action) {
@@ -385,6 +489,50 @@ public class Servlet extends HttpServlet {
                     response.setContentType("application/pdf");
                     int responseId = Integer.parseInt(request.getParameter("id") != null ? request.getParameter("id") : "");
                     response.getOutputStream().write(Base64.getDecoder().decode(new DaoResponse().findResponseById(responseId)));
+                    break;
+                case "modifyData":
+                    BeanUsers beanUsers1 = new DaoUsers().findUserById(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))));
+                    if (request.getParameter("usernameInput") != null) {
+                        beanUsers1.setNameUser(request.getParameter("usernameInput"));
+                    }
+                    if (request.getParameter("nameInput") != null) {
+                        beanUsers1.setName(request.getParameter("nameInput"));
+                    }
+                    if (request.getParameter("lastname1Input") != null) {
+                        beanUsers1.setLastname1(request.getParameter("lastname1Input"));
+                    }
+                    beanUsers1.setLastname2(request.getParameter("lastname2Input"));
+                    if (request.getParameter("emailInput") != null) {
+                        beanUsers1.setEmail(request.getParameter("emailInput"));
+                    }
+                    if (request.getParameter("passwordInput") != null && request.getParameter("passwordInput") != "") {
+                        beanUsers1.setPasswordUser(request.getParameter("passwordInput"));
+                    }
+                    int[] resultado4 = new int[6];
+                    resultado4 = new DaoUsers().update(beanUsers1);
+                    if(resultado4[0]==1){
+                        request.setAttribute("user", new DaoUsers().findUserById(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId")))));
+                        redirect(request,response,"/views/assistant/profile.jsp", (byte)2, "La actualización se realizó correctamente");
+                    }else{
+                        if(resultado4[1]==1){
+                            BeanUsers user = new DaoUsers().findUserById(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))));
+                            user.setPasswordUser(null);
+                            request.setAttribute("user", user);
+                            redirect(request,response,"/views/assistant/data_modify.jsp", (byte)3, "El usuario no es válido");
+                        }else{
+                            if(resultado4[2]==1){
+                                BeanUsers user = new DaoUsers().findUserById(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))));
+                                user.setPasswordUser(null);
+                                request.setAttribute("user", user);
+                                redirect(request,response,"/views/assistant/data_modify.jsp", (byte)3, "El nombre se usuario ya se encuentra registrado");
+                            }else if(resultado4[3]==1){
+                                BeanUsers user = new DaoUsers().findUserById(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))));
+                                user.setPasswordUser(null);
+                                request.setAttribute("user", user);
+                                redirect(request,response,"/views/assistant/data_modify.jsp", (byte)3, "El correo ya se encuentra registrado");
+                            }
+                        }
+                    }
                     break;
             }
         }

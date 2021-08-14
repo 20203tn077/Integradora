@@ -1,3 +1,7 @@
+var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+    return new bootstrap.Tooltip(tooltipTriggerEl)
+})
 var context = document.getElementById("context").value;
 var modalDetails = new bootstrap.Modal(document.getElementById("modalDetails"), {});
 var modalDelete = new bootstrap.Modal(document.getElementById("modalDelete"), {});
@@ -49,7 +53,7 @@ function showModalDetails(id) {
                 document.getElementById("modalDetails_responseContainer").style.display = "initial";
                 document.getElementById("modalDetails_commentContainer").style.display = "initial";
                 document.getElementById("modalDetails_rechannelButtonContainer").style.display = "none";
-                    document.getElementById("modalDetails_deleteButtonContainer").style.display = "none";
+                document.getElementById("modalDetails_deleteButtonContainer").style.display = "none";
                 document.getElementById("modalDetails_responseButtonContainer").style.display = "initial";
                 document.getElementById("modalDetails_response").innerHTML = record.dateAssignment;
                 document.getElementById("modalDetails_response").innerHTML = record.dateResponse;
@@ -71,7 +75,7 @@ function showModalDetails(id) {
                         for (let file of files) {
                             count++;
                             document.getElementById("modalFiles_content").innerHTML +=
-                            '<form action="' + context + '/Visualizar_Archivo" method="post" class="d-inline" target="_blank">' +
+                                '<form action="' + context + '/Visualizar_Archivo" method="post" class="d-inline" target="_blank">' +
                                 '<input type="hidden" name="id" value="' + file.id_response + '">' +
                                 '<input type="hidden" name="action" value="viewResponseFile">' +
                                 '<button class="btn btn-file m-2">' +
@@ -93,6 +97,6 @@ function showModalDetails(id) {
     };
 }
 
-function showModalDelete(id) {  
+function showModalDelete(id) {
     modalDelete.show();
 }

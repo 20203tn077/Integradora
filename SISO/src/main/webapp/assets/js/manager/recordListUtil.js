@@ -31,6 +31,7 @@ function showModalDetails(id) {
                     document.getElementById("modalDetails_assignmentContainer").style.display = "none";
                     document.getElementById("modalDetails_responseContainer").style.display = "none";
                     document.getElementById("modalDetails_commentContainer").style.display = "none";
+                    document.getElementById("modalDetails_assistantContainer").style.display = "none";
                     document.getElementById("modalDetails_assignButtonContainer").style.display = "initial";
                     document.getElementById("modalDetails_reassignButtonContainer").style.display = "none";
                     document.getElementById("modalDetails_responseButtonContainer").style.display = "none";
@@ -39,21 +40,25 @@ function showModalDetails(id) {
                     document.getElementById("modalDetails_assignmentContainer").style.display = "initial";
                     document.getElementById("modalDetails_responseContainer").style.display = "none";
                     document.getElementById("modalDetails_commentContainer").style.display = "none";
+                    document.getElementById("modalDetails_assistantContainer").style.display = "initial";
                     document.getElementById("modalDetails_assignButtonContainer").style.display = "none";
                     document.getElementById("modalDetails_reassignButtonContainer").style.display = "initial";
                     document.getElementById("modalDetails_responseButtonContainer").style.display = "none";
                     document.getElementById("modalDetails_response").innerHTML = record.dateAssignment;
+                    document.getElementById("modalDetails_assistant").innerHTML = record.userId.name + " " + record.userId.lastname1 + " " + record.userId.lastname2;
                 }
             } else {
                 document.getElementById("modalDetails_assignmentContainer").style.display = "initial";
                 document.getElementById("modalDetails_responseContainer").style.display = "initial";
                 document.getElementById("modalDetails_commentContainer").style.display = "initial";
+                document.getElementById("modalDetails_assistantContainer").style.display = "initial";
                 document.getElementById("modalDetails_assignButtonContainer").style.display = "none";
                 document.getElementById("modalDetails_reassignButtonContainer").style.display = "none";
                 document.getElementById("modalDetails_responseButtonContainer").style.display = "initial";
                 document.getElementById("modalDetails_response").innerHTML = record.dateAssignment;
                 document.getElementById("modalDetails_response").innerHTML = record.dateResponse;
                 document.getElementById("modalDetails_comment").innerHTML = record.comment;
+                document.getElementById("modalDetails_assistant").innerHTML = record.userId.name + " " + record.userId.lastname1 + " " + record.userId.lastname2;
             }
             document.getElementById("modalDetails_viewForm").value = record.id_minutes;
             modalDetails.show();

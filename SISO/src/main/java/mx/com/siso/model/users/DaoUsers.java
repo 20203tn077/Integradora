@@ -22,8 +22,10 @@ public class DaoUsers {
     static Logger logger = LoggerFactory.getLogger(DaoUsers.class);
 
 
-    public boolean create(BeanUsers user) throws SQLException {
-        boolean flag = false;
+    public int create(BeanUsers user) throws SQLException {
+        int resultado = 0;
+        System.out.println(user.getDepartment_id().getIdDepartment());
+        System.out.println(user.getType_id().getIdType());
         try{
             con = ConnectionMySQL.getConnection();
             cstm = con.prepareCall("{call create_user(?,?,?,?,?,?,?,?,?,?,?,?)}");
@@ -39,23 +41,31 @@ public class DaoUsers {
             cstm.registerOutParameter(10, java.sql.Types.INTEGER);
             cstm.registerOutParameter(11, java.sql.Types.INTEGER);
             cstm.registerOutParameter(12, java.sql.Types.INTEGER);
-            flag = cstm.execute();
+            cstm.execute();
             int errorName = cstm.getInt(9);
             int errorEmail = cstm.getInt(10);
             if(errorName ==0 && errorEmail==0){
                 System.out.println("Se registro correctamente");
-            }else if(errorName==1){
-                System.out.println("El nombre se usuario ya se encuentra registrado");
-            }else if(errorEmail==1){
-                System.out.println("El correo ya se encuentra registrado");
+                resultado = 1;
+            }else {
+                if (errorName ==1 && errorEmail==1){
+                    resultado = 4;
+                } else{
+                    if(errorName==1){
+                        System.out.println("El nombre se usuario ya se encuentra registrado");
+                        resultado = 2;
+                    }else if(errorEmail==1){
+                        System.out.println("El correo ya se encuentra registrado");
+                        resultado = 3;
+                    }
+                }
             }
-
         }catch(SQLException e){
             System.out.println("Error: " + e);
         }finally{
             con.close();
         }
-        return flag;
+        return resultado;
     }
     public boolean modifyUser(BeanUsers user) throws SQLException {
         boolean flag = false;
@@ -205,8 +215,9 @@ public class DaoUsers {
         System.out.println(beanUsers.getNameUser());
     }
 
-    public boolean update(BeanUsers user) throws SQLException {
-        boolean flag = false;
+    public int[] update(BeanUsers user){
+        int[] resultado = new int[6];
+        System.out.println(user.getId_user());
         try{
             con = ConnectionMySQL.getConnection();
             cstm = con.prepareCall("{call  modify_user(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
@@ -226,7 +237,7 @@ public class DaoUsers {
             cstm.registerOutParameter(14, java.sql.Types.INTEGER);
             cstm.registerOutParameter(15, java.sql.Types.INTEGER);
 
-            flag = cstm.execute();
+            cstm.execute();
             int errorUser = cstm.getInt(10);
             int errorName = cstm.getInt(11);
             int errorEmail = cstm.getInt(12);
@@ -234,33 +245,32 @@ public class DaoUsers {
             int errorType = cstm.getInt(14);
             int succes = cstm.getInt(15);
             if(succes==1){
-                System.out.println("Se modifico correctamente");
+                resultado[0] = 1;
             }else{
                 if(errorUser==1){
-                    System.out.println("El usuario no existe");
+                    resultado[1] = 1;
                 }else{
                     if(errorName==1){
-                        System.out.println("El nombre ya existe");
+                        resultado[2] = 1;
                     }
                     if(errorEmail==1){
-                        System.out.println("El email ya existe");
+                        resultado[3] = 1;
                     }
                 }
                 if(errorDepartament==1){
-                    System.out.println("El departamento no existe");
+                    resultado[4] = 1;
                 }
                 if(errorType==1){
-                    System.out.println("El tipo de usuario no existe");
+                    resultado[5] = 1;
                 }
             }
-
 
         }catch(SQLException e){
             System.out.println("Error: " + e);
         }finally{
             ConnectionMySQL.closeConnection(con, cstm);
         }
-        return flag;
+        return resultado;
     }
 
     public boolean delete(int id) {

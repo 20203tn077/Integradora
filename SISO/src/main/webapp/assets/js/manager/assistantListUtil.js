@@ -1,13 +1,17 @@
+var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+    return new bootstrap.Tooltip(tooltipTriggerEl)
+})
 var context = document.getElementById("context").value;
 var modalDetails = new bootstrap.Modal(document.getElementById("modalDetails"), {});
 var modalDelete = new bootstrap.Modal(document.getElementById("modalDelete"), {});
 
 function showModalDetails(id) {
     const request = new XMLHttpRequest();
-    request.open("POST", context+"/Servlet", true);
+    request.open("POST", context + "/Servlet", true);
     request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    request.send("action=getAssistantDetails&id="+id);
-    request.onreadystatechange = function() {
+    request.send("action=getAssistantDetails&id=" + id);
+    request.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             let user = JSON.parse(this.responseText);
             document.getElementById("modalDetails_username").innerHTML = user.nameUser;
@@ -22,6 +26,6 @@ function showModalDetails(id) {
     };
 }
 
-function showModalDelete(id) {  
+function showModalDelete(id) {
     modalDelete.show();
 }
