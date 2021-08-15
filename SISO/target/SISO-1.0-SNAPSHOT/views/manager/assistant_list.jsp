@@ -121,12 +121,14 @@
 
         <!--////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
 
-        <button type="button" class="btn btn-verde btn-floating shadow" data-bs-toggle="tooltip"
+        <a href="${context}/Nuevo_Auxiliar?redirect=assistantRegister">
+            <button type="button" class="btn btn-verde btn-floating shadow" data-bs-toggle="tooltip"
             data-bs-placement="left" title="Nuevo auxiliar">
             <svg class="feather-28">
                 <use xlink:href="${context}/assets/icons/feather-sprite.svg#user-plus" />
             </svg>
         </button>
+        </a>
 
         <!--////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
 

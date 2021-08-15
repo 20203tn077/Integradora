@@ -91,7 +91,7 @@
                         </div>
                         <div class="col-md-6 col-xl-4">
                             <label class="form-label">Teléfono:</label>
-                            <input type="tel" class="form-control" id="phoneInput" name="phoneInput" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}">
+                            <input type="tel" class="form-control" id="phoneInput" name="phoneInput" pattern="[0-9]{10}">
                         </div>
                     </div>
                     <button type="submit">enviar</button>

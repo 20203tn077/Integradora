@@ -311,12 +311,17 @@
                                 </form>
                             </div>
                             <div class="p-1 col-md-6 col-lg-4" id="modalDetails_reassignButtonContainer">
-                                <a href="#" class="btn btn-verde w-100">
-                                    <svg class="feather">
-                                        <use xlink:href="${context}/assets/icons/feather-sprite.svg#edit" />
-                                    </svg>
-                                    <span> Reasignar oficio</span>
-                                </a>
+                                <form action="${context}/Reasignar_Oficio" method="post">
+                                    <input type="hidden" name="action" value="redirect">
+                                    <input type="hidden" name="redirect" value="recordReassign">
+                                    <input type="hidden" name="id" id="modalDetails_reassignId">
+                                    <button type="submit" class="btn btn-verde w-100">
+                                        <svg class="feather">
+                                            <use xlink:href="${context}/assets/icons/feather-sprite.svg#edit" />
+                                        </svg>
+                                        <span> Reasignar oficio</span>
+                                    </button>
+                                </form>
                             </div>
                             <div class="p-1 col-md-6 col-lg-4" data-bs-target="#modalDelete" data-bs-toggle="modal"
                                 data-bs-dismiss="modal" id="modalDetails_responseButtonContainer">

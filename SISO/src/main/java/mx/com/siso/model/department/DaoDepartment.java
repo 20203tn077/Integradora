@@ -99,8 +99,35 @@ public class DaoDepartment {
         return beanDepartment;
     }
 
-    public boolean update(BeanDepartment department) throws SQLException {
-        boolean flag = false;
+    public BeanDepartment findDepartmentById2(long id) {
+        BeanDepartment beanDepartment = null;
+        try {
+            // SELECT * FROM users AS U INNER JOIN persons AS P ON U.idPerson = P.id INNER JOIN roles AS R ON U.idRole = R.id;
+            con = ConnectionMySQL.getConnection();
+            cstm = con.prepareCall("{call find_department_byId(?)}");
+            cstm.setLong(1, id);
+            rs = cstm.executeQuery();
+
+            if (rs.next()) {
+                beanDepartment = new BeanDepartment();
+
+                beanDepartment.setIdDepartment(rs.getInt("department_id"));
+                beanDepartment.setNameDepartment(rs.getString("department_name"));
+                beanDepartment.setDescription(rs.getString("description"));
+                beanDepartment.setTelephoneNumber(rs.getString("phone_number"));
+
+
+            }
+        } catch (SQLException e) {
+            System.out.println("Ha ocurrido un error: " + e.getMessage());
+        } finally {
+            ConnectionMySQL.closeConnection(con, cstm, rs);
+        }
+        return beanDepartment;
+    }
+
+    public int[] update(BeanDepartment department) throws SQLException {
+        int[] resultado = new int[3];
         try {
             con = ConnectionMySQL.getConnection();
             cstm = con.prepareCall("{call  modify_department(?,?,?,?,?,?,?)}");
@@ -112,18 +139,21 @@ public class DaoDepartment {
             cstm.registerOutParameter(6, java.sql.Types.INTEGER);
             cstm.registerOutParameter(7, java.sql.Types.INTEGER);
 
-            flag = cstm.execute();
+            cstm.execute();
             int errorCurrent = cstm.getInt(5);
             int errorName = cstm.getInt(6);
             int succes = cstm.getInt(7);
             if(succes==1){
                 System.out.println("Se modifico correctamente");
+                resultado[0] = 1;
             }else{
                 if(errorCurrent==1){
                     System.out.println("El departamento no existe");
+                    resultado[1] = 1;
                 }else{
                     if(errorName==1){
                         System.out.println("El nombre ya existe");
+                        resultado[2] = 1;
                     }
 
                 }
@@ -133,7 +163,7 @@ public class DaoDepartment {
         } finally {
             ConnectionMySQL.closeConnection(con, cstm);
         }
-        return flag;
+        return resultado;
     }
 
     public boolean delete(int id){

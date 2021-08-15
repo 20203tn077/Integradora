@@ -178,6 +178,7 @@
         </div>
 
         <!--////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+        
         <a href="${context}/Nuevo_Oficio?redirect=recordRegister">
             <button type="button" class="btn btn-verde btn-floating shadow" data-bs-toggle="tooltip"
                 data-bs-placement="left" title="Nuevo oficio">
@@ -186,7 +187,6 @@
                 </svg>
             </button>
         </a>
-
 
         <!--////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
 
@@ -259,12 +259,17 @@
                                 </form>
                             </div>
                             <div class="p-1 col-md-6 col-lg-4" id="modalDetails_rechannelButtonContainer">
-                                <a href="#" class="btn btn-verde w-100">
-                                    <svg class="feather">
-                                        <use xlink:href="${context}/assets/icons/feather-sprite.svg#edit" />
-                                    </svg>
-                                    <span> Recanalizar oficio</span>
-                                </a>
+                                <form action="${context}/Recanalizar_Oficio" method="post">
+                                    <input type="hidden" name="action" value="redirect">
+                                    <input type="hidden" name="redirect" value="recordRechannelling">
+                                    <input type="hidden" name="id" id="modalDetails_rechannelId">
+                                    <button type="submit" class="btn btn-verde w-100">
+                                        <svg class="feather">
+                                            <use xlink:href="${context}/assets/icons/feather-sprite.svg#edit" />
+                                        </svg>
+                                        <span> Recanalizar oficio</span>
+                                    </button>
+                                </form>
                             </div>
                             <div class="p-1 col-md-6 col-lg-4" data-bs-target="#modalDelete" data-bs-toggle="modal"
                                 data-bs-dismiss="modal" id="modalDetails_deleteButtonContainer">

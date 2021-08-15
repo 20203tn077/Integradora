@@ -22,13 +22,11 @@ public class DaoUsers {
     static Logger logger = LoggerFactory.getLogger(DaoUsers.class);
 
 
-    public int create(BeanUsers user) throws SQLException {
-        int resultado = 0;
-        System.out.println(user.getDepartment_id().getIdDepartment());
-        System.out.println(user.getType_id().getIdType());
+    public int[] create(BeanUsers user) throws SQLException {
+        int[] resultado = new int[5];
         try{
             con = ConnectionMySQL.getConnection();
-            cstm = con.prepareCall("{call create_user(?,?,?,?,?,?,?,?,?,?,?,?)}");
+            cstm = con.prepareCall("{call create_user(?,?,?,?,?,?,?,?,?,?,?,?,?)}");
             cstm.setString(1,user.getNameUser() );
             cstm.setString(2, user.getPasswordUser());
             cstm.setString(3, user.getName());
@@ -41,23 +39,28 @@ public class DaoUsers {
             cstm.registerOutParameter(10, java.sql.Types.INTEGER);
             cstm.registerOutParameter(11, java.sql.Types.INTEGER);
             cstm.registerOutParameter(12, java.sql.Types.INTEGER);
+            cstm.registerOutParameter(13, java.sql.Types.INTEGER);
             cstm.execute();
             int errorName = cstm.getInt(9);
             int errorEmail = cstm.getInt(10);
-            if(errorName ==0 && errorEmail==0){
+            int errorDepartment = cstm.getInt(11);
+            int errorType = cstm.getInt(12);
+            int success = cstm.getInt(13);
+            if(success==1){
                 System.out.println("Se registro correctamente");
-                resultado = 1;
+                resultado[0] = 1;
             }else {
-                if (errorName ==1 && errorEmail==1){
-                    resultado = 4;
-                } else{
-                    if(errorName==1){
-                        System.out.println("El nombre se usuario ya se encuentra registrado");
-                        resultado = 2;
-                    }else if(errorEmail==1){
-                        System.out.println("El correo ya se encuentra registrado");
-                        resultado = 3;
-                    }
+                if(errorName==1){
+                    resultado[1] = 1;
+                }
+                if(errorEmail==1){
+                    resultado[2] = 1;
+                }
+                if(errorDepartment==1){
+                    resultado[3] = 1;
+                }
+                if(errorType==1){
+                    resultado[4] = 1;
                 }
             }
         }catch(SQLException e){

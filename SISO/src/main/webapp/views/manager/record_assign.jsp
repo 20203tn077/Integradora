@@ -83,8 +83,9 @@
                         <input type="hidden" name="action" value="assignRecord">
                         <input type="hidden" name="recordId" value="${recordId}">
                         <div class="row gy-3">
-                            <div class="col-12">
-                                <span class="fw-bold">Oficio No. ${recordId}</span>
+                            <div class="col-md-6 col-xl-4">
+                                <label class="form-label">Número de oficio:</label>
+                                <input type="text" readonly class="form-control-plaintext" value="${record.id_minutes}" name="id">
                             </div>
                             <div class="col-md-6 col-xl-4">
                                 <label class="form-label">Auxiliar:</label>

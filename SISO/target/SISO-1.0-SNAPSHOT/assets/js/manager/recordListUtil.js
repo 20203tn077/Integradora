@@ -46,6 +46,7 @@ function showModalDetails(id) {
                     document.getElementById("modalDetails_responseButtonContainer").style.display = "none";
                     document.getElementById("modalDetails_response").innerHTML = record.dateAssignment;
                     document.getElementById("modalDetails_assistant").innerHTML = record.userId.name + " " + record.userId.lastname1 + " " + record.userId.lastname2;
+                    document.getElementById("modalDetails_reassignId").value = record.id_minutes;
                 }
             } else {
                 document.getElementById("modalDetails_assignmentContainer").style.display = "initial";

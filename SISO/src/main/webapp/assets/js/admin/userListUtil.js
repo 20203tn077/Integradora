@@ -18,6 +18,7 @@ function showModalDetails(id) {
             document.getElementById("modalDetails_name").innerHTML = user.name + " " + user.lastname1 + " " + user.lastname2;
             document.getElementById("modalDetails_email").innerHTML = user.email;
             document.getElementById("modalDetails_role").innerHTML = user.type_id.nameType;
+            document.getElementById("modalDetails_modifyId").value = user.id_user;
             if (user.type_id.idType != 3) {
                 document.getElementById("modalDetails_department").innerHTML = user.department_id.nameDepartment;
                 document.getElementById("modalDetails_departmentContainer").style.display = "unset";

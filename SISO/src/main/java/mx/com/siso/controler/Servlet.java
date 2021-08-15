@@ -26,7 +26,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @MultipartConfig(maxFileSize = 16177215)
-@WebServlet(name = "Servlet", urlPatterns = {"/Servlet", "/Gestión_de_Oficios", "/Gestión_de_Usuarios", "/Gestión_de_Auxiliares", "/Gestión_de_Departamentos", "/Modificar_Oficio", "/Modificar_Usuario", "/Modificar_Auxiliar", "/Modificar_Departamento", "/Nuevo_Oficio", "/Nuevo_Usuario", "/Nuevo_Auxiliar", "/Nuevo_Departamento", "/Perfil", "/Modificar_Datos", "/Canalizar_Oficio", "/Asignar_Oficio", "/Atender_Oficio", "/Visualizar_Oficio", "/Visualizar_Archivo"})
+@WebServlet(name = "Servlet", urlPatterns = {"/Servlet", "/Gestión_de_Oficios", "/Gestión_de_Usuarios", "/Gestión_de_Auxiliares", "/Gestión_de_Departamentos", "/Modificar_Oficio", "/Modificar_Usuario", "/Modificar_Auxiliar", "/Modificar_Departamento", "/Nuevo_Oficio", "/Nuevo_Usuario", "/Nuevo_Auxiliar", "/Nuevo_Departamento", "/Perfil", "/Modificar_Datos", "/Canalizar_Oficio", "/Recanalizar_Oficio", "/Asignar_Oficio", "/Reasignar_Oficio", "/Atender_Oficio", "/Visualizar_Oficio", "/Visualizar_Archivo"})
 public class Servlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -82,9 +82,6 @@ public class Servlet extends HttpServlet {
                         request.setAttribute("user", user);
                         redirect(request,response,"/views/manager/data_modify.jsp");
                         break;
-                    case "recordReassign":
-                        redirect(request,response,"/views/manager/record_reassign.jsp");
-                        break;
                     case "assistantRegister":
                         redirect(request,response,"/views/manager/assistant_register.jsp");
                         break;
@@ -114,8 +111,6 @@ public class Servlet extends HttpServlet {
                         request.setAttribute("priorityList", new DaoPriority().findPriority());
                         redirect(request,response,"/views/oficialia/record_register.jsp");
                         break;
-                    case "recordRechannelling":
-                        redirect(request,response,"/views/oficialia/record_rechannelling.jsp");
                 }
                 break;
             case 4:
@@ -145,14 +140,9 @@ public class Servlet extends HttpServlet {
                         request.setAttribute("roleList", new DaoUser_type().findUserType());
                         redirect(request,response,"/views/admin/user_register.jsp");
                         break;
-                    case "userModify":
-                        redirect(request,response,"/views/admin/user_modify.jsp");
-                        break;
                     case "departmentRegister":
                         redirect(request,response,"/views/admin/department_register.jsp");
                         break;
-                    case "departmentModify":
-                        redirect(request,response,"/views/admin/department_modify.jsp");
                 }
                 break;
             default:
@@ -257,6 +247,11 @@ public class Servlet extends HttpServlet {
                                 request.setAttribute("recordId", request.getParameter("id"));
                                 redirect(request,response,"/views/manager/record_assign.jsp");
                                 break;
+                            case "recordReassign":
+                                request.setAttribute("assistantList", new DaoUsers().findAllAssitant(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId")))));
+                                request.setAttribute("record", new DaoRecords().findRecordById(Integer.parseInt(request.getParameter("id"))));
+                                redirect(request,response,"/views/manager/record_reassign.jsp");
+                                break;
                         }
                         break;
                     case "getAssistantDetails":
@@ -299,6 +294,75 @@ public class Servlet extends HttpServlet {
                             throwables.printStackTrace();
                         }
                         break;
+                    case "registerAssistant":
+                        int resultado;
+                        String nameUser = request.getParameter("usernameInput") != null ? request.getParameter("usernameInput") : "";
+                        String password = request.getParameter("passwordInput")!= null ? request.getParameter("passwordInput") : "";
+                        String name = request.getParameter("nameInput")!= null ? request.getParameter("nameInput") : "";
+                        String lastname1 = request.getParameter("lastname1Input")!= null ? request.getParameter("lastname1Input") : "";
+                        String lastname2 = request.getParameter("lastname2Input")!= null ? request.getParameter("lastname2Input") : "";
+                        String email = request.getParameter("emailInput")!= null ? request.getParameter("emailInput") : "";
+                        BeanUser_type beanUser_type = new BeanUser_type(1, "");
+                        BeanDepartment beanDepartment = new BeanDepartment(new DaoUsers().findUserById(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId")))).getDepartment_id().getIdDepartment(), "", "", "", 0);
+                        BeanUsers beanUsers1 = new BeanUsers(0, nameUser, password, name, lastname1, lastname2, email,0, "", null,0, "", beanDepartment, beanUser_type);
+                        try {
+                            resultado = new DaoUsers().create(beanUsers1);
+                            switch (resultado){
+                                case 1:
+                                    request.setAttribute("userList", new DaoUsers().findAllUsers());
+                                    redirect(request,response,"/views/manager/assistant_list.jsp", (byte)2, "Se ha registrado correctamente");
+                                    break;
+                                case 2:
+                                    request.setAttribute("departmentList", new DaoDepartment().findDepartment());
+                                    request.setAttribute("roleList", new DaoUser_type().findUserType());
+                                    redirect(request,response,"/views/manager/assistant_register.jsp", (byte)3, "El nombre de usuario ya está registrado");
+                                    break;
+                                case 3:
+                                    request.setAttribute("departmentList", new DaoDepartment().findDepartment());
+                                    request.setAttribute("roleList", new DaoUser_type().findUserType());
+                                    redirect(request,response,"/views/manager/assistant_register.jsp", (byte)3, "El correo ya está registrado");
+                                    break;
+                                case 4:
+                                    request.setAttribute("departmentList", new DaoDepartment().findDepartment());
+                                    request.setAttribute("roleList", new DaoUser_type().findUserType());
+                                    redirect(request,response,"/views/manager/assistant_register.jsp", (byte)3, "El nombre de usuario y el correo ya están registrados");
+                                    break;
+                            }
+
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        }
+                        break;
+                    case "reassignRecord":
+                        int[] resultado5 = new int[4];
+                        int idRecord1 = Integer.parseInt(request.getParameter("id"));
+                        int idAssistant1 = Integer.parseInt(request.getParameter("assistantInput"));
+                        resultado5 = new DaoRecords().reassignRecord(idRecord1,idAssistant1);
+
+                        if (resultado5[0] == 1){
+                            request.setAttribute("recordList1", new DaoRecords().findAllRecordsByManager(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)1));
+                            request.setAttribute("recordList2", new DaoRecords().findAllRecordsByManager(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)2));
+                            request.setAttribute("recordList3", new DaoRecords().findAllRecordsByManager(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)3));
+                            redirect(request,response,"/views/manager/record_list.jsp", (byte)2, "Se reasignó correctamente");
+                        }else {
+                            if (resultado5[1] == 1){
+                                request.setAttribute("assistantList", new DaoUsers().findAllAssitant(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId")))));
+                                request.setAttribute("record", new DaoRecords().findRecordById(Integer.parseInt(request.getParameter("id"))));
+                                redirect(request,response,"/views/manager/record_reassign.jsp", (byte)3, "No existe el oficio");
+                            } else {
+                                if (resultado5[2] ==1){
+                                    request.setAttribute("assistantList", new DaoUsers().findAllAssitant(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId")))));
+                                    request.setAttribute("record", new DaoRecords().findRecordById(Integer.parseInt(request.getParameter("id"))));
+                                    redirect(request,response,"/views/manager/record_reassign.jsp", (byte)3, "Ya esta atendido");
+                                }
+                            }
+                            if (resultado5[3] == 1){
+                                request.setAttribute("assistantList", new DaoUsers().findAllAssitant(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId")))));
+                                request.setAttribute("record", new DaoRecords().findRecordById(Integer.parseInt(request.getParameter("id"))));
+                                redirect(request,response,"/views/manager/record_reassign.jsp", (byte)3, "El auxiliar no existe");
+                            }
+                        }
+                        break;
                 }
                 break;
             case "3":
@@ -310,6 +374,11 @@ public class Servlet extends HttpServlet {
                                 request.setAttribute("assistantList", new DaoUsers().findAllAssitant(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId")))));
                                 request.setAttribute("recordId", request.getParameter("id"));
                                 redirect(request,response,"/views/manager/record_assign.jsp");
+                                break;
+                            case "recordRechannelling":
+                                request.setAttribute("departmentList", new DaoDepartment().findDepartment());
+                                request.setAttribute("record", new DaoRecords().findRecordById(Integer.parseInt(request.getParameter("id"))));
+                                redirect(request,response,"/views/oficialia/record_rechannelling.jsp");
                                 break;
                         }
                         break;
@@ -354,6 +423,19 @@ public class Servlet extends HttpServlet {
                             System.out.println("fichero: "+ ex.getMessage());
                         }
                         break;
+                    case "rechannelRecord":
+                        int idRecord = Integer.parseInt(request.getParameter("id"));
+                        int idDepartment = Integer.parseInt(request.getParameter("departmentInput"));
+                        if (new DaoRecords().changeDepartment(idRecord, idDepartment)){
+                            request.setAttribute("recordList1", new DaoRecords().findAllRecords(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)1));
+                            request.setAttribute("recordList2", new DaoRecords().findAllRecords(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)2));
+                            redirect(request,response,"/views/oficialia/record_list.jsp", (byte)2, "Se ha hecho la recanalización correctament");
+                        }else {
+                            request.setAttribute("departmentList", new DaoDepartment().findDepartment());
+                            request.setAttribute("record", new DaoRecords().findRecordById(Integer.parseInt(request.getParameter("id"))));
+                            redirect(request,response,"/views/oficialia/record_rechannelling.jsp", (byte)3, "No se realizó la recanalización");
+                        }
+                        break;
                 }
                 break;
             case "4":
@@ -365,6 +447,16 @@ public class Servlet extends HttpServlet {
                                 request.setAttribute("assistantList", new DaoUsers().findAllAssitant(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId")))));
                                 request.setAttribute("recordId", request.getParameter("id"));
                                 redirect(request,response,"/views/manager/record_assign.jsp");
+                                break;
+                            case "userModify":
+                                request.setAttribute("departmentList", new DaoDepartment().findDepartment());
+                                request.setAttribute("roleList", new DaoUser_type().findUserType());
+                                request.setAttribute("user", new DaoUsers().findUserById(Integer.parseInt(request.getParameter("id"))));
+                                redirect(request,response,"/views/admin/user_modify.jsp");
+                                break;
+                            case "departmentModify":
+                                request.setAttribute("department", new DaoDepartment().findDepartmentById2(Long.parseLong(request.getParameter("id"))));
+                                redirect(request,response,"/views/admin/department_modify.jsp");
                                 break;
                         }
                         break;
@@ -462,6 +554,98 @@ public class Servlet extends HttpServlet {
                                 break;
                             } else {
                                 redirect(request,response,"/views/admin/department_register.jsp", (byte)3, "Departamento no registrado");
+                            }
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        }
+                        break;
+                    case "modifyUser":
+                        int[] resultado4 = new int[6];
+                        int departmentId1 = Integer.parseInt(request.getParameter("departmentInput")!= null ? request.getParameter("departmentInput") : "0");
+                        int type1 = Integer.parseInt(request.getParameter("roleInput")!= null ? request.getParameter("roleInput") : "0");
+
+                        BeanUser_type beanUser_type1 = new BeanUser_type(type1, "");
+                        BeanDepartment beanDepartment2 = new BeanDepartment(departmentId1, "", "", "", 0);
+                        BeanUsers beanUsers1 = new DaoUsers().findUserById(Integer.parseInt(request.getParameter("id")));
+                        if (request.getParameter("passwordInput") != "") {
+                            beanUsers1.setPasswordUser(request.getParameter("passwordInput"));
+                        }
+                        beanUsers1.setNameUser(request.getParameter("usernameInput"));
+                        beanUsers1.setName(request.getParameter("nameInput"));
+                        beanUsers1.setLastname1(request.getParameter("lastname1Input"));
+                        beanUsers1.setLastname2(request.getParameter("lastname2Input"));
+                        beanUsers1.setEmail(request.getParameter("emailInput"));
+                        beanUsers1.setDepartment_id(beanDepartment2);
+                        beanUsers1.setType_id(beanUser_type1);
+                            resultado4 = new DaoUsers().update(beanUsers1);
+                            if(resultado4[0]==1){
+                                request.setAttribute("userList", new DaoUsers().findAllUsers());
+                                redirect(request,response,"/views/admin/user_list.jsp", (byte)2, "La actualización se realizó correctamente");
+                            }else{
+                                if(resultado4[1]==1){
+                                    request.setAttribute("departmentList", new DaoDepartment().findDepartment());
+                                    request.setAttribute("roleList", new DaoUser_type().findUserType());
+                                    request.setAttribute("user", new DaoUsers().findUserById(Integer.parseInt(request.getParameter("id"))));
+                                    redirect(request,response,"/views/admin/user_modify.jsp", (byte)3, "El usuario no es válido");
+                                }else{
+                                    if (resultado4[2] ==1 && resultado4[3]==1){
+                                        request.setAttribute("departmentList", new DaoDepartment().findDepartment());
+                                        request.setAttribute("roleList", new DaoUser_type().findUserType());
+                                        request.setAttribute("user", new DaoUsers().findUserById(Integer.parseInt(request.getParameter("id"))));
+                                        redirect(request,response,"/views/admin/user_modify.jsp", (byte)3, "El usuario y correo ya están registrados");
+                                    } else{
+                                        if(resultado4[2]==1){
+                                            request.setAttribute("departmentList", new DaoDepartment().findDepartment());
+                                            request.setAttribute("roleList", new DaoUser_type().findUserType());
+                                            request.setAttribute("user", new DaoUsers().findUserById(Integer.parseInt(request.getParameter("id"))));
+                                            redirect(request,response,"/views/admin/user_modify.jsp", (byte)3, "El nombre se usuario ya se encuentra registrado");
+                                        }else if(resultado4[3]==1){
+                                            request.setAttribute("departmentList", new DaoDepartment().findDepartment());
+                                            request.setAttribute("roleList", new DaoUser_type().findUserType());
+                                            request.setAttribute("user", new DaoUsers().findUserById(Integer.parseInt(request.getParameter("id"))));
+                                            redirect(request,response,"/views/admin/user_modify.jsp", (byte)3, "El correo ya se encuentra registrado");
+                                        }
+                                    }
+                                }
+                                if(resultado4[4]==1){
+                                    request.setAttribute("departmentList", new DaoDepartment().findDepartment());
+                                    request.setAttribute("roleList", new DaoUser_type().findUserType());
+                                    request.setAttribute("user", new DaoUsers().findUserById(Integer.parseInt(request.getParameter("id"))));
+                                    redirect(request,response,"/views/admin/user_modify.jsp", (byte)3, "El departamento no es válido");
+                                }
+                                if(resultado4[5]==1){
+                                    request.setAttribute("departmentList", new DaoDepartment().findDepartment());
+                                    request.setAttribute("roleList", new DaoUser_type().findUserType());
+                                    request.setAttribute("user", new DaoUsers().findUserById(Integer.parseInt(request.getParameter("id"))));
+                                    redirect(request,response,"/views/admin/user_modify.jsp", (byte)3, "El tipo de usuario no es válido");
+                                }
+                            }
+                        break;
+                    case "modifyDepartment":
+                        int [] resultado2 = new int[3];
+                        int idDepartment = Integer.parseInt(request.getParameter("id")!= null ? request.getParameter("id") : "");
+                        String nameDepartment1 = request.getParameter("nameInput") != null ? request.getParameter("nameInput") : "";
+                        String description1 = request.getParameter("descriptionInput")!= null ? request.getParameter("descriptionInput") : "";
+                        String telephoneNumber1 = request.getParameter("phoneInput")!= null ? request.getParameter("phoneInput") : "";
+
+                        BeanDepartment beanDepartment3 = new BeanDepartment(idDepartment, nameDepartment1, description1, telephoneNumber1, 0);
+
+                        try {
+                            resultado2 = new DaoDepartment().update(beanDepartment3);
+                            if(resultado2[0] ==1){
+                                request.setAttribute("departmentList", new DaoDepartment().findDepartment());
+                                redirect(request,response,"/views/admin/department_list.jsp", (byte)2, "Se modifico correctamente");
+                            }else{
+                                if(resultado2[1]==1){
+                                    request.setAttribute("department", new DaoDepartment().findDepartmentById2(Long.parseLong(request.getParameter("id"))));
+                                    redirect(request,response,"/views/admin/department_modify.jsp", (byte)3, "El departamento no existe");
+                                }else{
+                                    if(resultado2[2]==1){
+                                        request.setAttribute("department", new DaoDepartment().findDepartmentById2(Long.parseLong(request.getParameter("id"))));
+                                        redirect(request,response,"/views/admin/department_modify.jsp", (byte)3, "El nombre ya existe");
+                                    }
+
+                                }
                             }
                         } catch (SQLException throwables) {
                             throwables.printStackTrace();

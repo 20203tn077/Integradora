@@ -17,6 +17,7 @@ function showModalDetails(id) {
             document.getElementById("modalDetails_name").innerHTML = department.nameDepartment;
             document.getElementById("modalDetails_description").innerHTML = department.description;
             document.getElementById("modalDetails_phone").innerHTML = department.telephoneNumber;
+            document.getElementById("modalDetails_modifyId").value = department.idDepartment;
             modalDetails.show();
             document.getElementById("modalDelete_name").innerHTML = department.nameDepartment;
             document.getElementById("modalDelete_formId").value = department.idDepartment;

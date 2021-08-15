@@ -290,4 +290,59 @@ public class DaoRecords {
         }
         return beanRecords;
     }
+    public boolean changeDepartment(int idRecord, int idDepartment){
+        boolean flag =  false;
+        try {
+            con = ConnectionMySQL.getConnection();
+            cstm = con.prepareCall("{call change_department(?,?,?)}");
+            cstm.setInt(1, idRecord);
+            cstm.setInt(2, idDepartment);
+            cstm.registerOutParameter(3, Types.INTEGER);
+            cstm.execute();
+            int success = cstm.getInt(3);
+            if (success == 1){
+                flag = true;
+            }
+        }catch (SQLException e){
+            System.out.println("Se ha encontrado el error" + e.getMessage());
+        }finally {
+            ConnectionMySQL.closeConnection(con,cstm);
+        }
+        return flag;
+    }
+    public int[] reassignRecord(int idRecord, int idAssistant){
+        int[] resultado = new int[4];
+        try {
+            con = ConnectionMySQL.getConnection();
+            cstm = con.prepareCall("{call reassign_record(?,?,?,?,?)}");
+            cstm.setInt(1, idRecord);
+            cstm.setInt(2, idAssistant);
+            cstm.registerOutParameter(3, Types.INTEGER);
+            cstm.registerOutParameter(4, Types.INTEGER);
+            cstm.registerOutParameter(5, Types.INTEGER);
+            cstm.execute();
+            int errorRecord = cstm.getInt(3);
+            int errorAttended = cstm.getInt(4);
+            int errorAssistant = cstm.getInt(5);
+            if (errorRecord == 0 && errorAttended == 0 && errorAssistant == 0){
+                resultado[0] = 1;
+            }else {
+                if (errorRecord == 1){
+                    resultado[1] = 1;
+                } else {
+                    if (errorAttended ==1){
+                        resultado[2] = 1;
+                    }
+                }
+                if (errorAssistant == 1){
+                    resultado[3] = 1;
+                }
+            }
+        }catch (SQLException e){
+            System.out.println("Se ha encontrado el error" + e.getMessage());
+        }finally {
+            ConnectionMySQL.closeConnection(con,cstm);
+        }
+        return resultado;
+    }
 }

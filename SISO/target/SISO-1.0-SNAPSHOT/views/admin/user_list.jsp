@@ -181,12 +181,17 @@
                     <div class="modal-footer">
                         <div class="row w-100">
                             <div class="p-1 col-md-6 col-lg-4">
-                                <a href="#" class="btn btn-verde w-100">
-                                    <svg class="feather">
-                                        <use xlink:href="${context}/assets/icons/feather-sprite.svg#edit" />
-                                    </svg>
-                                    <span> Modificar usuario</span>
-                                </a>
+                                <form action="${context}/Modificar_Usuario" method="post">
+                                    <input type="hidden" name="action" value="redirect">
+                                    <input type="hidden" name="redirect" value="userModify">
+                                    <input type="hidden" name="id" id="modalDetails_modifyId">
+                                    <button type="submit" class="btn btn-verde w-100">
+                                        <svg class="feather">
+                                            <use xlink:href="${context}/assets/icons/feather-sprite.svg#edit" />
+                                        </svg>
+                                        <span> Modificar usuario</span>
+                                    </button>
+                                </form>
                             </div>
                             <div class="p-1 col-md-6 col-lg-4" data-bs-target="#modalDelete" data-bs-toggle="modal"
                                 data-bs-dismiss="modal">

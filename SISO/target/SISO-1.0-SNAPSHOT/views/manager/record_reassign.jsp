@@ -76,287 +76,83 @@
         </c:if>
         <div class="container mt-4">
             <div class="card shadow-sm">
-                <h5 class="card-header">Gestión de oficios</h5>
-                <div class="card-body" height="100px">
-                    <h5>Pendientes:</h5>
-                    <div class="table-container">
-                        <table class="table table-azul table-striped table-hover border text-center">
-                            <thead class="thead-azul display-none">
-                                <tr>
-                                    <th>No. de Oficio</th>
-                                    <th>Fecha de asignación</th>
-                                    <th>Prioridad</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr role="button"
-                                    onclick="showModal1('1', '2021-07-26 04:47:00.0', '', 'DAMI', 'Muy importante')">
-                                    <td>1</td>
-                                    <td>
-                                        Sin asignacion
-                                    </td>
-                                    <td>
-                                        <span class="badge bg-naranja w-100">Muy importante</span>
-                                    </td>
-                                </tr>
-                                <tr role="button"
-                                    onclick="showModal1('3', '2021-07-26 04:47:17.0', '2021-06-07 16:45:25.0', 'DAMI', 'Importante')">
-                                    <td>3</td>
-                                    <td>
-                                        2021-06-07 16:45:25.0
-                                    </td>
-                                    <td>
-                                        <span class="badge bg-warning text-dark w-100">Importante</span>
-                                    </td>
-                                </tr>
-                                <tr role="button"
-                                    onclick="showModal1('5', '2021-07-26 04:47:39.0', '2021-06-10 12:46:07.0', 'DAMI', 'Urgente')">
-                                    <td>5</td>
-                                    <td>
-                                        2021-06-10 12:46:07.0
-                                    </td>
-                                    <td>
-                                        <span class="badge bg-danger w-100">Urgente</span>
-                                    </td>
-                                </tr>
-                                <tr role="button"
-                                    onclick="showModal1('7', '2021-07-26 04:47:45.0', '2021-06-11 17:58:08.0', 'DAMI', 'Muy importante')">
-                                    <td>7</td>
-                                    <td>
-                                        2021-06-11 17:58:08.0
-                                    </td>
-                                    <td>
-                                        <span class="badge bg-naranja w-100">Muy importante</span>
-                                    </td>
-                                </tr>
-                                <tr role="button"
-                                    onclick="showModal1('6', '2021-07-26 04:47:43.0', '2021-06-11 19:18:29.0', 'DAMI', 'Normal')">
-                                    <td>6</td>
-                                    <td>
-                                        2021-06-11 19:18:29.0
-                                    </td>
-                                    <td>
-                                        <span class="badge bg-success w-100">Normal</span>
-                                    </td>
-                                </tr>
-                                <tr role="button"
-                                    onclick="showModal1('8', '2021-07-26 04:47:48.0', '2021-06-12 14:05:29.0', 'DATIC', 'Normal')">
-                                    <td>8</td>
-                                    <td>
-                                        2021-06-12 14:05:29.0
-                                    </td>
-                                    <td>
-                                        <span class="badge bg-success w-100">Normal</span>
-                                    </td>
-                                </tr>
-                                <tr role="button"
-                                    onclick="showModal1('9', '2021-07-26 04:47:51.0', '2021-06-14 10:07:53.0', 'DAMI', 'Importante')">
-                                    <td>9</td>
-                                    <td>
-                                        2021-06-14 10:07:53.0
-                                    </td>
-                                    <td>
-                                        <span class="badge bg-warning text-dark w-100">Importante</span>
-                                    </td>
-                                </tr>
-                                <tr role="button"
-                                    onclick="showModal1('10', '2021-07-26 04:47:54.0', '2021-07-18 11:59:49.0', 'DAMI', 'Muy importante')">
-                                    <td>10</td>
-                                    <td>
-                                        2021-07-18 11:59:49.0
-                                    </td>
-                                    <td>
-                                        <span class="badge bg-naranja w-100">Muy importante</span>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <h5 class="mt-3">Atendidos:</h5>
-                    <div class="table-container">
-                        <table class="table table-azul table-striped table-hover border text-center">
-                            <thead class="thead-azul display-none">
-                                <tr>
-                                    <th>No. de Oficio</th>
-                                    <th>Fecha de asignación</th>
-                                    <th>Fecha de respuesta</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr role="button"
-                                    onclick="showModal2('4', '2021-07-26 04:47:21.0', '2021-06-08 14:10:46.0', '2021-06-12 18:10:46.0' , 'DATIC', 'Urgente', 'Revisión Completa')">
-                                    <td>4</td>
-                                    <td>
-                                        2021-06-08 14:10:46.0
-                                    </td>
-                                    <td>
-                                        2021-06-12 18:10:46.0
-                                    </td>
-                                </tr>
-                                <tr role="button"
-                                    onclick="showModal2('2', '2021-07-26 04:47:09.0', '2021-06-06 16:10:30.0', '2021-06-15 17:10:15.0' , 'DATIC', 'Urgente', 'Archivo revisado')">
-                                    <td>2</td>
-                                    <td>
-                                        2021-06-06 16:10:30.0
-                                    </td>
-                                    <td>
-                                        2021-06-15 17:10:15.0
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                <h5 class="card-header">Asignar oficio</h5>
+                <div class="card-body">
+                    <form action="${context}/Gestión_de_Oficios" method="POST">
+                        <input type="hidden" name="action" value="reassignRecord">
+                        <input type="hidden" name="id" value="${record.id_minutes}">
+                        <div class="row gy-3">
+                            <div class="col-md-6 col-xl-4">
+                                <label class="form-label">Número de oficio:</label>
+                                <input type="text" readonly class="form-control-plaintext" value="${record.id_minutes}" name="id">
+                            </div>
+                            <div class="col-md-6 col-xl-4">
+                                <label class="form-label">Auxiliar:</label>
+                                <select class="form-select" name="assistantInput" required>
+                                    <option value="">Seleccione un auxiliar...</option>
+                                    <c:forEach items="${assistantList}" var="assistant">
+                                        <c:choose>
+                                            <c:when test="${record.userId.id_user == assistant.id_user}">
+                                                <option value="${assistant.id_user}" selected>${assistant.name.concat(" ").concat(assistant.lastname1).concat(" ").concat(assistant.lastname2)}</option>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <option value="${assistant.id_user}">${assistant.name.concat(" ").concat(assistant.lastname1).concat(" ").concat(assistant.lastname2)}</option>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:forEach>
+                                  </select>
+                            </div>
+                        </div>
+                        <hr>
+                            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalExit">
+                                <svg class="feather">
+                                    <use xlink:href="${context}/assets/icons/feather-sprite.svg#x" />
+                                </svg>
+                                <span> Cancelar</span>
+                            </button>
+                            <button type="submit" class="btn btn-verde">
+                                <svg class="feather">
+                                    <use xlink:href="${context}/assets/icons/feather-sprite.svg#check" />
+                                </svg>
+                                <span> Asignar</span>
+                            </button>
+                    </form>
+    
                 </div>
             </div>
+    
         </div>
-        <div class="modal fade" tabindex="-1" id="pendingRecordModal">
-            <div class="modal-dialog modal-lg">
+        <div class="modal fade" tabindex="-1" id="modalExit">
+            <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Detalle del oficio</h5>
+                        <h5 class="modal-title">Abandonar asignación</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <span class="fw-bold">
-                                        Número de oficio:
-                                    </span>
-                                    <p id="modal1RecordId"></p>
-                                </div>
-                                <div class="col-md-6">
-                                    <span class="fw-bold">
-                                        Fecha de canalización:
-                                    </span>
-                                    <p id="modal1ChannellingDate"></p>
-                                </div>
-                                <div class="col-md-6">
-                                    <span class="fw-bold">
-                                        Fecha de asignación:
-                                    </span>
-                                    <p id="modal1AssignmentDate"></p>
-                                </div>
-                                <div class="col-md-6">
-                                    <span class="fw-bold">
-                                        Departamento:
-                                    </span>
-                                    <p id="modal1Department"></p>
-                                </div>
-                                <div class="col-md-6">
-                                    <span class="fw-bold">
-                                        Prioridad:
-                                    </span>
-                                    <p>
-                                        <span id="modal1Priority"></span>
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <h5>Acciones:</h5>
-                                <div class="col-md-6 col-lg-4 mb-3">
-                                    <form action="${context}/ServletRecords" method="POST" target="_blank" class="m-0">
-                                        <input type="hidden" value="getRecordById" name="action">
-                                        <input type="hidden" id="modal1RecordIdInput" name="recordIdInput">
-                                        <button type="submit" class="btn btn-primary w-100">
-                                            <svg class="feather">
-                                                <use xlink:href="${context}/assets/icons/feather-sprite.svg#file-text" />
-                                            </svg>
-                                            <span> Visualizar archivo</span>
-                                        </button>
-                                    </form>
-                                </div>
-                                <div class="col-md-6 col-lg-4 mb-3">
-                                    <button type="button" class="btn btn-primary w-100">
-                                        <svg class="feather">
-                                            <use xlink:href="${context}/assets/icons/feather-sprite.svg#edit" />
-                                        </svg>
-                                        <span> Atender oficio</span>
-                                    </button>
-                                </div>
-                                <div class="col-md-6 col-lg-4 mb-3">
-                                    <button type="button" class="btn btn-primary w-100">
-                                        <svg class="feather">
-                                            <use xlink:href="${context}/assets/icons/feather-sprite.svg#edit" />
-                                        </svg>
-                                        <span> Atender oficio</span>
-                                    </button>
-                                </div>
+                        <div class="row">
+                            <div class="col">
+                                <p>¿Deseas abandonar el la asignación del oficio?</p>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal fade" tabindex="-1" id="attendedRecordModal">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Detalle del oficio</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <span class="fw-bold">
-                                        Número de oficio:
-                                    </span>
-                                    <p id="modal2RecordId"></p>
-                                </div>
-                                <div class="col-md-6">
-                                    <span class="fw-bold">
-                                        Fecha de canalización:
-                                    </span>
-                                    <p id="modal2ChannellingDate"></p>
-                                </div>
-                                <div class="col-md-6">
-                                    <span class="fw-bold">
-                                        Fecha de asignación:
-                                    </span>
-                                    <p id="modal2AssignmentDate"></p>
-                                </div>
-                                <div class="col-md-6">
-                                    <span class="fw-bold">
-                                        Fecha de respuesta:
-                                    </span>
-                                    <p id="modal2ResponseDate"></p>
-                                </div>
-                                <div class="col-md-6">
-                                    <span class="fw-bold">
-                                        Departamento:
-                                    </span>
-                                    <p id="modal2Department"></p>
-                                </div>
-                                <div class="col-md-6">
-                                    <span class="fw-bold">
-                                        Prioridad:
-                                    </span>
-                                    <p>
-                                        <span id="modal2Priority"></span>
-                                    </p>
-                                </div>
-                                <div class="col-md-6">
-                                    <span class="fw-bold">
-                                        Comentario:
-                                    </span>
-                                    <p id="modal2Comment"></p>
-                                </div>
+                    <div class="modal-footer">
+                        <div class="row w-100">
+                            <div class="p-1 col-md-6 col-lg-4">
+                                <button class="btn btn-secondary w-100" data-bs-dismiss="modal">
+                                    <svg class="feather">
+                                        <use xlink:href="${context}/assets/icons/feather-sprite.svg#x" />
+                                    </svg>
+                                    <span> Cancelar</span>
+                                </button>
                             </div>
-                            <div class="row">
-                                <h5>Acciones:</h5>
-                                <div class="col-md-6 col-lg-4 mb-3">
-                                    <form action="${context}/ServletRecords" method="POST" target="_blank" class="m-0">
-                                        <input type="hidden" value="getRecordById" name="action">
-                                        <input type="hidden" id="modal2RecordIdInput" name="recordIdInput">
-                                        <button type="submit" class="btn btn-primary w-100">
-                                            <svg class="feather">
-                                                <use xlink:href="${context}/assets/icons/feather-sprite.svg#file-text" />
-                                            </svg>
-                                            <span> Visualizar archivo</span>
-                                        </button>
-                                    </form>
-                                </div>
+                            <div class="p-1 col-md-6 col-lg-4">
+                                    <a class="btn btn-verde w-100" href="${context}/Gestión_de_Oficios?redirect=records">
+                                        <svg class="feather">
+                                            <use xlink:href="${context}/assets/icons/feather-sprite.svg#corner-up-left" />
+                                        </svg>
+                                        <span> Salir</span>
+                                    </a>
                             </div>
                         </div>
                     </div>

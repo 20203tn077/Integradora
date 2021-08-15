@@ -193,6 +193,7 @@ break;
                     passwordChangeUser.setPasswordUser(recoveryPassword);
 
                         if (new DaoUsers().update(passwordChangeUser)[0] == 1) {
+                            new DaoUsers().restartAttempts(recoveryId3);
                             request.getSession().removeAttribute("recoveryId");
                             redirect(request,response,"/views/common/login.jsp", (byte)2, "Se ha actualizado tu contraseña, inicia sesión de nuevo.");
                         }

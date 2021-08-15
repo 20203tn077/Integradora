@@ -118,7 +118,7 @@
                                 </c:forEach>
                               </select>
                         </div>
-                        <div class="col-md-6 col-xl-4">
+                        <div class="col-md-6 col-xl-4" id="departmentContainer">
                             <label class="form-label">Área:</label>
                             <select class="form-select" aria-label="Default select example" id="departmentInput" name="departmentInput">
                                 <option value="" selected>Selecciona un área</option>
