@@ -145,7 +145,7 @@ public class Servlet extends HttpServlet {
                 }
                 break;
             default:
-                redirect(request, response, "/views/common/login.jsp", (byte)1, "La sesión ha expirado, vuelve a iniciar sesión");
+                redirect(request, response, "/views/common/login.jsp", (byte)1, "La sesión ha expirado, vuelva a iniciar sesión.");
         }
     }
 
@@ -190,11 +190,11 @@ public class Servlet extends HttpServlet {
                                     new DaoResponse().changeAttended(beanResponse_file);
                                     request.setAttribute("recordList1", new DaoRecords().findRecordsByAssistant(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)1));
                                     request.setAttribute("recordList2", new DaoRecords().findRecordsByAssistant(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)2));
-                                    redirect(request,response,"/views/assistant/record_list.jsp", (byte)2, "El oficio se atendió correctamente");
+                                    redirect(request,response,"/views/assistant/record_list.jsp", (byte)2, "El oficio ha sido atendido exitosamente.");
                                 }else {
                                     request.setAttribute("recordList1", new DaoRecords().findRecordsByAssistant(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)1));
                                     request.setAttribute("recordList2", new DaoRecords().findRecordsByAssistant(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)2));
-                                    redirect(request,response,"/views/assistant/record_list.jsp", (byte)3, "El oficio no se atendió correctamente");
+                                    redirect(request,response,"/views/assistant/record_list.jsp", (byte)3, "El oficio no ha sido atendido.");
                                 }
 
                             } catch (SQLException e) {
@@ -221,7 +221,7 @@ public class Servlet extends HttpServlet {
                                         new DaoResponse().changeAttended(beanResponse_file);
                                         request.setAttribute("recordList1", new DaoRecords().findRecordsByAssistant(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)1));
                                         request.setAttribute("recordList2", new DaoRecords().findRecordsByAssistant(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)2));
-                                        redirect(request,response,"/views/assistant/record_list.jsp", (byte)2, "El oficio se atendió correctamente");
+                                        redirect(request,response,"/views/assistant/record_list.jsp", (byte)2, "El oficio ha sido atendido exitosamente.");
                                     } catch (SQLException e) {
                                         e.printStackTrace();
                                     }
@@ -229,7 +229,7 @@ public class Servlet extends HttpServlet {
                                 }else {
                                     request.setAttribute("recordList1", new DaoRecords().findRecordsByAssistant(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)1));
                                     request.setAttribute("recordList2", new DaoRecords().findRecordsByAssistant(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)2));
-                                    redirect(request,response,"/views/assistant/record_list.jsp", (byte)2, "El oficio no se atendió correctamente");
+                                    redirect(request,response,"/views/assistant/record_list.jsp", (byte)3, "El oficio no ha sido atendido.");
                                 }
                             }
                         }
@@ -264,7 +264,7 @@ public class Servlet extends HttpServlet {
                     case "deleteAssistant":
                         new DaoUsers().delete(Integer.parseInt(request.getParameter("id")));
                         request.setAttribute("assistantList", new DaoUsers().findAllAssitant(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId")))));
-                        redirect(request, response, "/views/manager/assistant_list.jsp", (byte)2, "El auxiliar ha sido eliminado");
+                        redirect(request, response, "/views/manager/assistant_list.jsp", (byte)2, "El auxiliar ha sido eliminado exitosamente.");
                         break;
                     case "assignRecord":
                         int[] resultado3 = new int[4];
@@ -280,7 +280,7 @@ public class Servlet extends HttpServlet {
                                 request.setAttribute("recordList1", new DaoRecords().findAllRecordsByManager(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)1));
                                 request.setAttribute("recordList2", new DaoRecords().findAllRecordsByManager(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)2));
                                 request.setAttribute("recordList3", new DaoRecords().findAllRecordsByManager(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)3));
-                                redirect(request,response,"/views/manager/record_list.jsp", (byte)2, "El oficio se asignó de forma correcta");
+                                redirect(request,response,"/views/manager/record_list.jsp", (byte)2, "El oficio ha sido asignado exitosamente.");
                                 ArrayList<String> emails = new ArrayList<String>();
                                 emails.add(email2);
                                 new Email(emails, "Nuevo oficio", "Le ha sido asignado el oficio con número " + idRecord + ".").start();
@@ -288,17 +288,17 @@ public class Servlet extends HttpServlet {
                                 if (resultado3[1] == 1) {
                                     request.setAttribute("assistantList", new DaoUsers().findAllAssitant(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId")))));
                                     request.setAttribute("recordId", request.getParameter("id"));
-                                    redirect(request,response,"/views/manager/record_assign.jsp", (byte)3, "El usuario no existe");
+                                    redirect(request,response,"/views/manager/record_assign.jsp", (byte)3, "El auxiliar seleccionado no es válido.");
                                 }
                                 if (resultado3[2] == 1){
                                     request.setAttribute("assistantList", new DaoUsers().findAllAssitant(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId")))));
                                     request.setAttribute("recordId", request.getParameter("id"));
-                                    redirect(request,response,"/views/manager/record_assign.jsp", (byte)3, "El oficio no existe");
+                                    redirect(request,response,"/views/manager/record_assign.jsp", (byte)3, "El oficio seleccionado no es válido.");
                                 }else {
                                     if (resultado3[3] == 1){
                                         request.setAttribute("assistantList", new DaoUsers().findAllAssitant(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId")))));
                                         request.setAttribute("recordId", request.getParameter("id"));
-                                        redirect(request,response,"/views/manager/record_assign.jsp", (byte)3, "El oficio ya esta asignado");
+                                        redirect(request,response,"/views/manager/record_assign.jsp", (byte)3, "El oficio seleccionado ya ha sido asignado.");
                                     }
                                 }
                             }
@@ -308,7 +308,6 @@ public class Servlet extends HttpServlet {
                         break;
                     case "registerAssistant":
                         int[] resultado = new int[5];
-                        String messageName = "", messageEmail="", messageDepartment="", messageType="";
                         String nameUser = request.getParameter("usernameInput") != null ? request.getParameter("usernameInput") : "";
                         String password = request.getParameter("passwordInput")!= null ? request.getParameter("passwordInput") : "";
                         String name = request.getParameter("nameInput")!= null ? request.getParameter("nameInput") : "";
@@ -322,23 +321,28 @@ public class Servlet extends HttpServlet {
                             resultado3 = new DaoUsers().create(beanUsers1);
                             if(resultado3[0]==1){
                                 request.setAttribute("assistantList", new DaoUsers().findAllAssitant(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId")))));
-                                redirect(request,response,"/views/manager/assistant_list.jsp", (byte)2, "Se ha registrado correctamente");
+                                redirect(request,response,"/views/manager/assistant_list.jsp", (byte)2, "El asistente ha sido registrado exitosamente.");
                             }else {
                                 if(resultado3[1] == 1){
-                                    messageName = "El nombre de usuario ya está registrado ";
+                                    request.setAttribute("departmentList", new DaoDepartment().findDepartment());
+                                    request.setAttribute("roleList", new DaoUser_type().findUserType());
+                                    redirect(request,response,"/views/manager/assistant_register.jsp", (byte)3, "El nombre de usuario ingresdo ya ha sido registrado.");
                                 }
                                 if(resultado3[2] == 1){
-                                    messageEmail ="El email ya está registrado ";
+                                    request.setAttribute("departmentList", new DaoDepartment().findDepartment());
+                                    request.setAttribute("roleList", new DaoUser_type().findUserType());
+                                    redirect(request,response,"/views/manager/assistant_register.jsp", (byte)3, "La dirección de correo electrónico ingresada ya ha sido registrada.");
                                 }
                                 if(resultado3[3] == 1){
-                                    messageDepartment = "El departamento no es valido ";
+                                    request.setAttribute("departmentList", new DaoDepartment().findDepartment());
+                                    request.setAttribute("roleList", new DaoUser_type().findUserType());
+                                    redirect(request,response,"/views/manager/assistant_register.jsp", (byte)3, "El departamento seleccionado no es válido.");
                                 }
                                 if(resultado3[4] == 1){
-                                    messageType = "El tipo de usuario no es valido ";
+                                    request.setAttribute("departmentList", new DaoDepartment().findDepartment());
+                                    request.setAttribute("roleList", new DaoUser_type().findUserType());
+                                    redirect(request,response,"/views/manager/assistant_register.jsp", (byte)3, "El rol seleccionado no es válido.");
                                 }
-                                request.setAttribute("departmentList", new DaoDepartment().findDepartment());
-                                request.setAttribute("roleList", new DaoUser_type().findUserType());
-                                redirect(request,response,"/views/manager/assistant_register.jsp", (byte)3, messageName + messageEmail + messageDepartment + messageType);
                             }
 
                         } catch (SQLException throwables) {
@@ -357,7 +361,7 @@ public class Servlet extends HttpServlet {
                             request.setAttribute("recordList1", new DaoRecords().findAllRecordsByManager(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)1));
                             request.setAttribute("recordList2", new DaoRecords().findAllRecordsByManager(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)2));
                             request.setAttribute("recordList3", new DaoRecords().findAllRecordsByManager(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)3));
-                            redirect(request,response,"/views/manager/record_list.jsp", (byte)2, "Se reasignó correctamente");
+                            redirect(request,response,"/views/manager/record_list.jsp", (byte)2, "El oficio ha sido reasignado exitosamente.");
                             ArrayList<String> emails = new ArrayList<String>();
                             emails.add(oldEmail);
                             new Email(emails, "Retiro de oficio", "El oficio con número " + idRecord1 + " ha sido reasignado a otro auxiliar y retirado de su bandeja.").start();
@@ -368,18 +372,18 @@ public class Servlet extends HttpServlet {
                             if (resultado5[1] == 1){
                                 request.setAttribute("assistantList", new DaoUsers().findAllAssitant(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId")))));
                                 request.setAttribute("record", new DaoRecords().findRecordById(Integer.parseInt(request.getParameter("id"))));
-                                redirect(request,response,"/views/manager/record_reassign.jsp", (byte)3, "No existe el oficio");
+                                redirect(request,response,"/views/manager/record_reassign.jsp", (byte)3, "El oficio seleccionado no es válido.");
                             } else {
                                 if (resultado5[2] ==1){
                                     request.setAttribute("assistantList", new DaoUsers().findAllAssitant(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId")))));
                                     request.setAttribute("record", new DaoRecords().findRecordById(Integer.parseInt(request.getParameter("id"))));
-                                    redirect(request,response,"/views/manager/record_reassign.jsp", (byte)3, "Ya esta atendido");
+                                    redirect(request,response,"/views/manager/record_reassign.jsp", (byte)3, "El oficio ya ha sido atendido.");
                                 }
                             }
                             if (resultado5[3] == 1){
                                 request.setAttribute("assistantList", new DaoUsers().findAllAssitant(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId")))));
                                 request.setAttribute("record", new DaoRecords().findRecordById(Integer.parseInt(request.getParameter("id"))));
-                                redirect(request,response,"/views/manager/record_reassign.jsp", (byte)3, "El auxiliar no existe");
+                                redirect(request,response,"/views/manager/record_reassign.jsp", (byte)3, "El auxiliar seleccionado no es válido.");
                             }
                         }
                         break;
@@ -397,30 +401,30 @@ public class Servlet extends HttpServlet {
                         resultado4 = new DaoUsers().update(beanUsers2);
                         if(resultado4[0]==1){
                             request.setAttribute("userList", new DaoUsers().findAllUsers());
-                            redirect(request,response,"/views/admin/user_list.jsp", (byte)2, "La actualización se realizó correctamente");
+                            redirect(request,response,"/views/admin/user_list.jsp", (byte)2, "Los datos del auxiliar han sido actualizados exitosamente.");
                         }else{
                             if(resultado4[1]==1){
                                 request.setAttribute("departmentList", new DaoDepartment().findDepartment());
                                 request.setAttribute("roleList", new DaoUser_type().findUserType());
                                 request.setAttribute("user", new DaoUsers().findUserById(Integer.parseInt(request.getParameter("id"))));
-                                redirect(request,response,"/views/admin/user_modify.jsp", (byte)3, "El usuario no es válido");
+                                redirect(request,response,"/views/admin/user_modify.jsp", (byte)3, "El auxiliar seleccionado no es válido.");
                             }else{
                                 if (resultado4[2] ==1 && resultado4[3]==1){
                                     request.setAttribute("departmentList", new DaoDepartment().findDepartment());
                                     request.setAttribute("roleList", new DaoUser_type().findUserType());
                                     request.setAttribute("user", new DaoUsers().findUserById(Integer.parseInt(request.getParameter("id"))));
-                                    redirect(request,response,"/views/admin/user_modify.jsp", (byte)3, "El usuario y correo ya están registrados");
+                                    redirect(request,response,"/views/admin/user_modify.jsp", (byte)3, "El nombre de usuario y la dirección de correo electrónico ingresados ya han sido registrados.");
                                 } else{
                                     if(resultado4[2]==1){
                                         request.setAttribute("departmentList", new DaoDepartment().findDepartment());
                                         request.setAttribute("roleList", new DaoUser_type().findUserType());
                                         request.setAttribute("user", new DaoUsers().findUserById(Integer.parseInt(request.getParameter("id"))));
-                                        redirect(request,response,"/views/admin/user_modify.jsp", (byte)3, "El nombre se usuario ya se encuentra registrado");
+                                        redirect(request,response,"/views/admin/user_modify.jsp", (byte)3, "El nombre de usuario ya ha sido registrado.");
                                     }else if(resultado4[3]==1){
                                         request.setAttribute("departmentList", new DaoDepartment().findDepartment());
                                         request.setAttribute("roleList", new DaoUser_type().findUserType());
                                         request.setAttribute("user", new DaoUsers().findUserById(Integer.parseInt(request.getParameter("id"))));
-                                        redirect(request,response,"/views/admin/user_modify.jsp", (byte)3, "El correo ya se encuentra registrado");
+                                        redirect(request,response,"/views/admin/user_modify.jsp", (byte)3, "La dirección de correo electrónico ingresada ya ha sido registrada.");
                                     }
                                 }
                             }
@@ -428,13 +432,13 @@ public class Servlet extends HttpServlet {
                                 request.setAttribute("departmentList", new DaoDepartment().findDepartment());
                                 request.setAttribute("roleList", new DaoUser_type().findUserType());
                                 request.setAttribute("user", new DaoUsers().findUserById(Integer.parseInt(request.getParameter("id"))));
-                                redirect(request,response,"/views/admin/user_modify.jsp", (byte)3, "El departamento no es válido");
+                                redirect(request,response,"/views/admin/user_modify.jsp", (byte)3, "El departamento seleccionado no es válido.");
                             }
                             if(resultado4[5]==1){
                                 request.setAttribute("departmentList", new DaoDepartment().findDepartment());
                                 request.setAttribute("roleList", new DaoUser_type().findUserType());
                                 request.setAttribute("user", new DaoUsers().findUserById(Integer.parseInt(request.getParameter("id"))));
-                                redirect(request,response,"/views/admin/user_modify.jsp", (byte)3, "El tipo de usuario no es válido");
+                                redirect(request,response,"/views/admin/user_modify.jsp", (byte)3, "El rol seleccionado no es válido.");
                             }
                         }
                         break;
@@ -480,17 +484,17 @@ public class Servlet extends HttpServlet {
                                 if(resultado2[0] == 1){
                                     request.setAttribute("recordList1", new DaoRecords().findAllRecords(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)1));
                                     request.setAttribute("recordList2", new DaoRecords().findAllRecords(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)2));
-                                    redirect(request,response,"/views/oficialia/record_list.jsp", (byte)2, "El oficio se registró correctamente");
+                                    redirect(request,response,"/views/oficialia/record_list.jsp", (byte)2, "El oficio ha sido registrado exitosamente.");
                                 }else{
                                     if(resultado2[1] == 1){
                                         request.setAttribute("departmentList", new DaoDepartment().findDepartment());
                                         request.setAttribute("priorityList", new DaoPriority().findPriority());
-                                        redirect(request,response,"/views/oficialia/record_register.jsp", (byte)3, "El departamento seleccionado no existe");
+                                        redirect(request,response,"/views/oficialia/record_register.jsp", (byte)3, "El departamento seleccionado no es válido.");
                                     }
                                     if(resultado2[2] == 1){
                                         request.setAttribute("departmentList", new DaoDepartment().findDepartment());
                                         request.setAttribute("priorityList", new DaoPriority().findPriority());
-                                        redirect(request,response,"/views/oficialia/record_register.jsp", (byte)3, "La prioridad seleccionada no existe");
+                                        redirect(request,response,"/views/oficialia/record_register.jsp", (byte)3, "La prioridad seleccionada no es válida.");
                                     }
                                     System.out.println("pruebaif");
                                 }
@@ -506,22 +510,22 @@ public class Servlet extends HttpServlet {
                         if (new DaoRecords().changeDepartment(idRecord, idDepartment)){
                             request.setAttribute("recordList1", new DaoRecords().findAllRecords(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)1));
                             request.setAttribute("recordList2", new DaoRecords().findAllRecords(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)2));
-                            redirect(request,response,"/views/oficialia/record_list.jsp", (byte)2, "Se ha hecho la recanalización correctament");
+                            redirect(request,response,"/views/oficialia/record_list.jsp", (byte)2, "El oficio ha sido recanalizado exitosamente.");
                         }else {
                             request.setAttribute("departmentList", new DaoDepartment().findDepartment());
                             request.setAttribute("record", new DaoRecords().findRecordById(Integer.parseInt(request.getParameter("id"))));
-                            redirect(request,response,"/views/oficialia/record_rechannelling.jsp", (byte)3, "No se realizó la recanalización");
+                            redirect(request,response,"/views/oficialia/record_rechannelling.jsp", (byte)3, "El oficio no ha sido recanalizado.");
                         }
                         break;
                     case "deleteRecord":
                         if( new DaoRecords().delete(Integer.parseInt(request.getParameter("id")))){
                             request.setAttribute("recordList1", new DaoRecords().findAllRecords(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)1));
                             request.setAttribute("recordList2", new DaoRecords().findAllRecords(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)2));
-                            redirect(request,response,"/views/oficialia/record_list.jsp", (byte)2, "Se elimino correctamente");
+                            redirect(request,response,"/views/oficialia/record_list.jsp", (byte)2, "El oficio ha sido eliminado exitosamente.");
                         }else{
                             request.setAttribute("recordList1", new DaoRecords().findAllRecords(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)1));
                             request.setAttribute("recordList2", new DaoRecords().findAllRecords(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)2));
-                            redirect(request,response,"/views/oficialia/record_list.jsp", (byte)3, "No se eliminó");
+                            redirect(request,response,"/views/oficialia/record_list.jsp", (byte)3, "El oficio no ha sido eliminado.");
                         }
                         break;
                 }
@@ -556,7 +560,7 @@ public class Servlet extends HttpServlet {
                     case "deleteUser":
                         new DaoUsers().delete(Integer.parseInt(request.getParameter("id")));
                         request.setAttribute("userList", new DaoUsers().findAllUsers());
-                        redirect(request, response, "/views/admin/user_list.jsp", (byte)2, "El usuario ha sido eliminado");
+                        redirect(request, response, "/views/admin/user_list.jsp", (byte)2, "El usuario ha sido eliminado exitosamente.");
                         break;
                     case "getDepartmentDetails":
                         sendJSON(response, new DaoDepartment().findDepartmentById(Long.parseLong(request.getParameter("id"))));
@@ -564,7 +568,7 @@ public class Servlet extends HttpServlet {
                     case "deleteDepartment":
                         new DaoDepartment().delete(Integer.parseInt(request.getParameter("id")));
                         request.setAttribute("departmentList", new DaoDepartment().findDepartment());
-                        redirect(request, response, "/views/admin/department_list.jsp", (byte)2, "El departamento ha sido eliminado");
+                        redirect(request, response, "/views/admin/department_list.jsp", (byte)2, "El departamento ha sido eliminado exitosamente.");
                         break;
                     case "modifyData":
                         BeanAdministrador beanAdministrador = new DaoAdministrator().findAdministrator();
@@ -577,12 +581,12 @@ public class Servlet extends HttpServlet {
                             BeanAdministrador beanAdministrador1 = new DaoAdministrator().findAdministrator();
                             beanAdministrador1.setPasswordAdmin(null);
                             request.setAttribute("admin", beanAdministrador1);
-                            redirect(request,response,"/views/admin/profile.jsp",(byte)2,"Se ha actualizado correctamente");
+                            redirect(request,response,"/views/admin/profile.jsp",(byte)2,"Sus datos han sido actualizados exitosamente.");
                         }else {
                             BeanAdministrador beanAdministrador1 = new DaoAdministrator().findAdministrator();
                             beanAdministrador1.setPasswordAdmin(null);
                             request.setAttribute("admin", beanAdministrador1);
-                            redirect(request,response,"/views/admin/data_modify.jsp",(byte)3,"El nombre de usuario ya está registrado");
+                            redirect(request,response,"/views/admin/data_modify.jsp",(byte)3,"El nombre de usuario ingresado ya ha sido registrado.");
                         }
                         break;
                     case "registerUser":
@@ -605,23 +609,28 @@ public class Servlet extends HttpServlet {
                             resultado3 = new DaoUsers().create(beanUsers);
                             if(resultado3[0]==1){
                                 request.setAttribute("userList", new DaoUsers().findAllUsers());
-                                redirect(request,response,"/views/admin/user_list.jsp", (byte)2, "Se ha registrado correctamente");
+                                redirect(request,response,"/views/admin/user_list.jsp", (byte)2, "El usuario ha sido registrado exitosamente.");
                             }else {
                                 if(resultado3[1] == 1){
-                                    messageName1 = "El nombre de usuario ya está registrado ";
+                                    request.setAttribute("departmentList", new DaoDepartment().findDepartment());
+                                    request.setAttribute("roleList", new DaoUser_type().findUserType());
+                                    redirect(request,response,"/views/admin/user_register.jsp", (byte)3, "El nombre de usuario ingresado ya ha sido registrado.");
                                 }
                                 if(resultado3[2] == 1){
-                                    messageEmail1="El email ya está registrado ";
+                                    request.setAttribute("departmentList", new DaoDepartment().findDepartment());
+                                    request.setAttribute("roleList", new DaoUser_type().findUserType());
+                                    redirect(request,response,"/views/admin/user_register.jsp", (byte)3, "La dirección de correo electrónico ingresada ya ha sido registrada.");
                                 }
                                 if(resultado3[3] == 1){
-                                    messageDepartment1 = "El departamento no es valido ";
+                                    request.setAttribute("departmentList", new DaoDepartment().findDepartment());
+                                    request.setAttribute("roleList", new DaoUser_type().findUserType());
+                                    redirect(request,response,"/views/admin/user_register.jsp", (byte)3, "El departamento seleccionado no es válido.");
                                 }
                                 if(resultado3[4] == 1){
-                                    messageType1 = "El tipo de usuario no es valido  ";
+                                    request.setAttribute("departmentList", new DaoDepartment().findDepartment());
+                                    request.setAttribute("roleList", new DaoUser_type().findUserType());
+                                    redirect(request,response,"/views/admin/user_register.jsp", (byte)3, "El rol seleccionado no es válido.");
                                 }
-                                request.setAttribute("departmentList", new DaoDepartment().findDepartment());
-                                request.setAttribute("roleList", new DaoUser_type().findUserType());
-                                redirect(request,response,"/views/admin/user_register.jsp", (byte)3, messageName1 + messageEmail1 + messageDepartment1 + messageType1);
                             }
 
 
@@ -639,10 +648,10 @@ public class Servlet extends HttpServlet {
                         try {
                             if(new DaoDepartment().create(beanDepartment1)){
                                 request.setAttribute("departmentList", new DaoDepartment().findDepartment());
-                                redirect(request,response,"/views/admin/department_list.jsp", (byte)2, "Departamento registrado correctamente");
+                                redirect(request,response,"/views/admin/department_list.jsp", (byte)2, "El departamento ha sido registrado exitosamente.");
                                 break;
                             } else {
-                                redirect(request,response,"/views/admin/department_register.jsp", (byte)3, "Departamento no registrado");
+                                redirect(request,response,"/views/admin/department_register.jsp", (byte)3, "El departamento no ha sido registrado.");
                             }
                         } catch (SQLException throwables) {
                             throwables.printStackTrace();
@@ -669,30 +678,30 @@ public class Servlet extends HttpServlet {
                             resultado4 = new DaoUsers().update(beanUsers1);
                             if(resultado4[0]==1){
                                 request.setAttribute("userList", new DaoUsers().findAllUsers());
-                                redirect(request,response,"/views/admin/user_list.jsp", (byte)2, "La actualización se realizó correctamente");
+                                redirect(request,response,"/views/admin/user_list.jsp", (byte)2, "Los datos del usuario han sido actualizado exitosamente.");
                             }else{
                                 if(resultado4[1]==1){
                                     request.setAttribute("departmentList", new DaoDepartment().findDepartment());
                                     request.setAttribute("roleList", new DaoUser_type().findUserType());
                                     request.setAttribute("user", new DaoUsers().findUserById(Integer.parseInt(request.getParameter("id"))));
-                                    redirect(request,response,"/views/admin/user_modify.jsp", (byte)3, "El usuario no es válido");
+                                    redirect(request,response,"/views/admin/user_modify.jsp", (byte)3, "El usuario seleccionado no es válido.");
                                 }else{
                                     if (resultado4[2] ==1 && resultado4[3]==1){
                                         request.setAttribute("departmentList", new DaoDepartment().findDepartment());
                                         request.setAttribute("roleList", new DaoUser_type().findUserType());
                                         request.setAttribute("user", new DaoUsers().findUserById(Integer.parseInt(request.getParameter("id"))));
-                                        redirect(request,response,"/views/admin/user_modify.jsp", (byte)3, "El usuario y correo ya están registrados");
+                                        redirect(request,response,"/views/admin/user_modify.jsp", (byte)3, "El nombre de usuario y la dirección de correo electrónico ingresados ya han sido registrados.");
                                     } else{
                                         if(resultado4[2]==1){
                                             request.setAttribute("departmentList", new DaoDepartment().findDepartment());
                                             request.setAttribute("roleList", new DaoUser_type().findUserType());
                                             request.setAttribute("user", new DaoUsers().findUserById(Integer.parseInt(request.getParameter("id"))));
-                                            redirect(request,response,"/views/admin/user_modify.jsp", (byte)3, "El nombre se usuario ya se encuentra registrado");
+                                            redirect(request,response,"/views/admin/user_modify.jsp", (byte)3, "El nombre de usuario ingresado ya ha sido registrado.");
                                         }else if(resultado4[3]==1){
                                             request.setAttribute("departmentList", new DaoDepartment().findDepartment());
                                             request.setAttribute("roleList", new DaoUser_type().findUserType());
                                             request.setAttribute("user", new DaoUsers().findUserById(Integer.parseInt(request.getParameter("id"))));
-                                            redirect(request,response,"/views/admin/user_modify.jsp", (byte)3, "El correo ya se encuentra registrado");
+                                            redirect(request,response,"/views/admin/user_modify.jsp", (byte)3, "La dirección de correo electrónico ingresada ya ha sido registrada.");
                                         }
                                     }
                                 }
@@ -700,13 +709,13 @@ public class Servlet extends HttpServlet {
                                     request.setAttribute("departmentList", new DaoDepartment().findDepartment());
                                     request.setAttribute("roleList", new DaoUser_type().findUserType());
                                     request.setAttribute("user", new DaoUsers().findUserById(Integer.parseInt(request.getParameter("id"))));
-                                    redirect(request,response,"/views/admin/user_modify.jsp", (byte)3, "El departamento no es válido");
+                                    redirect(request,response,"/views/admin/user_modify.jsp", (byte)3, "El departamento seleccionado no es válido.");
                                 }
                                 if(resultado4[5]==1){
                                     request.setAttribute("departmentList", new DaoDepartment().findDepartment());
                                     request.setAttribute("roleList", new DaoUser_type().findUserType());
                                     request.setAttribute("user", new DaoUsers().findUserById(Integer.parseInt(request.getParameter("id"))));
-                                    redirect(request,response,"/views/admin/user_modify.jsp", (byte)3, "El tipo de usuario no es válido");
+                                    redirect(request,response,"/views/admin/user_modify.jsp", (byte)3, "El rol seleccionado no es válido.");
                                 }
                             }
                         break;
@@ -723,15 +732,15 @@ public class Servlet extends HttpServlet {
                             resultado2 = new DaoDepartment().update(beanDepartment3);
                             if(resultado2[0] ==1){
                                 request.setAttribute("departmentList", new DaoDepartment().findDepartment());
-                                redirect(request,response,"/views/admin/department_list.jsp", (byte)2, "Se modifico correctamente");
+                                redirect(request,response,"/views/admin/department_list.jsp", (byte)2, "Los datos del departamento han sido actualizado exitosamente.");
                             }else{
                                 if(resultado2[1]==1){
                                     request.setAttribute("department", new DaoDepartment().findDepartmentById2(Long.parseLong(request.getParameter("id"))));
-                                    redirect(request,response,"/views/admin/department_modify.jsp", (byte)3, "El departamento no existe");
+                                    redirect(request,response,"/views/admin/department_modify.jsp", (byte)3, "El departamento seleccionado no es válido.");
                                 }else{
                                     if(resultado2[2]==1){
                                         request.setAttribute("department", new DaoDepartment().findDepartmentById2(Long.parseLong(request.getParameter("id"))));
-                                        redirect(request,response,"/views/admin/department_modify.jsp", (byte)3, "El nombre ya existe");
+                                        redirect(request,response,"/views/admin/department_modify.jsp", (byte)3, "El nombre ingresado ya ha sido registrado.");
                                     }
 
                                 }
@@ -743,7 +752,7 @@ public class Servlet extends HttpServlet {
                 }
                 break;
             default:
-                redirect(request, response, "/views/common/login.jsp", (byte)1, "La sesión ha expirado, vuelve a iniciar sesión");
+                redirect(request, response, "/views/common/login.jsp", (byte)1, "La sesión ha expirado, vuelva a iniciar sesión.");
         }
         if (sessionRole.equals("1") ||sessionRole.equals("2") ||sessionRole.equals("3")) {
             switch (action) {
@@ -785,24 +794,24 @@ public class Servlet extends HttpServlet {
                     resultado4 = new DaoUsers().update(beanUsers1);
                     if(resultado4[0]==1){
                         request.setAttribute("user", new DaoUsers().findUserById(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId")))));
-                        redirect(request,response,"/views/assistant/profile.jsp", (byte)2, "La actualización se realizó correctamente");
+                        redirect(request,response,"/views/assistant/profile.jsp", (byte)2, "Sus datos han sido actualizados exitosamente.");
                     }else{
                         if(resultado4[1]==1){
                             BeanUsers user = new DaoUsers().findUserById(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))));
                             user.setPasswordUser(null);
                             request.setAttribute("user", user);
-                            redirect(request,response,"/views/assistant/data_modify.jsp", (byte)3, "El usuario no es válido");
+                            redirect(request,response,"/views/assistant/data_modify.jsp", (byte)3, "El usuario seleccionado no es válido.");
                         }else{
                             if(resultado4[2]==1){
                                 BeanUsers user = new DaoUsers().findUserById(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))));
                                 user.setPasswordUser(null);
                                 request.setAttribute("user", user);
-                                redirect(request,response,"/views/assistant/data_modify.jsp", (byte)3, "El nombre se usuario ya se encuentra registrado");
+                                redirect(request,response,"/views/assistant/data_modify.jsp", (byte)3, "El nombre se usuario ingresado ya ha sido registrado.");
                             }else if(resultado4[3]==1){
                                 BeanUsers user = new DaoUsers().findUserById(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))));
                                 user.setPasswordUser(null);
                                 request.setAttribute("user", user);
-                                redirect(request,response,"/views/assistant/data_modify.jsp", (byte)3, "El correo ya se encuentra registrado");
+                                redirect(request,response,"/views/assistant/data_modify.jsp", (byte)3, "La dirección de correo electrónico ingresada ya ha sido registrada.");
                             }
                         }
                     }

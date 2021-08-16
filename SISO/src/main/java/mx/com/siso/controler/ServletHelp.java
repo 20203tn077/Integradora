@@ -67,7 +67,7 @@ public class ServletHelp extends HttpServlet {
                             System.out.println("Tipo de usuario: " + result[1]);
                             if (result[3] != 0){
                                 new DaoUsers().increaseAttempts(result[0]);
-                                redirect(request,response,"/views/common/login.jsp", (byte)3, "Contraseña incorrecta, llevas " + (resultado2[0] + 1) + " intentos fallidos");
+                                redirect(request,response,"/views/common/login.jsp", (byte)3, "Contraseña incorrecta, " + (3 - (resultado2[0] + 1)) + " intentos restantes.");
                             }else {
                                 new DaoUsers().restartAttempts(result[0]);
                                 System.out.println("Contraseña correcta");
@@ -99,7 +99,7 @@ public class ServletHelp extends HttpServlet {
                             e.printStackTrace();
                         }
                     }else if (resultado2[0] == 3 && resultado2[1] >= 0 && resultado2[1] < 31){
-                        redirect(request,response,"/views/common/login.jsp", (byte)4, "Su cuenta ha sido bloqueada temporalmente");
+                        redirect(request,response,"/views/common/login.jsp", (byte)4, "Su cuenta ha sido bloqueada temporalmente.");
                     }
                 } else if (idUser2 == -1) {
                     try {
@@ -109,14 +109,14 @@ public class ServletHelp extends HttpServlet {
                     }
                     if (result[3] != 0){
                         System.out.println("Contraseña incorrecta");
-                        redirect(request,response,"/views/common/login.jsp", (byte)3, "Contraseña incorrecta");
+                        redirect(request,response,"/views/common/login.jsp", (byte)3, "Contraseña incorrecta.");
                     }else {
                         request.setAttribute("userList", new DaoUsers().findAllUsers());
                         redirect(request,response,"/views/admin/user_list.jsp");
                         request.getSession().setAttribute("sessionRole", result[1]);
                     }
                 } else {
-                    redirect(request,response,"/views/common/login.jsp", (byte)3, "El usuario ingresado no existe");
+                    redirect(request,response,"/views/common/login.jsp", (byte)3, "El usuario ingresado no es válido.");
                 }
                 break;
             case "newPasswordRequest":
@@ -146,7 +146,7 @@ public class ServletHelp extends HttpServlet {
                     new Email(emails, "Código de recuperación", "Ha solicitado restablecer su contraseña, utilice el siguente código para continuar con el proceso: " + parseToken + ".").start();
                 }else{
                     System.out.println("El correo no es valido");
-                    redirect(request,response,"/views/common/pswd_request.jsp", (byte)3, "El correo ingresado no es válido");
+                    redirect(request,response,"/views/common/pswd_request.jsp", (byte)3, "El correo ingresado no es válido.");
                 }
                 break;
             case "tokenValidation":
@@ -165,7 +165,7 @@ public class ServletHelp extends HttpServlet {
                     System.out.println("Token no coincide");
                     request.setAttribute("email", recoveryEmail);
                     request.setAttribute("id", recoveryId2);
-                    redirect(request,response,"/views/common/pswd_recover.jsp", (byte)3, "El token ingresado no es válido");
+                    redirect(request,response,"/views/common/pswd_recover.jsp", (byte)3, "El código ingresado no es válido.");
                 }
                 break;
             case "passwordChange":
@@ -178,7 +178,7 @@ public class ServletHelp extends HttpServlet {
                         if (new DaoUsers().update(passwordChangeUser)[0] == 1) {
                             new DaoUsers().restartAttempts(recoveryId3);
                             request.getSession().removeAttribute("recoveryId");
-                            redirect(request,response,"/views/common/login.jsp", (byte)2, "Se ha actualizado tu contraseña, inicia sesión de nuevo.");
+                            redirect(request,response,"/views/common/login.jsp", (byte)2, "Su contraseña ha sido actualizada exitosamente.");
                         }
                 } else {
                     //No coincide el token recibido con el que se intentaba cambiar
