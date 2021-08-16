@@ -76,7 +76,7 @@
     </c:if>
     <div class="container mt-4">
         <div class="card shadow-sm">
-            <h5 class="card-header">Modificar datos</h5>
+            <h5 class="card-header">Modificar datos de usuario</h5>
             <div class="card-body">
                 <form action="${context}/Gestión_de_Usuarios" method="POST" class="m-0">
                     <input type="hidden" name="action" value="modifyUser">
@@ -99,7 +99,7 @@
                             <input type="text" class="form-control" id="lastname1Input" name="lastname2Input" value="${user.lastname2}">
                         </div>
                         <div class="col-md-6 col-xl-4">
-                            <label class="form-label">Correlo electrónico:</label>
+                            <label class="form-label">Correo electrónico:</label>
                             <input type="email" class="form-control" id="emailInput" name="emailInput" value="${user.email}">
                         </div>
                         <div class="col-md-6 col-xl-4">
@@ -113,7 +113,7 @@
                         <div class="col-md-6 col-xl-4">
                             <label class="form-label">Rol:</label>
                             <select class="form-select" aria-label="Default select example" id="roleInput" name="roleInput">
-                                <option value="">Selecciona un rol...</option>
+                                <option value="">Seleccione un rol...</option>
                                 <c:forEach items="${roleList}" var="role">
                                     <c:choose>
                                         <c:when test="${role.idType == user.type_id.idType}">
@@ -127,9 +127,9 @@
                               </select>
                         </div>
                         <div class="col-md-6 col-xl-4" id="departmentContainer" <c:if test="${user.type_id.idType == 3}">style="display: none;"</c:if>>
-                            <label class="form-label">Área:</label>
+                            <label class="form-label">Departamento:</label>
                             <select class="form-select" aria-label="Default select example" id="departmentInput" name="departmentInput">
-                                <option value="">Selecciona un área</option>
+                                <option value="">Seleccione un departamento...</option>
                                 <c:forEach items="${departmentList}" var="department">
                                     <c:choose>
                                         <c:when test="${department.idDepartment == user.department_id.idDepartment}">
@@ -161,7 +161,7 @@
                             <svg class="feather">
                                 <use xlink:href="${context}/assets/icons/feather-sprite.svg#check" />
                             </svg>
-                            Guardar cambios
+                            <span> Guardar cambios</span>
                         </button>
                     </div>
                 </div>
@@ -172,13 +172,13 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Abandonar asignación</h5>
+                    <h5 class="modal-title">Descartar cambios</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
                         <div class="col">
-                            <p>¿Deseas abandonar el la asignación del oficio?</p>
+                            <p>¿Desea descartar los cambios realizados?</p>
                         </div>
                     </div>
                 </div>
@@ -197,7 +197,7 @@
                                     <svg class="feather">
                                         <use xlink:href="${context}/assets/icons/feather-sprite.svg#corner-up-left" />
                                     </svg>
-                                    <span> Salir</span>
+                                    <span> Descartar</span>
                                 </a>
                         </div>
                     </div>

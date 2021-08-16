@@ -27,15 +27,15 @@
                 <input type="hidden" name="action" value="passwordChange">
                 <input type="hidden" name="recoveryId" value="${id}">
                 <div>
-                  <label for="usernameInput" class="form-label">Ingresa una nueva contraseña</label>
+                  <label for="usernameInput" class="form-label">Ingrese una nueva contraseña</label>
                   <input type="password" class="form-control" name="passwordInput" required>
                 </div>
                 <div>
-                  <label for="usernameInput" class="form-label">Repite la contraseña</label>
+                  <label for="usernameInput" class="form-label">Repita la contraseña</label>
                   <input type="password" class="form-control" name="passwordConfirmation" required>
                 </div>
                 <button type="submit" class="btn btn-verde">
-                  Cambiar contraseña
+                  Guardar nueva contraseña
                 </button>
               </form>
             </div>

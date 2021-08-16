@@ -62,12 +62,11 @@
             <form action="${context}/Restablecer_Contraseña" method="POST" class="d-grid gap-3">
               <input type="hidden" name="action" value="newPasswordRequest">
               <div>
-                <p>Ingresa el correo electrónico con el que se dió de alta
-                  tu usuario.</p>
+                <p>Ingrese la dirección de correo electrónico con la que fue registrado, se le enviará un código para poder restablecer su contraseña.</p>
                 <input type="email" class="form-control" name="emailInput" required>
               </div>
               <button type="submit" class="btn btn-verde">
-                Recuperar contraseña
+                Continuar
               </button>
             </form>
           </div>

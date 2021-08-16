@@ -86,20 +86,20 @@
 
         <div class="container mt-4">
             <div class="card shadow-sm">
-                <h5 class="card-header">Gestión de usuarios</h5>
+                <h5 class="card-header">Gestión de auxiliares</h5>
                 <div class="card-body" height="100px">
                     <table class="table table-azul table-striped table-hover border text-center m-0">
                         <thead class="thead-azul display-none">
                             <tr>
                                 <th>Nombre de usuario</th>
-                                <th>Nombre completo</th>
+                                <th>Nombre</th>
                                 <th>Correo electrónico</th>
                             </tr>
                         </thead>
                         <tbody>
                             <c:choose>
                                 <c:when test="${empty assistantList}">
-                                    <td colspan="3">Sin asistentes</td>
+                                    <td colspan="3">Sin auxiliares</td>
                                 </c:when>
                                 <c:otherwise>
                                     <c:forEach items="${assistantList}" var="assistant">

@@ -62,14 +62,14 @@
             <div class="card-body">
               <form action="${context}/Restablecer_Contraseña" method="POST" class="d-grid gap-3">
                 <div>
-                  <p>Se envió un token de recuperación a ${email}. Ingresa el token para restablecer tu contraseña.</p>
+                  <p>El código de recuperación ha sido enviado a ${email}. Ingrese el código para restablecer su contraseña.</p>
                   <input type="hidden" name="action" value="tokenValidation">
                   <input type="hidden" name="recoveryEmail" value="${email}">
                   <input type="hidden" name="recoveryId" value="${id}">
                   <input type="text" class="form-control" name="tokenInput" required>
                 </div>
                 <button type="submit" class="btn btn-verde">
-                  Recuperar contraseña
+                  Continuar
                 </button>
               </form>
             </div>

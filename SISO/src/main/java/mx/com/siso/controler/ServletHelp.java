@@ -143,7 +143,7 @@ public class ServletHelp extends HttpServlet {
                     redirect(request,response,"/views/common/pswd_recover.jsp");
                     ArrayList<String> emails = new ArrayList<String>();
                     emails.add(correo);
-                    new Email(emails, "Código de recuperación", "Ha solicitado restablecer su contraseña, utilice el siguente código para continuar con el proceso: " + parseToken + ".").start();
+                    new Email(emails, "Código de recuperación", "Ha solicitado restablecer su contraseña, utilice el siguente código para continuar con el proceso: " + parseToken + ". El código es válido durante los siguientes 30 minutos.").start();
                 }else{
                     System.out.println("El correo no es valido");
                     redirect(request,response,"/views/common/pswd_request.jsp", (byte)3, "El correo ingresado no es válido.");

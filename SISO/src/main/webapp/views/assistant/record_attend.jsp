@@ -122,13 +122,13 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Abandonar asignación</h5>
+                        <h5 class="modal-title">Descartar respuesta</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="row">
                             <div class="col">
-                                <p>¿Deseas abandonar el la asignación del oficio?</p>
+                                <p>¿Desea descartar la respuesta al oficio?</p>
                             </div>
                         </div>
                     </div>
@@ -147,7 +147,7 @@
                                         <svg class="feather">
                                             <use xlink:href="${context}/assets/icons/feather-sprite.svg#corner-up-left" />
                                         </svg>
-                                        <span> Salir</span>
+                                        <span> Descartar</span>
                                     </a>
                             </div>
                         </div>

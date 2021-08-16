@@ -76,7 +76,7 @@
     </c:if>
     <div class="container mt-4">
         <div class="card shadow-sm">
-            <h5 class="card-header">Modificar datos</h5>
+            <h5 class="card-header">Nuevo departamento</h5>
             <div class="card-body">
                 <form action="${context}/Gestión_de_Departamentos" method="POST" class="m-0">
                     <input type="hidden" name="action" value="registerDepartment">
@@ -90,7 +90,7 @@
                             <input type="text" class="form-control" id="descriptionInput" name="descriptionInput">
                         </div>
                         <div class="col-md-6 col-xl-4">
-                            <label class="form-label">Teléfono:</label>
+                            <label class="form-label">Número de teléfono:</label>
                             <input type="tel" class="form-control" id="phoneInput" name="phoneInput" pattern="[0-9]{10}">
                         </div>
                     </div>
@@ -112,7 +112,7 @@
                             <svg class="feather">
                                 <use xlink:href="${context}/assets/icons/feather-sprite.svg#check" />
                             </svg>
-                            Guardar cambios
+                            <span> Registrar departamento</span>
                         </button>
                     </div>
                 </div>
@@ -123,13 +123,13 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Abandonar asignación</h5>
+                    <h5 class="modal-title">Descartar registro</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
                         <div class="col">
-                            <p>¿Deseas abandonar el la asignación del oficio?</p>
+                            <p>¿Desea descartar el registro del nuevo departamento?</p>
                         </div>
                     </div>
                 </div>
@@ -148,7 +148,7 @@
                                     <svg class="feather">
                                         <use xlink:href="${context}/assets/icons/feather-sprite.svg#corner-up-left" />
                                     </svg>
-                                    <span> Salir</span>
+                                    <span> Descartar</span>
                                 </a>
                         </div>
                     </div>

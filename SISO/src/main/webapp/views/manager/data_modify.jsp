@@ -98,7 +98,7 @@
                                 <input type="text" class="form-control" id="lastname1Input" name="lastname2Input" value="${user.lastname2}">
                             </div>
                             <div class="col-md-6 col-xl-4">
-                                <label class="form-label">Correlo electrónico:</label>
+                                <label class="form-label">Correo electrónico:</label>
                                 <input type="email" class="form-control" id="emailInput" name="emailInput" value="${user.email}">
                             </div>
                         </div>
@@ -131,7 +131,7 @@
                                 <svg class="feather">
                                     <use xlink:href="${context}/assets/icons/feather-sprite.svg#check" />
                                 </svg>
-                                Guardar cambios
+                                <span> Guardar cambios</span>
                             </button>
                         </div>
                     </div>
@@ -142,13 +142,13 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Abandonar asignación</h5>
+                        <h5 class="modal-title">Descartar cambios</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="row">
                             <div class="col">
-                                <p>¿Deseas abandonar el la asignación del oficio?</p>
+                                <p>¿Desea descartar los cambios realizados?</p>
                             </div>
                         </div>
                     </div>
@@ -167,7 +167,7 @@
                                         <svg class="feather">
                                             <use xlink:href="${context}/assets/icons/feather-sprite.svg#corner-up-left" />
                                         </svg>
-                                        <span> Salir</span>
+                                        <span> Descartar</span>
                                     </a>
                             </div>
                         </div>

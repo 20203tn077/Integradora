@@ -76,7 +76,7 @@
     </c:if>
     <div class="container mt-4">
         <div class="card shadow-sm">
-            <h5 class="card-header">Modificar datos</h5>
+            <h5 class="card-header">Nuevo usuario</h5>
             <div class="card-body">
                 <form action="${context}/Gestión_de_Usuarios" method="POST" class="m-0">
                     <input type="hidden" name="action" value="registerUser">
@@ -98,7 +98,7 @@
                             <input type="text" class="form-control" id="lastname1Input" name="lastname2Input">
                         </div>
                         <div class="col-md-6 col-xl-4">
-                            <label class="form-label">Correlo electrónico:</label>
+                            <label class="form-label">Correo electrónico:</label>
                             <input type="email" class="form-control" id="emailInput" name="emailInput">
                         </div>
                         <div class="col-md-6 col-xl-4">
@@ -112,16 +112,16 @@
                         <div class="col-md-6 col-xl-4">
                             <label class="form-label">Rol:</label>
                             <select class="form-select" aria-label="Default select example" id="roleInput" name="roleInput">
-                                <option value="" selected>Selecciona un rol...</option>
+                                <option value="" selected>Seleccione un rol...</option>
                                 <c:forEach items="${roleList}" var="role">
                                     <option value="${role.idType}">${role.nameType}</option>
                                 </c:forEach>
                               </select>
                         </div>
                         <div class="col-md-6 col-xl-4" id="departmentContainer">
-                            <label class="form-label">Área:</label>
+                            <label class="form-label">Departamento:</label>
                             <select class="form-select" aria-label="Default select example" id="departmentInput" name="departmentInput">
-                                <option value="" selected>Selecciona un área</option>
+                                <option value="" selected>Seleccione un departamento</option>
                                 <c:forEach items="${departmentList}" var="department">
                                     <option value="${department.idDepartment}">${department.nameDepartment}</option>
                                 </c:forEach>
@@ -146,7 +146,7 @@
                             <svg class="feather">
                                 <use xlink:href="${context}/assets/icons/feather-sprite.svg#check" />
                             </svg>
-                            Guardar cambios
+                            <span> Registrar usuario</span>
                         </button>
                     </div>
                 </div>
@@ -157,13 +157,13 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Abandonar asignación</h5>
+                    <h5 class="modal-title">Descartar registro</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
                         <div class="col">
-                            <p>¿Deseas abandonar el la asignación del oficio?</p>
+                            <p>¿Desea descartar el registro del nuevo usuario?</p>
                         </div>
                     </div>
                 </div>
@@ -182,7 +182,7 @@
                                     <svg class="feather">
                                         <use xlink:href="${context}/assets/icons/feather-sprite.svg#corner-up-left" />
                                     </svg>
-                                    <span> Salir</span>
+                                    <span> Descartar</span>
                                 </a>
                         </div>
                     </div>

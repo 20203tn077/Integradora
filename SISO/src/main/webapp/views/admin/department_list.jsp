@@ -94,7 +94,7 @@
                             <tr>
                                 <th>Nombre</th>
                                 <th>Descripción</th>
-                                <th>Teléfono</th>
+                                <th>Número de teléfono</th>
                             </tr>
                         </thead>
                         <tbody class="align-middle">
@@ -210,7 +210,7 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col">
-                                <p>¿Desea eliminar el departamento <span id="modalDelete_name"></span>?</p>
+                                <p>¿Desea eliminar al departamento <span id="modalDelete_name"></span>?</p>
                             </div>
                         </div>
                     </div>

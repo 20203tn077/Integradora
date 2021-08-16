@@ -75,7 +75,7 @@
     </c:if>
     <div class="container mt-4">
         <div class="card shadow-sm">
-            <h5 class="card-header">Nuevo oficio</h5>
+            <h5 class="card-header">Recanalizar oficio</h5>
             <div class="card-body">
                 <form action="${context}/Gestión_de_Oficios" method="POST">
                     <input type="hidden" name="action" value="rechannelRecord">
@@ -119,7 +119,7 @@
                             <svg class="feather">
                                 <use xlink:href="${context}/assets/icons/feather-sprite.svg#check" />
                             </svg>
-                            Guardar cambios
+                            <span>Guardar cambios</span>
                         </button>
                     </div>
                 </div>
@@ -131,13 +131,13 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Abandonar registro</h5>
+                    <h5 class="modal-title">Descartar cambios</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
                         <div class="col">
-                            <p>¿Deseas abandonar el registro del oficio?</p>
+                            <p>¿Desea descartar los cambios realizados en la canalización del oficio?</p>
                         </div>
                     </div>
                 </div>
@@ -156,7 +156,7 @@
                                     <svg class="feather">
                                         <use xlink:href="${context}/assets/icons/feather-sprite.svg#corner-up-left" />
                                     </svg>
-                                    <span> Salir</span>
+                                    <span> Descartar</span>
                                 </a>
                         </div>
                     </div>
