@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import mx.com.siso.model.records.DaoRecords;
 import mx.com.siso.model.users.BeanUsers;
 import mx.com.siso.model.users.DaoUsers;
+import mx.com.siso.tool.Email;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -16,6 +17,7 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Random;
 
@@ -133,39 +135,20 @@ public class ServletHelp extends HttpServlet {
                 BeanUsers beanUsers = new BeanUsers();
                 beanUsers.setEmail(correo);
                 beanUsers.setToken(parseToken);
-                Properties props = System.getProperties();
                 int recoveryId = new DaoUsers().checkEmail(beanUsers);
                 if(recoveryId != -1) {
-                    props.put("mail.smtp.host", "smtp.gmail.com");  //El servidor SMTP de Google
-                    props.put("mail.smtp.user", "sisowebutez@gmail.com");
-                    props.put("mail.smtp.auth", "true");    //Usar autenticación mediante usuario y clave
-                    props.put("mail.smtp.starttls.enable", "true"); //Para conectar de manera segura al servidor SMTP
-                    props.put("mail.smtp.port", "587"); //El puerto SMTP seguro de Google
-
-                    Session session = Session.getDefaultInstance(props);
-                    MimeMessage message = new MimeMessage(session);
-
-                    try {
-                        message.setFrom(new InternetAddress("sisowebutez@gmail.com"));
-                        message.addRecipients(Message.RecipientType.TO, correo);   //Se podrían añadir varios de la misma manera
-                        message.setSubject("Recuperacion de Contraseña Token");
-                        message.setText("Este token de recuperacion, por favor introducelo en la casilla correspondiente: " + parseToken);
-                        Transport transport = session.getTransport("smtp");
-                        transport.connect("smtp.gmail.com", "sisowebutez@gmail.com", "sisoutez");
-                        transport.sendMessage(message, message.getAllRecipients());
-                        transport.close();
-                        request.setAttribute("email", correo);
-                        request.setAttribute("id", recoveryId);
-                        request.getSession().setAttribute("recoveryId", recoveryId);
-                        redirect(request,response,"/views/common/pswd_recover.jsp");
-                    } catch (MessagingException me) {
-                        me.printStackTrace();   //Si se produce un error
-                    }
+                    request.setAttribute("email", correo);
+                    request.setAttribute("id", recoveryId);
+                    request.getSession().setAttribute("recoveryId", recoveryId);
+                    redirect(request,response,"/views/common/pswd_recover.jsp");
+                    ArrayList<String> emails = new ArrayList<String>();
+                    emails.add(correo);
+                    new Email(emails, "Código de recuperación", "Ha solicitado restablecer su contraseña, utilice el siguente código para continuar con el proceso: " + parseToken + ".").start();
                 }else{
                     System.out.println("El correo no es valido");
                     redirect(request,response,"/views/common/pswd_request.jsp", (byte)3, "El correo ingresado no es válido");
                 }
-break;
+                break;
             case "tokenValidation":
                 String recoveryToken = request.getParameter("tokenInput") != null ? request.getParameter("tokenInput") : "";
                 String recoveryEmail= request.getParameter("recoveryEmail") != null ? request.getParameter("recoveryEmail") : "";

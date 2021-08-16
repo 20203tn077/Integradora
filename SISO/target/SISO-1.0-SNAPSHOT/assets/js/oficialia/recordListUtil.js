@@ -40,6 +40,7 @@ function showModalDetails(id) {
                     document.getElementById("modalDetails_deleteButtonContainer").style.display = "initial";
                     document.getElementById("modalDetails_responseButtonContainer").style.display = "none";
                     document.getElementById("modalDetails_rechannelId").value = record.id_minutes;
+                    document.getElementById("modalDelete_formId").value = record.id_minutes;
                 } else {
                     document.getElementById("modalDetails_assignmentContainer").style.display = "initial";
                     document.getElementById("modalDetails_responseContainer").style.display = "none";
@@ -48,6 +49,7 @@ function showModalDetails(id) {
                     document.getElementById("modalDetails_deleteButtonContainer").style.display = "initial";
                     document.getElementById("modalDetails_responseButtonContainer").style.display = "none";
                     document.getElementById("modalDetails_response").innerHTML = record.dateAssignment;
+                    document.getElementById("modalDelete_formId").value = record.id_minutes;
                 }
             } else {
                 document.getElementById("modalDetails_assignmentContainer").style.display = "initial";

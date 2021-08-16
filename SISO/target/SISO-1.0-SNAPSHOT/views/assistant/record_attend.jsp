@@ -90,27 +90,33 @@
                             </div>
                             <div class="col-md-6 col-xl-4">
                                 <label class="form-label">Archivos de respuesta (opcional):</label>
-                                <input type="file" class="form-control" name="filesInput" multiple accept=".pdf">
+                                <input type="file" class="form-control" name="filesInput" id="filesInput" multiple accept=".pdf">
                             </div>
                         </div>
-                        <hr>
+                        <button type="submit">Enviar</button>
+                    </form>
+                </div>
+                <div class="card-footer bg-white">
+                    <div class="row">
+                        <div class="p-1 col-md-4 col-xl-3">
                             <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalExit">
                                 <svg class="feather">
                                     <use xlink:href="${context}/assets/icons/feather-sprite.svg#x" />
                                 </svg>
                                 <span> Cancelar</span>
                             </button>
-                            <button type="submit" class="btn btn-verde">
+                        </div>
+                        <div class="p-1 col-md-4 col-xl-3">
+                            <button type="button" class="btn btn-verde">
                                 <svg class="feather">
                                     <use xlink:href="${context}/assets/icons/feather-sprite.svg#check" />
                                 </svg>
                                 <span> Atender</span>
                             </button>
-                    </form>
-    
-                </div>
+                        </div>
+                    </div>
+                </div>      
             </div>
-    
         </div>
         <div class="modal fade" tabindex="-1" id="modalExit">
             <div class="modal-dialog">
@@ -159,6 +165,20 @@
         </div>
     </c:if>
     <script src="${context}/assets/js/bootstrap.bundle.js"></script>
+    <script>
+        /*document.getElementById("submitButton").onclick = function(){
+        };*/
+
+        document.getElementById("filesInput").onchange = function() {
+            for (file of this.files) {
+                if (file.size > 5242880) {
+                    this.setCustomValidity("El tamaño máximo es de 5MB");
+                } else {
+                    this.setCustomValidity("");
+                }
+            }
+        };
+    </script>
 </body>
 
 </html>

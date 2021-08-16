@@ -324,8 +324,8 @@
                                 </button>
                             </div>
                             <div class="p-1 col-md-6 col-lg-4">
-                                <form action="${context}/Gestión_de_Usuarios" method="post" class="d-inline">
-                                    <input type="hidden" name="action" value="deleteUser">
+                                <form action="${context}/Gestión_de_Oficios" method="post" class="d-inline">
+                                    <input type="hidden" name="action" value="deleteRecord">
                                     <input type="hidden" name="id" id="modalDelete_formId">
                                     <button type="submit" class="btn btn-danger w-100">
                                         <svg class="feather">

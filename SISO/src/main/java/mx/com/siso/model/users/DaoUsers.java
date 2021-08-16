@@ -501,7 +501,67 @@ public class DaoUsers {
             ConnectionMySQL.closeConnection(con, cstm, rs);
         }
     }
+    public int[] updateAssistant(BeanUsers user) throws SQLException {
+        int[] resultado = new int[5];
+        System.out.println(user.getId_user());
+        try{
+            con = ConnectionMySQL.getConnection();
+            cstm = con.prepareCall("{call  modify_assistant(?,?,?,?,?,?,?,?,?,?)}");
+            cstm.setInt(1,user.getId_user());
+            cstm.setString(2,user.getNameUser() );
+            cstm.setString(3, user.getName());
+            cstm.setString(4,user.getLastname1());
+            cstm.setString(5,user.getLastname2());
+            cstm.setString(6, user.getEmail());
+            cstm.registerOutParameter(7, java.sql.Types.INTEGER);
+            cstm.registerOutParameter(8, java.sql.Types.INTEGER);
+            cstm.registerOutParameter(9, java.sql.Types.INTEGER);
+            cstm.registerOutParameter(10, java.sql.Types.INTEGER);
+            cstm.execute();
+            int errorUser = cstm.getInt(7);
+            int errorName = cstm.getInt(8);
+            int errorEmail = cstm.getInt(9);
+            int succes = cstm.getInt(10);
+            if(succes==1){
+                resultado[0] = 1;
+            }else{
+                if(errorUser==1){
+                    resultado[1] = 1;
+                }else{
+                    if(errorName==1){
+                        resultado[2] = 1;
+                    }
+                    if(errorEmail==1){
+                        resultado[3] = 1;
+                    }
+                }
+            }
 
+        }catch(SQLException e){
+            System.out.println("Error: " + e);
+        }finally{
+            ConnectionMySQL.closeConnection(con, cstm);
+        }
+        return resultado;
+    }
 
+    public ArrayList<String> findManagersEmailByDepartment(int idDepartment) {
+        ArrayList<String> emails = new ArrayList<String>();
+        try {
+            con = ConnectionMySQL.getConnection();
+            cstm = con.prepareCall("{call findManagersEmail(?)}");
+            cstm.setInt(1, idDepartment);
+            rs = cstm.executeQuery();
+
+            while(rs.next()){
+                emails.add(rs.getString(1));
+            }
+        }catch (SQLException e){
+            logger.error("Ha ocurrido un error: " + e.getMessage());
+        } finally {
+            ConnectionMySQL.closeConnection(con, cstm, rs);
+        }
+        return emails;
+    }
 }
 

@@ -273,6 +273,7 @@ public class DaoRecords {
                 beanUsers.setLastname2(rs.getString("lastname_2"));
                 beanUsers.setId_user(rs.getInt("user_id"));
                 beanUsers.setNameUser(rs.getString("username"));
+                beanUsers.setEmail(rs.getString("email"));
                 beanRecords.setDateChannelling(Formatter.formatDate(rs.getString("channelling_date")));
                 beanRecords.setDateAssignment(Formatter.formatDate(rs.getString("assignment_date")));
                 beanRecords.setDateResponse(Formatter.formatDate(rs.getString("response_date")));
@@ -344,5 +345,25 @@ public class DaoRecords {
             ConnectionMySQL.closeConnection(con,cstm);
         }
         return resultado;
+    }
+    public boolean delete(int id){
+        boolean flag = false;
+        try{
+            System.out.println(id);
+            con = ConnectionMySQL.getConnection();
+            cstm = con.prepareCall("{call delete_record(?,?)}");
+            cstm.setInt(1,id);
+            cstm.registerOutParameter(2, Types.INTEGER);
+            cstm.execute();
+            int success= cstm.getInt(2);
+            if(success==1){
+                flag=true;
+            }
+        }catch(SQLException e){
+            System.out.println("Se ha encontrado el error: " + e.getMessage());
+        }finally {
+            ConnectionMySQL.closeConnection(con,cstm);
+        }
+        return flag;
     }
 }

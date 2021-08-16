@@ -82,7 +82,7 @@
                     <div class="row gy-3">
                         <div class="col-md-6 col-xl-4">
                             <label class="form-label">Departamento:</label>
-                            <select class="form-select" name="departmentInput" required>
+                            <select class="form-select" name="departmentInput" id="departmentInput" required>
                                 <option selected value="">Seleccione un departamento...</option>
                                 <c:forEach items="${departmentList}" var="department">
                                     <option value="${department.idDepartment}">${department.nameDepartment}</option>
@@ -91,7 +91,7 @@
                         </div>
                         <div class="col-md-6 col-xl-4">
                             <label class="form-label">Prioridad:</label>
-                            <select class="form-select" name="priorityInput" required>
+                            <select class="form-select" name="priorityInput" id="priorityInput" required>
                                 <option selected value="">Seleccione una prioridad...</option>
                                 <c:forEach items="${priorityList}" var="priority">
                                     <option value="${priority.idPriority}">${priority.namePriority}</option>
@@ -100,24 +100,31 @@
                         </div>
                         <div class="col-md-6 col-xl-4">
                             <label class="form-label">Archivo:</label>
-                            <input type="file" class="form-control" name="fileInput" required accept=".pdf">
+                            <input type="file" class="form-control" name="fileInput" id="fileInput" required accept=".pdf">
                         </div>
                     </div>
-                    <hr>
-                        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalExit">
+                    <button type="submit">enviar</button>
+                </form>
+            </div>
+            <div class="card-footer bg-white">
+                <div class="row">
+                    <div class="p-1 col-md-4 col-xl-3">
+                        <button type="button" class="btn btn-secondary w-100" data-bs-toggle="modal" data-bs-target="#modalExit">
                             <svg class="feather">
                                 <use xlink:href="${context}/assets/icons/feather-sprite.svg#x" />
                             </svg>
                             <span> Cancelar</span>
                         </button>
-                        <button type="submit" class="btn btn-verde">
+                    </div>
+                    <div class="p-1 col-md-4 col-xl-3">
+                        <button class="btn btn-verde w-100" id="submitButton">
                             <svg class="feather">
                                 <use xlink:href="${context}/assets/icons/feather-sprite.svg#check" />
                             </svg>
-                            <span> Registrar oficio</span>
+                            Guardar cambios
                         </button>
-                </form>
-
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -169,6 +176,18 @@
   </div>
 </c:if>
     <script src="${context}/assets/js/bootstrap.bundle.js"></script>
+    <script>
+        document.getElementById("submitButton").onclick = function(){
+        };
+
+        document.getElementById("fileInput").onchange = function() {
+            if (this.files[0].size > 5242880) {
+                this.setCustomValidity("El tamaño máximo es de 5MB");
+            } else {
+                this.setCustomValidity("");
+            }
+        };
+    </script>
 </body>
 
 </html>

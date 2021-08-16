@@ -85,7 +85,7 @@
                         <div class="row gy-3">
                             <div class="col-md-6 col-xl-4">
                                 <label class="form-label">Número de oficio:</label>
-                                <input type="text" readonly class="form-control-plaintext" value="${record.id_minutes}" name="id">
+                                <input type="text" readonly class="form-control-plaintext" value="${recordId}" name="id">
                             </div>
                             <div class="col-md-6 col-xl-4">
                                 <label class="form-label">Auxiliar:</label>
@@ -97,21 +97,28 @@
                                   </select>
                             </div>
                         </div>
-                        <hr>
+                        <button type="submit">enviar</button>
+                    </form>
+                </div>
+                <div class="card-footer bg-white">
+                    <div class="row">
+                        <div class="p-1 col-md-4 col-xl-3">
                             <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalExit">
                                 <svg class="feather">
                                     <use xlink:href="${context}/assets/icons/feather-sprite.svg#x" />
                                 </svg>
                                 <span> Cancelar</span>
                             </button>
-                            <button type="submit" class="btn btn-verde">
+                        </div>
+                        <div class="p-1 col-md-4 col-xl-3">
+                            <button type="button" class="btn btn-verde">
                                 <svg class="feather">
                                     <use xlink:href="${context}/assets/icons/feather-sprite.svg#check" />
                                 </svg>
                                 <span> Asignar</span>
                             </button>
-                    </form>
-    
+                        </div>
+                    </div>
                 </div>
             </div>
     

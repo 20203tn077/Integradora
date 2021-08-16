@@ -19,6 +19,7 @@ function showModalDetails(id) {
             document.getElementById("modalDetails_email").innerHTML = user.email;
             document.getElementById("modalDetails_role").innerHTML = user.type_id.nameType;
             document.getElementById("modalDetails_department").innerHTML = user.department_id.nameDepartment;
+            document.getElementById("modalDetails_modifyId").value = user.id_user;
             modalDetails.show();
             document.getElementById("modalDelete_name").innerHTML = user.name + " " + user.lastname1 + " " + user.lastname2;
             document.getElementById("modalDelete_formId").value = user.id_user;
