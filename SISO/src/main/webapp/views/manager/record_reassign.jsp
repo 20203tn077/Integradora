@@ -78,7 +78,7 @@
             <div class="card shadow-sm">
                 <h5 class="card-header">Reasignar oficio</h5>
                 <div class="card-body">
-                    <form action="${context}/Gestión_de_Oficios" method="POST">
+                    <form action="${context}/Gestión_de_Oficios" method="POST" id="mainForm">
                         <input type="hidden" name="action" value="reassignRecord">
                         <input type="hidden" name="id" value="${record.id_minutes}">
                         <div class="row gy-3">
@@ -103,7 +103,6 @@
                                   </select>
                             </div>
                         </div>
-                        <button type="submit">enviar</button>
                     </form>
                 </div>
                 <div class="card-footer bg-white">
@@ -117,7 +116,7 @@
                             </button>
                         </div>
                         <div class="p-1 col-md-4 col-xl-3">
-                            <button type="button" class="btn btn-verde">
+                            <button type="button" class="btn btn-verde" id="submitButton">
                                 <svg class="feather">
                                     <use xlink:href="${context}/assets/icons/feather-sprite.svg#check" />
                                 </svg>
@@ -176,6 +175,15 @@
         </div>
     </c:if>
     <script src="${context}/assets/js/bootstrap.bundle.js"></script>
+    <script>
+        document.getElementById("submitButton").onclick = () => {
+            if (document.getElementById("mainForm").checkValidity()) {
+                document.getElementById("mainForm").submit();
+            } else {
+                document.getElementById("mainForm").reportValidity();
+            }
+        }
+    </script>
 </body>
 
 </html>

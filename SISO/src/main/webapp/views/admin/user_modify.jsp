@@ -78,41 +78,33 @@
         <div class="card shadow-sm">
             <h5 class="card-header">Modificar datos de usuario</h5>
             <div class="card-body">
-                <form action="${context}/Gestión_de_Usuarios" method="POST" class="m-0">
+                <form action="${context}/Gestión_de_Usuarios" method="POST" class="m-0" id="mainForm">
                     <input type="hidden" name="action" value="modifyUser">
                     <input type="hidden" name="id" value="${user.id_user}">
                     <div class="row gy-3">
                         <div class="col-md-6 col-xl-4">
                             <label class="form-label">Nombre de usuario:</label>
-                            <input type="text" class="form-control" id="usernameInput" name="usernameInput" value="${user.nameUser}">
+                            <input type="text" class="form-control" id="usernameInput" name="usernameInput" value="${user.nameUser}" autocomplete="off" maxlength="20" required>
                         </div>
                         <div class="col-md-6 col-xl-4">
                             <label class="form-label">Nombre(s):</label>
-                            <input type="text" class="form-control" id="nameInput" name="nameInput" value="${user.name}">
+                            <input type="text" class="form-control" id="nameInput" name="nameInput" value="${user.name}" autocomplete="off" maxlength="25" required>
                         </div>
                         <div class="col-md-6 col-xl-4">
                             <label class="form-label">Primer apellido:</label>
-                            <input type="text" class="form-control" id="lastname1Input" name="lastname1Input" value="${user.lastname1}">
+                            <input type="text" class="form-control" id="lastname1Input" name="lastname1Input" value="${user.lastname1}" autocomplete="off"  maxlength="25" required>
                         </div>
                         <div class="col-md-6 col-xl-4">
-                            <label class="form-label">Segundo apellido:</label>
-                            <input type="text" class="form-control" id="lastname1Input" name="lastname2Input" value="${user.lastname2}">
+                            <label class="form-label">Segundo apellido (opcional):</label>
+                            <input type="text" class="form-control" id="lastname2Input" name="lastname2Input" value="${user.lastname2}" autocomplete="off" maxlength="25">
                         </div>
                         <div class="col-md-6 col-xl-4">
                             <label class="form-label">Correo electrónico:</label>
-                            <input type="email" class="form-control" id="emailInput" name="emailInput" value="${user.email}">
-                        </div>
-                        <div class="col-md-6 col-xl-4">
-                            <label class="form-label">Contraseña:</label>
-                            <input type="password" class="form-control" id="passwordInput" name="passwordInput">
-                        </div>
-                        <div class="col-md-6 col-xl-4">
-                            <label class="form-label">Confimar contraseña:</label>
-                            <input type="password" class="form-control">
+                            <input type="email" class="form-control" id="emailInput" name="emailInput" value="${user.email}" autocomplete="off" maxlength="60" required>
                         </div>
                         <div class="col-md-6 col-xl-4">
                             <label class="form-label">Rol:</label>
-                            <select class="form-select" aria-label="Default select example" id="roleInput" name="roleInput">
+                            <select class="form-select" id="roleInput" name="roleInput" required>
                                 <option value="">Seleccione un rol...</option>
                                 <c:forEach items="${roleList}" var="role">
                                     <c:choose>
@@ -126,9 +118,9 @@
                                 </c:forEach>
                               </select>
                         </div>
-                        <div class="col-md-6 col-xl-4" id="departmentContainer" <c:if test="${user.type_id.idType == 3}">style="display: none;"</c:if>>
+                        <div class="col-md-6 col-xl-4" id="departmentContainer">
                             <label class="form-label">Departamento:</label>
-                            <select class="form-select" aria-label="Default select example" id="departmentInput" name="departmentInput">
+                            <select class="form-select" id="departmentInput" name="departmentInput">
                                 <option value="">Seleccione un departamento...</option>
                                 <c:forEach items="${departmentList}" var="department">
                                     <c:choose>
@@ -143,7 +135,17 @@
                               </select>
                         </div>
                     </div>
-                    <button type="submit">enviar</button>
+                    <hr>
+                    <div class="row gy-3">
+                        <div class="col-md-6 col-xl-4">
+                            <label class="form-label">Contraseña:</label>
+                            <input type="password" class="form-control" id="passwordInput" name="passwordInput" autocomplete="off" maxlength="30" minlength="8">
+                        </div>
+                        <div class="col-md-6 col-xl-4">
+                            <label class="form-label">Confimar contraseña:</label>
+                            <input type="password" class="form-control" autocomplete="off"  maxlength="30" minlength="8" id="passwordConfirmation">
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="card-footer bg-white">
@@ -157,7 +159,7 @@
                         </button>
                     </div>
                     <div class="p-1 col-md-4 col-xl-3">
-                        <button class="btn btn-verde w-100">
+                        <button class="btn btn-verde w-100" id="submitButton">
                             <svg class="feather">
                                 <use xlink:href="${context}/assets/icons/feather-sprite.svg#check" />
                             </svg>
@@ -214,7 +216,75 @@
     <span> Error: No tienes acceso a este sitio.</span>
   </div>
 </c:if>
-    <script src="/assets/js/bootstrap.bundle.js"></script>
+    <script src="${context}/assets/js/bootstrap.bundle.js"></script>
+    <script>
+        if (document.getElementById("roleInput").value == 3) {
+            document.getElementById("departmentContainer").style.display = "none";
+            document.getElementById("departmentInput").required = false;
+        } else {
+            document.getElementById("departmentContainer").style.display = "initial";
+            document.getElementById("departmentInput").required = true;
+        }
+        document.getElementById("roleInput").onchange = () => {
+            if (document.getElementById("roleInput").value == 3) {
+                document.getElementById("departmentContainer").style.display = "none";
+                document.getElementById("departmentInput").required = false;
+            } else {
+                document.getElementById("departmentContainer").style.display = "initial";
+                document.getElementById("departmentInput").required = true;
+            }
+        }
+        document.getElementById("submitButton").onclick = () => {
+            if (document.getElementById("usernameInput").value.length > 0 && document.getElementById("usernameInput").value.trim().length == 0) {
+                document.getElementById("usernameInput").setCustomValidity("El campo no puede quedar en blanco");
+            } else {
+                document.getElementById("usernameInput").setCustomValidity("");
+            }
+            if (document.getElementById("nameInput").value.length > 0 && document.getElementById("nameInput").value.trim().length == 0) {
+                document.getElementById("nameInput").setCustomValidity("El campo no puede quedar en blanco");
+            } else {
+                document.getElementById("nameInput").setCustomValidity("");
+            }
+            if (document.getElementById("lastname1Input").value.length > 0 && document.getElementById("lastname1Input").value.trim().length == 0) {
+                document.getElementById("lastname1Input").setCustomValidity("El campo no puede quedar en blanco");
+            } else {
+                document.getElementById("lastname1Input").setCustomValidity("");
+            }
+            if (document.getElementById("lastname2Input").value.length > 0 && document.getElementById("lastname2Input").value.trim().length == 0) {
+                document.getElementById("lastname2Input").setCustomValidity("El campo no puede quedar en blanco");
+            } else {
+                document.getElementById("lastname2Input").setCustomValidity("");
+            }
+            if (document.getElementById("emailInput").value.length > 0 && document.getElementById("emailInput").value.trim().length == 0) {
+                document.getElementById("emailInput").setCustomValidity("El campo no puede quedar en blanco");
+            } else {
+                document.getElementById("emailInput").setCustomValidity("");
+            }
+            if (document.getElementById("passwordInput").value.length > 0) {
+                if (document.getElementById("passwordInput").value.trim().length == 0) {
+                    document.getElementById("passwordInput").setCustomValidity("El campo no puede quedar en blanco");
+                } else {
+                    document.getElementById("passwordInput").setCustomValidity("");
+                }
+                document.getElementById("passwordConfirmation").required = true;
+            } else {
+                document.getElementById("passwordConfirmation").required = false;
+                document.getElementById("passwordConfirmation").value = "";
+            }
+            if (document.getElementById("passwordConfirmation").value != document.getElementById("passwordInput").value) {
+                document.getElementById("passwordConfirmation").setCustomValidity("Ambas contraseñas deben coincidir");
+            } else {
+                document.getElementById("passwordConfirmation").setCustomValidity("");
+            }
+
+
+            if (document.getElementById("mainForm").checkValidity()) {
+                document.getElementById("mainForm").submit();
+            } else {
+                document.getElementById("mainForm").reportValidity();
+            }
+        }
+    </script>
 </body>
 
 </html>

@@ -59,15 +59,22 @@
         <div class="card shadow-sm">
           <h5 class="card-header">Restablecer contraseña</h5>
           <div class="card-body">
-            <form action="${context}/Restablecer_Contraseña" method="POST" class="d-grid gap-3">
+            <form action="${context}/Restablecer_Contraseña" method="POST" class="m-0" id="mainForm">
               <input type="hidden" name="action" value="newPasswordRequest">
-              <div>
-                <p>Ingrese la dirección de correo electrónico con la que fue registrado, se le enviará un código para poder restablecer su contraseña.</p>
-                <input type="email" class="form-control" name="emailInput" required>
+              <div class="row gy-3">
+                <div class="col-12">
+                  Ingrese la dirección de correo electrónico con la que fue registrado, se le enviará un código para poder restablecer su contraseña.
+                </div>
+                <div class="col-12">
+                  <label class="form-label">Correo electrónico:</label>
+                  <input type="email" class="form-control" name="emailInput" id="emailInput" required maxlength="60">
+                </div>
+                <div class="col-12">
+                  <button type="button" class="btn btn-verde" id="submitButton">
+                    Continuar
+                  </button>
+                </div>
               </div>
-              <button type="submit" class="btn btn-verde">
-                Continuar
-              </button>
             </form>
           </div>
         </div>
@@ -76,6 +83,22 @@
   </div>
 
   <script src="${context}/assets/js/bootstrap.bundle.js"></script>
+  <script>
+    document.getElementById("submitButton").onclick = () => {
+    if (document.getElementById("emailInput").value.length > 0 && document.getElementById("emailInput").value.trim().length == 0) {
+        document.getElementById("emailInput").setCustomValidity("El campo no puede quedar en blanco");
+    } else {
+        document.getElementById("emailInput").setCustomValidity("");
+    }
+
+
+    if (document.getElementById("mainForm").checkValidity()) {
+        document.getElementById("mainForm").submit();
+    } else {
+        document.getElementById("mainForm").reportValidity();
+    }
+}
+  </script>
 </body>
 
 </html>

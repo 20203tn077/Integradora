@@ -76,9 +76,9 @@
         </c:if>
         <div class="container mt-4">
             <div class="card shadow-sm">
-                <h5 class="card-header">Asignar oficio</h5>
+                <h5 class="card-header">Reasignar oficio</h5>
                 <div class="card-body">
-                    <form action="${context}/Gestión_de_Oficios" method="POST">
+                    <form action="${context}/Gestión_de_Oficios" method="POST" id="mainForm">
                         <input type="hidden" name="action" value="reassignRecord">
                         <input type="hidden" name="id" value="${record.id_minutes}">
                         <div class="row gy-3">
@@ -103,7 +103,6 @@
                                   </select>
                             </div>
                         </div>
-                        <button type="submit">enviar</button>
                     </form>
                 </div>
                 <div class="card-footer bg-white">
@@ -117,11 +116,11 @@
                             </button>
                         </div>
                         <div class="p-1 col-md-4 col-xl-3">
-                            <button type="button" class="btn btn-verde">
+                            <button type="button" class="btn btn-verde" id="submitButton">
                                 <svg class="feather">
                                     <use xlink:href="${context}/assets/icons/feather-sprite.svg#check" />
                                 </svg>
-                                <span> Asignar</span>
+                                <span> Guardar cambios</span>
                             </button>
                         </div>
                     </div>
@@ -133,13 +132,13 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Abandonar asignación</h5>
+                        <h5 class="modal-title">Descartar cambios</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="row">
                             <div class="col">
-                                <p>¿Deseas abandonar el la asignación del oficio?</p>
+                                <p>¿Desea descartar los cambios realizados en la asignación del oficio?</p>
                             </div>
                         </div>
                     </div>
@@ -158,7 +157,7 @@
                                         <svg class="feather">
                                             <use xlink:href="${context}/assets/icons/feather-sprite.svg#corner-up-left" />
                                         </svg>
-                                        <span> Salir</span>
+                                        <span> Descartar</span>
                                     </a>
                             </div>
                         </div>
@@ -176,6 +175,15 @@
         </div>
     </c:if>
     <script src="${context}/assets/js/bootstrap.bundle.js"></script>
+    <script>
+        document.getElementById("submitButton").onclick = () => {
+            if (document.getElementById("mainForm").checkValidity()) {
+                document.getElementById("mainForm").submit();
+            } else {
+                document.getElementById("mainForm").reportValidity();
+            }
+        }
+    </script>
 </body>
 
 </html>

@@ -57,21 +57,19 @@
                 <div class="card shadow-sm">
                     <h5 class="card-header">Inicio de sesión</h5>
                     <div class="card-body">
-                        <form action="${context}/Inicio" method="POST" class="d-grid gap-3">
+                        <form action="${context}/Inicio" method="POST" class="d-grid gap-3 m-0">
                             <input type="hidden" value="access" name="action">
                             <div>
-                                <label for="usernameInput" class="form-label">Nombre de usuario</label>
+                                <label for="usernameInput" class="form-label">Nombre de usuario:</label>
                                 <input type="text" class="form-control" id="usernameInput" name="usernameInput"
-                                    required>
+                                    required maxlength="20">
                             </div>
                             <div>
-                                <label for="passwordInput" class="form-label">Contraseña</label>
+                                <label for="passwordInput" class="form-label">Contraseña:</label>
                                 <input type="password" class="form-control" id="passwordInput" name="passwordInput"
-                                    required>
+                                    required maxlength="30" minlength="8">
                                 <div class="form-text">
-                                    <a href="${context}/views/common/pswd_request.jsp" class="link-secondary">¿Olvidaste
-                                        tu
-                                        contraseña?</a>
+                                    <a href="${context}/views/common/pswd_request.jsp" class="link-secondary">¿Ha olvidado su contraseña?</a>
                                 </div>
                             </div>
                             <button type="submit" class="btn btn-verde">

@@ -60,17 +60,25 @@
           <div class="card shadow-sm">
             <h5 class="card-header">Restablecer contraseña</h5>
             <div class="card-body">
-              <form action="${context}/Restablecer_Contraseña" method="POST" class="d-grid gap-3">
-                <div>
-                  <p>El código de recuperación ha sido enviado a ${email}. Ingrese el código para restablecer su contraseña.</p>
-                  <input type="hidden" name="action" value="tokenValidation">
-                  <input type="hidden" name="recoveryEmail" value="${email}">
-                  <input type="hidden" name="recoveryId" value="${id}">
-                  <input type="text" class="form-control" name="tokenInput" required>
+              <form action="${context}/Restablecer_Contraseña" method="POST" class="m-0" id="mainForm">
+                <input type="hidden" name="action" value="tokenValidation">
+                <input type="hidden" name="recoveryEmail" value="${email}">
+                <input type="hidden" name="recoveryId" value="${id}">
+                <div class="row gy-3">
+                  <div class="col-12">
+                    El código ha sido enviado a ${email}, este será valido durante los siguientes 30 minutos.
+                  </div>
+                  <div class="col-12">
+                    <label class="form-label">Código de recuperación:</label>
+                    <input type="text" class="form-control" name="tokenInput" id="tokenInput" required autocomplete="off" minlength="10"
+                      maxlength="10">
+                  </div>
+                  <div class="col-12">
+                    <button type="button" class="btn btn-verde" id="submitButton">
+                      Continuar
+                    </button>
+                  </div>
                 </div>
-                <button type="submit" class="btn btn-verde">
-                  Continuar
-                </button>
               </form>
             </div>
           </div>
@@ -88,6 +96,22 @@
 </c:if>
 
 <script src="${context}/assets/js/bootstrap.bundle.js"></script>
+<script>
+  document.getElementById("submitButton").onclick = () => {
+    if (document.getElementById("tokenInput").value.length > 0 && document.getElementById("tokenInput").value.trim().length == 0) {
+        document.getElementById("tokenInput").setCustomValidity("El campo no puede quedar en blanco");
+    } else {
+        document.getElementById("tokenInput").setCustomValidity("");
+    }
+
+
+    if (document.getElementById("mainForm").checkValidity()) {
+        document.getElementById("mainForm").submit();
+    } else {
+        document.getElementById("mainForm").reportValidity();
+    }
+}
+</script>
 </body>
 
 </html>

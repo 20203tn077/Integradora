@@ -77,7 +77,7 @@
         <div class="card shadow-sm">
             <h5 class="card-header">Recanalizar oficio</h5>
             <div class="card-body">
-                <form action="${context}/Gestión_de_Oficios" method="POST">
+                <form action="${context}/Gestión_de_Oficios" method="POST" id="mainForm">
                     <input type="hidden" name="action" value="rechannelRecord">
                     <div class="row gy-3">
                         <div class="col-md-6 col-xl-4">
@@ -101,7 +101,6 @@
                               </select>
                         </div>
                     </div>
-                    <button type="submit">enviar</button>
                 </form>
             </div>
             <div class="card-footer bg-white">
@@ -115,7 +114,7 @@
                         </button>
                     </div>
                     <div class="p-1 col-md-4 col-xl-3">
-                        <button class="btn btn-verde w-100">
+                        <button class="btn btn-verde w-100" id="submitButton">
                             <svg class="feather">
                                 <use xlink:href="${context}/assets/icons/feather-sprite.svg#check" />
                             </svg>
@@ -173,7 +172,16 @@
     <span> Error: No tienes acceso a este sitio.</span>
   </div>
 </c:if>
-    <script src="/assets/js/bootstrap.bundle.js"></script>
+    <script src="${context}/assets/js/bootstrap.bundle.js"></script>
+    <script>
+        document.getElementById("submitButton").onclick = () => {
+            if (document.getElementById("mainForm").checkValidity()) {
+                document.getElementById("mainForm").submit();
+            } else {
+                document.getElementById("mainForm").reportValidity();
+            }
+        }
+    </script>
 </body>
 
 </html>

@@ -78,26 +78,25 @@
         <div class="card shadow-sm">
             <h5 class="card-header">Modificar datos</h5>
             <div class="card-body">
-                <form action="${context}/Perfil" method="POST" class="m-0">
+                <form action="${context}/Perfil" method="POST" class="m-0" id="mainForm">
                     <input type="hidden" name="action" value="modifyData">
                     <div class="row gy-3">
                         <div class="col-md-6 col-xl-4">
                             <label class="form-label">Nombre de usuario:</label>
-                            <input type="text" class="form-control" id="usernameInput" name="usernameInput" value="${admin.nameAdmin}">
+                            <input type="text" class="form-control" id="usernameInput" name="usernameInput" value="${admin.nameAdmin}" autocomplete="off" maxlength="20" required>
                         </div>
                     </div>
                     <hr>
                     <div class="row gy-3">
                         <div class="col-md-6 col-xl-4">
                             <label class="form-label">Contraseña:</label>
-                            <input type="password" class="form-control" id="passwordInput" name="passwordInput">
+                            <input type="password" class="form-control" id="passwordInput" name="passwordInput" autocomplete="off" maxlength="30" minlength="8">
                         </div>
                         <div class="col-md-6 col-xl-4">
                             <label class="form-label">Confimar contraseña:</label>
-                            <input type="password" class="form-control" id="usernamasdeInput">
+                            <input type="password" class="form-control" id="passwordConfirmation" autocomplete="off"  maxlength="30" minlength="8">
                         </div>
                     </div>
-                    <button type="submit">enviar</button>
                 </form>
             </div>
             <div class="card-footer bg-white">
@@ -111,11 +110,11 @@
                         </button>
                     </div>
                     <div class="p-1 col-md-4 col-xl-3">
-                        <button class="btn btn-verde w-100">
+                        <button class="btn btn-verde w-100" id="submitButton">
                             <svg class="feather">
                                 <use xlink:href="${context}/assets/icons/feather-sprite.svg#check" />
                             </svg>
-                            Guardar cambios
+                            <span> Guardar cambios</span>
                         </button>
                     </div>
                 </div>
@@ -126,13 +125,13 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Abandonar asignación</h5>
+                    <h5 class="modal-title">Descartar cambios</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
                         <div class="col">
-                            <p>¿Deseas abandonar el la asignación del oficio?</p>
+                            <p>¿Desea descartar los cambios realizados?</p>
                         </div>
                     </div>
                 </div>
@@ -151,7 +150,7 @@
                                     <svg class="feather">
                                         <use xlink:href="${context}/assets/icons/feather-sprite.svg#corner-up-left" />
                                     </svg>
-                                    <span> Salir</span>
+                                    <span> Descartar</span>
                                 </a>
                         </div>
                     </div>
@@ -169,6 +168,38 @@
   </div>
 </c:if>
     <script src="${context}/assets/js/bootstrap.bundle.js"></script>
+    <script>
+        document.getElementById("submitButton").onclick = () => {
+            if (document.getElementById("usernameInput").value.length > 0 && document.getElementById("usernameInput").value.trim().length == 0) {
+                document.getElementById("usernameInput").setCustomValidity("El campo no puede quedar en blanco");
+            } else {
+                document.getElementById("usernameInput").setCustomValidity("");
+            }
+            if (document.getElementById("passwordInput").value.length > 0) {
+                if (document.getElementById("passwordInput").value.trim().length == 0) {
+                    document.getElementById("passwordInput").setCustomValidity("El campo no puede quedar en blanco");
+                } else {
+                    document.getElementById("passwordInput").setCustomValidity("");
+                }
+                document.getElementById("passwordConfirmation").required = true;
+            } else {
+                document.getElementById("passwordConfirmation").required = false;
+                document.getElementById("passwordConfirmation").value = "";
+            }
+            if (document.getElementById("passwordConfirmation").value != document.getElementById("passwordInput").value) {
+                document.getElementById("passwordConfirmation").setCustomValidity("Ambas contraseñas deben coincidir");
+            } else {
+                document.getElementById("passwordConfirmation").setCustomValidity("");
+            }
+
+
+            if (document.getElementById("mainForm").checkValidity()) {
+                document.getElementById("mainForm").submit();
+            } else {
+                document.getElementById("mainForm").reportValidity();
+            }
+        }
+    </script>
 </body>
 
 </html>

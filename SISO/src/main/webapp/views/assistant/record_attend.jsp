@@ -77,7 +77,7 @@
             <div class="card shadow-sm">
                 <h5 class="card-header">Atender oficio</h5>
                 <div class="card-body">
-                    <form action="${context}/Gestión_de_Oficios" method="POST" enctype="multipart/form-data">
+                    <form action="${context}/Gestión_de_Oficios" method="POST" enctype="multipart/form-data" id="mainForm">
                         <input type="hidden" name="action" value="attendRecord">
                         <input type="hidden" name="recordId" value="${recordId}">
                         <div class="row gy-3">
@@ -86,14 +86,13 @@
                             </div>
                             <div class="col">
                                 <label class="form-label">Comentario:</label>
-                                <textarea name="commentInput" class="form-control" rows="1" required></textarea>
+                                <textarea name="commentInput" class="form-control" rows="1" required  autocomplete="off" maxlength="120" required></textarea>
                             </div>
                             <div class="col-md-6 col-xl-4">
                                 <label class="form-label">Archivos de respuesta (opcional):</label>
                                 <input type="file" class="form-control" name="filesInput" id="filesInput" multiple accept=".pdf">
                             </div>
                         </div>
-                        <button type="submit">Enviar</button>
                     </form>
                 </div>
                 <div class="card-footer bg-white">
@@ -107,7 +106,7 @@
                             </button>
                         </div>
                         <div class="p-1 col-md-4 col-xl-3">
-                            <button type="button" class="btn btn-verde">
+                            <button type="button" class="btn btn-verde" id="submitButton">
                                 <svg class="feather">
                                     <use xlink:href="${context}/assets/icons/feather-sprite.svg#check" />
                                 </svg>
@@ -166,18 +165,27 @@
     </c:if>
     <script src="${context}/assets/js/bootstrap.bundle.js"></script>
     <script>
-        /*document.getElementById("submitButton").onclick = function(){
-        };*/
-
-        document.getElementById("filesInput").onchange = function() {
-            for (file of this.files) {
+        document.getElementById("submitButton").onclick = () => {
+            for (file of document.getElementById("filesInput").files) {
                 if (file.size > 5242880) {
-                    this.setCustomValidity("El tamaño máximo es de 5MB");
+                    document.getElementById("filesInput").setCustomValidity("El tamaño máximo es de 5MB");
                 } else {
-                    this.setCustomValidity("");
+                    document.getElementById("filesInput").setCustomValidity("");
                 }
             }
-        };
+            if (document.getElementById("commentInput").value.length > 0 && document.getElementById("commentInput").value.trim().length == 0) {
+                document.getElementById("commentInput").setCustomValidity("El campo no puede quedar en blanco");
+            } else {
+                document.getElementById("commentInput").setCustomValidity("");
+            }
+
+
+            if (document.getElementById("mainForm").checkValidity()) {
+                document.getElementById("mainForm").submit();
+            } else {
+                document.getElementById("mainForm").reportValidity();
+            }
+        }
     </script>
 </body>
 

@@ -20,23 +20,29 @@
     <div class="container mt-5">
       <div class="row">
         <div class="col-md-7 col-xl-5 mx-auto">
-          <div class="card">
+          <div class="card shadow-sm">
             <h5 class="card-header">Restablecer contraseña</h5>
             <div class="card-body">
-              <form action="${context}/Inicio_de_Sesión" method="POST" class="d-grid gap-3">
+              <form action="${context}/Inicio_de_Sesión" method="POST" class="m-0" id="mainForm">
                 <input type="hidden" name="action" value="passwordChange">
                 <input type="hidden" name="recoveryId" value="${id}">
-                <div>
-                  <label for="usernameInput" class="form-label">Ingrese una nueva contraseña</label>
-                  <input type="password" class="form-control" name="passwordInput" required>
+                <div class="row gy-3">
+                  <div class="col-12">
+                    <label class="form-label">Nueva contraseña:</label>
+                    <input type="password" class="form-control" name="passwordInput" required autocomplete="off"
+                      maxlength="30" minlength="8" id="passwordInput">
+                  </div>
+                  <div class="col-12">
+                    <label class="form-label">Confirmar contraseña:</label>
+                    <input type="password" class="form-control" name="passwordConfirmation" required autocomplete="off"
+                      maxlength="30" minlength="8" id="passwordConfirmation">
+                  </div>
+                  <div class="col-12">
+                    <button type="button" class="btn btn-verde" id="submitButton">
+                      Guardar nueva contraseña
+                    </button>
+                  </div>
                 </div>
-                <div>
-                  <label for="usernameInput" class="form-label">Repita la contraseña</label>
-                  <input type="password" class="form-control" name="passwordConfirmation" required>
-                </div>
-                <button type="submit" class="btn btn-verde">
-                  Guardar nueva contraseña
-                </button>
               </form>
             </div>
           </div>
@@ -54,6 +60,27 @@
     </div>
   </c:if>
   <script src="${context}/assets/js/bootstrap.bundle.js"></script>
+  <script>
+    document.getElementById("submitButton").onclick = () => {
+      if (document.getElementById("passwordInput").value.length > 0 && document.getElementById("passwordInput").value.trim().length == 0) {
+        document.getElementById("passwordInput").setCustomValidity("El campo no puede quedar en blanco");
+      } else {
+        document.getElementById("passwordInput").setCustomValidity("");
+      }
+      if (document.getElementById("passwordConfirmation").value != document.getElementById("passwordInput").value) {
+        document.getElementById("passwordConfirmation").setCustomValidity("Ambas contraseñas deben coincidir");
+      } else {
+        document.getElementById("passwordConfirmation").setCustomValidity("");
+      }
+
+
+      if (document.getElementById("mainForm").checkValidity()) {
+        document.getElementById("mainForm").submit();
+      } else {
+        document.getElementById("mainForm").reportValidity();
+      }
+    }
+  </script>
 </body>
 
 </html>

@@ -76,26 +76,25 @@
     </c:if>
     <div class="container mt-4">
         <div class="card shadow-sm">
-            <h5 class="card-header">Modificar datos</h5>
+            <h5 class="card-header">Modificar datos de departamento</h5>
             <div class="card-body">
-                <form action="${context}/Gestión_de_Departamentos" method="POST" class="m-0">
+                <form action="${context}/Gestión_de_Departamentos" method="POST" class="m-0" id="mainForm">
                     <input type="hidden" name="action" value="modifyDepartment">
                     <input type="hidden" name="id" value="${department.idDepartment}">
                     <div class="row gy-3">
                         <div class="col-md-6 col-xl-4">
                             <label class="form-label">Nombre:</label>
-                            <input type="text" class="form-control" id="nameInput" name="nameInput" value="${department.nameDepartment}">
+                            <input type="text" class="form-control" id="nameInput" name="nameInput" value="${department.nameDepartment}" autocomplete="off" maxlength="80" required>
                         </div>
                         <div class="col-md-6 col-xl-4">
                             <label class="form-label">Descripción:</label>
-                            <input type="text" class="form-control" id="descriptionInput" name="descriptionInput" value="${department.description}">
+                            <input type="text" class="form-control" id="descriptionInput" name="descriptionInput" value="${department.description}" autocomplete="off" maxlength="120" required>
                         </div>
                         <div class="col-md-6 col-xl-4">
-                            <label class="form-label">Teléfono:</label>
-                            <input type="tel" class="form-control" id="phoneInput" name="phoneInput" pattern="[0-9]{10}" value="${department.telephoneNumber}">
+                            <label class="form-label">Número de teléfono:</label>
+                            <input type="tel" class="form-control" id="phoneInput" name="phoneInput" pattern="[0-9]{10}" value="${department.telephoneNumber}" autocomplete="off" maxlength="10" required>
                         </div>
                     </div>
-                    <button type="submit">enviar</button>
                 </form>
             </div>
             <div class="card-footer bg-white">
@@ -109,11 +108,11 @@
                         </button>
                     </div>
                     <div class="p-1 col-md-4 col-xl-3">
-                        <button class="btn btn-verde w-100">
+                        <button class="btn btn-verde w-100" id="submitButton">
                             <svg class="feather">
                                 <use xlink:href="${context}/assets/icons/feather-sprite.svg#check" />
                             </svg>
-                            Guardar cambios
+                            <span> Guardar cambios</span>
                         </button>
                     </div>
                 </div>
@@ -124,13 +123,13 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Abandonar asignación</h5>
+                    <h5 class="modal-title">Descartar cambios</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
                         <div class="col">
-                            <p>¿Deseas abandonar el la asignación del oficio?</p>
+                            <p>¿Desea descartar los cambios realizados?</p>
                         </div>
                     </div>
                 </div>
@@ -149,7 +148,7 @@
                                     <svg class="feather">
                                         <use xlink:href="${context}/assets/icons/feather-sprite.svg#corner-up-left" />
                                     </svg>
-                                    <span> Salir</span>
+                                    <span> Descartar</span>
                                 </a>
                         </div>
                     </div>
@@ -166,7 +165,33 @@
     <span> Error: No tienes acceso a este sitio.</span>
   </div>
 </c:if>
-    <script src="/assets/js/bootstrap.bundle.js"></script>
+    <script src="${context}/assets/js/bootstrap.bundle.js"></script>
+    <script>
+        document.getElementById("submitButton").onclick = () => {
+            if (document.getElementById("nameInput").value.length > 0 && document.getElementById("nameInput").value.trim().length == 0) {
+                document.getElementById("nameInput").setCustomValidity("El campo no puede quedar en blanco");
+            } else {
+                document.getElementById("nameInput").setCustomValidity("");
+            }
+            if (document.getElementById("descriptionInput").value.length > 0 && document.getElementById("descriptionInput").value.trim().length == 0) {
+                document.getElementById("descriptionInput").setCustomValidity("El campo no puede quedar en blanco");
+            } else {
+                document.getElementById("descriptionInput").setCustomValidity("");
+            }
+            if (document.getElementById("phoneInput").validity.patternMismatch) {
+                document.getElementById("phoneInput").setCustomValidity("El número debe tener 10 dígitos sin espacios ni otros caracteres");
+            } else {
+                document.getElementById("phoneInput").setCustomValidity("");
+            }
+
+
+            if (document.getElementById("mainForm").checkValidity()) {
+                document.getElementById("mainForm").submit();
+            } else {
+                document.getElementById("mainForm").reportValidity();
+            }
+        }
+    </script>
 </body>
 
 </html>

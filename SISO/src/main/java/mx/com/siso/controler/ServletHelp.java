@@ -27,7 +27,7 @@ public class ServletHelp extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
-        String redirect = request.getParameter("redirect") != null ? request.getParameter("redirect") : "";
+        String redirect = request.getParameter("redirect") != "" ? request.getParameter("redirect") : "";
         switch (redirect) {
             case "login":
                 request.getSession().removeAttribute("sessionRole");
@@ -40,14 +40,14 @@ public class ServletHelp extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
-        String action = request.getParameter("action") != null ? request.getParameter("action") : "";
+        String action = request.getParameter("action") != "" ? request.getParameter("action") : "";
         switch (action) {
             case "access":
                 int resultado2[] = new int[2];
                 int result[] = new int[4];
 
-                String loginUsername = request.getParameter("usernameInput") != null ? request.getParameter("usernameInput") : "";
-                String loginPassword = request.getParameter("passwordInput") != null ? request.getParameter("passwordInput") : "";
+                String loginUsername = request.getParameter("usernameInput") != "" ? request.getParameter("usernameInput") : "";
+                String loginPassword = request.getParameter("passwordInput") != "" ? request.getParameter("passwordInput") : "";
                 int idUser2 = new DaoUsers().findIdByUsername(loginUsername);
 
                 BeanUsers loginBeanUser = new BeanUsers();
@@ -131,7 +131,7 @@ public class ServletHelp extends HttpServlet {
                     token.append(alfabeto.charAt(indice));
                 }
                 String parseToken = String.valueOf(token);
-                String correo = request.getParameter("emailInput") != null ? request.getParameter("emailInput") : "";
+                String correo = request.getParameter("emailInput") != "" ? request.getParameter("emailInput") : "";
                 BeanUsers beanUsers = new BeanUsers();
                 beanUsers.setEmail(correo);
                 beanUsers.setToken(parseToken);
@@ -150,9 +150,9 @@ public class ServletHelp extends HttpServlet {
                 }
                 break;
             case "tokenValidation":
-                String recoveryToken = request.getParameter("tokenInput") != null ? request.getParameter("tokenInput") : "";
-                String recoveryEmail= request.getParameter("recoveryEmail") != null ? request.getParameter("recoveryEmail") : "";
-                int recoveryId2 = request.getParameter("recoveryId") != null ? Integer.parseInt(request.getParameter("recoveryId")) : -1;
+                String recoveryToken = request.getParameter("tokenInput") != "" ? request.getParameter("tokenInput") : "";
+                String recoveryEmail= request.getParameter("recoveryEmail") != "" ? request.getParameter("recoveryEmail") : "";
+                int recoveryId2 = request.getParameter("recoveryId") != "" ? Integer.parseInt(request.getParameter("recoveryId")) : -1;
                 BeanUsers beanUsers1 = new BeanUsers();
                 beanUsers1.setId_user(recoveryId2);
                 beanUsers1.setToken(recoveryToken);
@@ -169,8 +169,8 @@ public class ServletHelp extends HttpServlet {
                 }
                 break;
             case "passwordChange":
-                int recoveryId3 = request.getParameter("recoveryId") != null ? Integer.parseInt(request.getParameter("recoveryId")) : -1;
-                String recoveryPassword = request.getParameter("passwordInput") != null ? request.getParameter("passwordInput") : "";
+                int recoveryId3 = request.getParameter("recoveryId") != "" ? Integer.parseInt(request.getParameter("recoveryId")) : -1;
+                String recoveryPassword = request.getParameter("passwordInput") != "" ? request.getParameter("passwordInput") : "";
                 if (Integer.parseInt(String.valueOf(request.getSession().getAttribute("recoveryId"))) == recoveryId3) {
                     BeanUsers passwordChangeUser = new DaoUsers().findUserById(recoveryId3);
                     passwordChangeUser.setPasswordUser(recoveryPassword);
