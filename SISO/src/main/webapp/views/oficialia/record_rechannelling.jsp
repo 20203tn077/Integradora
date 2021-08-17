@@ -77,7 +77,7 @@
         <div class="card shadow-sm">
             <h5 class="card-header">Recanalizar oficio</h5>
             <div class="card-body">
-                <form action="${context}/Gestión_de_Oficios" method="POST" id="mainForm">
+                <form action="${context}/Gestión_de_Oficios" method="POST" id="mainForm" class="m-0">
                     <input type="hidden" name="action" value="rechannelRecord">
                     <div class="row gy-3">
                         <div class="col-md-6 col-xl-4">

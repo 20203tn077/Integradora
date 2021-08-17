@@ -79,7 +79,7 @@
             <div class="card shadow-sm">
                 <h5 class="card-header">Asignar oficio</h5>
                 <div class="card-body">
-                    <form action="${context}/Gestión_de_Oficios" method="POST" id="mainForm">
+                    <form action="${context}/Gestión_de_Oficios" method="POST" id="mainForm" class="m-0">
                         <input type="hidden" name="action" value="assignRecord">
                         <input type="hidden" name="recordId" value="${recordId}">
                         <div class="row gy-3">

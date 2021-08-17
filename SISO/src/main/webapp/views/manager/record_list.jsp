@@ -285,7 +285,7 @@
                     <div class="modal-footer">
                         <div class="row w-100">
                             <div class="p-1 col-md-6 col-lg-4">
-                                <form action="${context}/Visualizar_Oficio" method="post" class="d-inline"
+                                <form action="${context}/Visualizar_Oficio" method="post" class="d-inline m-0"
                                     target="_blank">
                                     <input type="hidden" name="action" value="viewRecordFile">
                                     <input type="hidden" name="id" id="modalDetails_viewForm">
@@ -298,7 +298,7 @@
                                 </form>
                             </div>
                             <div class="p-1 col-md-6 col-lg-4" id="modalDetails_assignButtonContainer">
-                                <form action="${context}/Asignar_Oficio" method="post">
+                                <form action="${context}/Asignar_Oficio" method="post" class="d-inline m-0">
                                     <input type="hidden" name="action" value="redirect">
                                     <input type="hidden" name="redirect" value="recordAssign">
                                     <input type="hidden" name="id" id="modalDetails_assignId">
@@ -311,7 +311,7 @@
                                 </form>
                             </div>
                             <div class="p-1 col-md-6 col-lg-4" id="modalDetails_reassignButtonContainer">
-                                <form action="${context}/Reasignar_Oficio" method="post">
+                                <form action="${context}/Reasignar_Oficio" method="post" class="d-inline m-0">
                                     <input type="hidden" name="action" value="redirect">
                                     <input type="hidden" name="redirect" value="recordReassign">
                                     <input type="hidden" name="id" id="modalDetails_reassignId">

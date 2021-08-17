@@ -77,7 +77,7 @@
             <div class="card shadow-sm">
                 <h5 class="card-header">Atender oficio</h5>
                 <div class="card-body">
-                    <form action="${context}/Gestión_de_Oficios" method="POST" enctype="multipart/form-data" id="mainForm">
+                    <form action="${context}/Gestión_de_Oficios" method="POST" enctype="multipart/form-data" id="mainForm" class="m-0">
                         <input type="hidden" name="action" value="attendRecord">
                         <input type="hidden" name="recordId" value="${recordId}">
                         <div class="row gy-3">

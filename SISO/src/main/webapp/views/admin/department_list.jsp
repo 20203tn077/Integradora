@@ -171,7 +171,7 @@
                     <div class="modal-footer">
                         <div class="row w-100">
                             <div class="p-1 col-md-6 col-lg-4">
-                                <form action="${context}/Modificar_Departamento" method="post">
+                                <form action="${context}/Modificar_Departamento" method="post" class=" d-inline m-0">
                                     <input type="hidden" name="action" value="redirect">
                                     <input type="hidden" name="redirect" value="departmentModify">
                                     <input type="hidden" name="id" id="modalDetails_modifyId">
@@ -226,7 +226,7 @@
                                 </button>
                             </div>
                             <div class="p-1 col-md-6 col-lg-4">
-                                <form action="${context}/Gestión_de_Departamentos" method="post" class="d-inline">
+                                <form action="${context}/Gestión_de_Departamentos" method="post" class="d-inline m-0">
                                     <input type="hidden" name="action" value="deleteDepartment">
                                     <input type="hidden" name="id" id="modalDelete_formId">
                                     <button type="submit" class="btn btn-danger w-100">
