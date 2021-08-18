@@ -125,7 +125,7 @@
             </div>
             <div class="card-footer bg-white">
                 <div class="row">
-                    <div class="p-1 col-md-4 col-xl-3">
+                    <div class="p-1 col-md-4 col-xl-2">
                         <a href="${context}/Modificar_Datos?redirect=dataModify" class="btn btn-verde w-100">
                             <svg class="feather">
                                 <use xlink:href="${context}/assets/icons/feather-sprite.svg#edit" />

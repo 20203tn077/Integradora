@@ -289,7 +289,7 @@
                                     target="_blank">
                                     <input type="hidden" name="action" value="viewRecordFile">
                                     <input type="hidden" name="id" id="modalDetails_viewForm">
-                                    <button type="submit" class="btn btn-primary w-100">
+                                    <button type="submit" class="btn btn-verde w-100">
                                         <svg class="feather">
                                             <use xlink:href="${context}/assets/icons/feather-sprite.svg#file-text" />
                                         </svg>
@@ -304,7 +304,7 @@
                                     <input type="hidden" name="id" id="modalDetails_assignId">
                                     <button type="submit" class="btn btn-verde w-100">
                                         <svg class="feather">
-                                            <use xlink:href="${context}/assets/icons/feather-sprite.svg#edit" />
+                                            <use xlink:href="${context}/assets/icons/feather-sprite.svg#user-plus" />
                                         </svg>
                                         <span> Asignar oficio</span>
                                     </button>
@@ -352,7 +352,7 @@
                     <div class="modal-footer">
                         <div class="row w-100">
                             <div class="p-1 col-md-4 col-lg-3">
-                                <button class="btn btn-primary w-100" data-bs-target="#modalDetails"
+                                <button class="btn btn-secondary w-100" data-bs-target="#modalDetails"
                                     data-bs-toggle="modal" data-bs-dismiss="modal">
                                     <svg class="feather">
                                         <use xlink:href="${context}/assets/icons/feather-sprite.svg#arrow-left" />

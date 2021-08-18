@@ -86,7 +86,7 @@
                             </div>
                             <div class="col">
                                 <label class="form-label">Comentario:</label>
-                                <textarea name="commentInput" class="form-control" rows="1" required  autocomplete="off" maxlength="120" required></textarea>
+                                <textarea name="commentInput" id="commentInput" class="form-control" rows="1" required  autocomplete="off" maxlength="120" required></textarea>
                             </div>
                             <div class="col-md-6 col-xl-4">
                                 <label class="form-label">Archivos de respuesta (opcional):</label>
@@ -97,16 +97,16 @@
                 </div>
                 <div class="card-footer bg-white">
                     <div class="row">
-                        <div class="p-1 col-md-4 col-xl-3">
-                            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalExit">
+                        <div class="p-1 col-md-4 col-xl-2">
+                            <button type="button" class="btn btn-secondary w-100" data-bs-toggle="modal" data-bs-target="#modalExit">
                                 <svg class="feather">
                                     <use xlink:href="${context}/assets/icons/feather-sprite.svg#x" />
                                 </svg>
                                 <span> Cancelar</span>
                             </button>
                         </div>
-                        <div class="p-1 col-md-4 col-xl-3">
-                            <button type="button" class="btn btn-verde" id="submitButton">
+                        <div class="p-1 col-md-4 col-xl-2">
+                            <button type="button" class="btn btn-verde w-100" id="submitButton">
                                 <svg class="feather">
                                     <use xlink:href="${context}/assets/icons/feather-sprite.svg#check" />
                                 </svg>
@@ -142,9 +142,9 @@
                                 </button>
                             </div>
                             <div class="p-1 col-md-6 col-lg-4">
-                                    <a class="btn btn-verde w-100" href="${context}/Gestión_de_Oficios?redirect=records">
+                                    <a class="btn btn-danger w-100" href="${context}/Gestión_de_Oficios?redirect=records">
                                         <svg class="feather">
-                                            <use xlink:href="${context}/assets/icons/feather-sprite.svg#corner-up-left" />
+                                            <use xlink:href="${context}/assets/icons/feather-sprite.svg#trash-2" />
                                         </svg>
                                         <span> Descartar</span>
                                     </a>
@@ -166,13 +166,18 @@
     <script src="${context}/assets/js/bootstrap.bundle.js"></script>
     <script>
         document.getElementById("submitButton").onclick = () => {
-            for (file of document.getElementById("filesInput").files) {
-                if (file.size > 5242880) {
-                    document.getElementById("filesInput").setCustomValidity("El tamaño máximo es de 5MB");
-                } else {
-                    document.getElementById("filesInput").setCustomValidity("");
+            if (document.getElementById("filesInput").value != "") {
+                for (file of document.getElementById("filesInput").files) {
+                    if (file.size > 5242880) {
+                        document.getElementById("filesInput").setCustomValidity("El tamaño máximo es de 5MB");
+                    } else {
+                        document.getElementById("filesInput").setCustomValidity("");
+                    }
                 }
+            } else {
+                document.getElementById("filesInput").setCustomValidity("");
             }
+
             if (document.getElementById("commentInput").value.length > 0 && document.getElementById("commentInput").value.trim().length == 0) {
                 document.getElementById("commentInput").setCustomValidity("El campo no puede quedar en blanco");
             } else {

@@ -75,7 +75,10 @@
                   </div>
                   <div class="col-12">
                     <button type="button" class="btn btn-verde" id="submitButton">
-                      Continuar
+                      <svg class="feather">
+                        <use xlink:href="${context}/assets/icons/feather-sprite.svg#arrow-right" />
+                      </svg>
+                      <span> Continuar</span>
                     </button>
                   </div>
                 </div>

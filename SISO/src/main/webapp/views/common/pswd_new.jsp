@@ -39,7 +39,10 @@
                   </div>
                   <div class="col-12">
                     <button type="button" class="btn btn-verde" id="submitButton">
-                      Guardar nueva contraseña
+                      <svg class="feather">
+                        <use xlink:href="${context}/assets/icons/feather-sprite.svg#check" />
+                    </svg>
+                    <span> Guardar nueva contraseña</span>
                     </button>
                   </div>
                 </div>

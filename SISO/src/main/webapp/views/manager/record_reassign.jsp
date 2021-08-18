@@ -82,9 +82,9 @@
                         <input type="hidden" name="action" value="reassignRecord">
                         <input type="hidden" name="id" value="${record.id_minutes}">
                         <div class="row gy-3">
-                            <div class="col-md-6 col-xl-4">
+                            <div class="col-md-4 col-xl-2">
                                 <label class="form-label">Número de oficio:</label>
-                                <input type="text" readonly class="form-control-plaintext" value="${record.id_minutes}" name="id">
+                                <input type="text" readonly class="form-control-plaintext" value="${record.id_minutes}">
                             </div>
                             <div class="col-md-6 col-xl-4">
                                 <label class="form-label">Auxiliar:</label>
@@ -107,16 +107,16 @@
                 </div>
                 <div class="card-footer bg-white">
                     <div class="row">
-                        <div class="p-1 col-md-4 col-xl-3">
-                            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalExit">
+                        <div class="p-1 col-md-4 col-xl-2">
+                            <button type="button" class="btn btn-secondary w-100" data-bs-toggle="modal" data-bs-target="#modalExit">
                                 <svg class="feather">
                                     <use xlink:href="${context}/assets/icons/feather-sprite.svg#x" />
                                 </svg>
                                 <span> Cancelar</span>
                             </button>
                         </div>
-                        <div class="p-1 col-md-4 col-xl-3">
-                            <button type="button" class="btn btn-verde" id="submitButton">
+                        <div class="p-1 col-md-4 col-xl-2">
+                            <button type="button" class="btn btn-verde w-100" id="submitButton">
                                 <svg class="feather">
                                     <use xlink:href="${context}/assets/icons/feather-sprite.svg#check" />
                                 </svg>
@@ -153,9 +153,9 @@
                                 </button>
                             </div>
                             <div class="p-1 col-md-6 col-lg-4">
-                                    <a class="btn btn-verde w-100" href="${context}/Gestión_de_Oficios?redirect=records">
+                                    <a class="btn btn-danger w-100" href="${context}/Gestión_de_Oficios?redirect=records">
                                         <svg class="feather">
-                                            <use xlink:href="${context}/assets/icons/feather-sprite.svg#corner-up-left" />
+                                            <use xlink:href="${context}/assets/icons/feather-sprite.svg#trash-2" />
                                         </svg>
                                         <span> Descartar</span>
                                     </a>

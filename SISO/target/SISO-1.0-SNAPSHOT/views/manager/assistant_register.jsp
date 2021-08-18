@@ -114,7 +114,7 @@
                 </div>
                 <div class="card-footer bg-white">
                     <div class="row">
-                        <div class="p-1 col-md-4 col-xl-3">
+                        <div class="p-1 col-md-4 col-xl-2">
                             <button type="button" class="btn btn-secondary w-100" data-bs-toggle="modal" data-bs-target="#modalExit">
                                 <svg class="feather">
                                     <use xlink:href="${context}/assets/icons/feather-sprite.svg#x" />
@@ -122,7 +122,7 @@
                                 <span> Cancelar</span>
                             </button>
                         </div>
-                        <div class="p-1 col-md-4 col-xl-3">
+                        <div class="p-1 col-md-4 col-xl-2">
                             <button class="btn btn-verde w-100" id="submitButton">
                                 <svg class="feather">
                                     <use xlink:href="${context}/assets/icons/feather-sprite.svg#check" />
@@ -159,9 +159,9 @@
                                 </button>
                             </div>
                             <div class="p-1 col-md-6 col-lg-4">
-                                    <a class="btn btn-verde w-100" href="${context}/Gestión_de_Usuarios?redirect=users">
+                                    <a class="btn btn-danger w-100" href="${context}/Gestión_de_Auxiliares?redirect=assistants">
                                         <svg class="feather">
-                                            <use xlink:href="${context}/assets/icons/feather-sprite.svg#corner-up-left" />
+                                            <use xlink:href="${context}/assets/icons/feather-sprite.svg#trash-2" />
                                         </svg>
                                         <span> Descartar</span>
                                     </a>
