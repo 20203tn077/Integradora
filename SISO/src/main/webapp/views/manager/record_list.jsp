@@ -94,7 +94,7 @@
                         <table class="table table-azul table-striped table-hover border text-center m-0">
                             <thead class="thead-azul display-none">
                                 <tr>
-                                    <th>No. de Oficio</th>
+                                    <th>Nombre del archivo</th>
                                     <th>Fecha de canalización</th>
                                     <th>Prioridad</th>
                                 </tr>
@@ -107,7 +107,7 @@
                                     <c:otherwise>
                                         <c:forEach items="${recordList1}" var="record">
                                             <tr role="button" onclick="showModalDetails('${record.id_minutes}')">
-                                                <td>${record.id_minutes}</td>
+                                                <td>${record.filename}</td>
                                                 <td>
                                                     ${record.dateChannelling}
                                                 </td>
@@ -149,7 +149,7 @@
                         <table class="table table-azul table-striped table-hover border text-center m-0">
                             <thead class="thead-azul display-none">
                                 <tr>
-                                    <th>No. de Oficio</th>
+                                    <th>Nombre del archivo</th>
                                     <th>Fecha de canalización</th>
                                     <th>Fecha de asignación</th>
                                     <th>Auxiliar asignado</th>
@@ -163,7 +163,7 @@
                                     <c:otherwise>
                                         <c:forEach items="${recordList2}" var="record">
                                             <tr role="button" onclick="showModalDetails('${record.id_minutes}')">
-                                                <td>${record.id_minutes}</td>
+                                                <td>${record.filename}</td>
                                                 <td>
                                                     ${record.dateChannelling}
                                                 </td>
@@ -189,7 +189,7 @@
                         <table class="table table-azul table-striped table-hover border text-center m-0">
                             <thead class="thead-azul display-none">
                                 <tr>
-                                    <th>No. de Oficio</th>
+                                    <th>Nombre del archivo</th>
                                     <th>Fecha de asignación</th>
                                     <th>Fecha de respuesta</th>
                                 </tr>
@@ -202,7 +202,7 @@
                                     <c:otherwise>
                                         <c:forEach items="${recordList3}" var="record">
                                             <tr role="button" onclick="showModalDetails('${record.id_minutes}')">
-                                                <td>${record.id_minutes}</td>
+                                                <td>${record.filename}</td>
                                                 <td>
                                                     ${record.dateAssignment}
                                                 </td>
@@ -234,9 +234,9 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <span class="fw-bold">
-                                    Número de oficio:
+                                    Nombre del archivo:
                                 </span>
-                                <p id="modalDetails_id"></p>
+                                <p id="modalDetails_filename"></p>
                             </div>
                             <div class="col-md-6">
                                 <span class="fw-bold">

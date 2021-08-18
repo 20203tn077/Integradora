@@ -20,11 +20,20 @@ public class BeanRecords {
     private BeanDepartment departmentId;
     private BeanUsers userId;
     private BeanPriority priorityId;
+    private String filename;
 
     public BeanRecords() {
     }
 
-    public BeanRecords(int id_minutes, InputStream fileMinutes, int attended, String dateChannelling, String dateAssignment, String dateResponse, String comment, int currentMinutes, BeanDepartment departmentId, BeanUsers userId, BeanPriority priorityId) {
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
+
+    public BeanRecords(int id_minutes, InputStream fileMinutes, int attended, String dateChannelling, String dateAssignment, String dateResponse, String comment, int currentMinutes, BeanDepartment departmentId, BeanUsers userId, BeanPriority priorityId, String filename) {
         this.id_minutes = id_minutes;
         this.fileMinutes = fileMinutes;
         this.attended = attended;
@@ -36,6 +45,7 @@ public class BeanRecords {
         this.departmentId = departmentId;
         this.userId = userId;
         this.priorityId = priorityId;
+        this.filename = filename;
     }
 
     public int getId_minutes() {

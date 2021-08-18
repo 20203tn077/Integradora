@@ -84,9 +84,9 @@
                         <input type="hidden" name="recordId" value="${recordId}">
                         <input type="hidden" name="id" value="${record.id_minutes}">
                         <div class="row gy-3">
-                            <div class="col-md-4 col-xl-2">
-                                <label class="form-label">Número de oficio:</label>
-                                <input type="text" readonly class="form-control-plaintext" value="${record.id_minutes}">
+                            <div class="col-md-6 col-xl-4">
+                                <label class="form-label">Nombre del archivo:</label>
+                                <input type="text" readonly class="form-control-plaintext fw-bold" value="${record.filename}">
                             </div>
                             <div class="col-md-6 col-xl-4">
                                 <label class="form-label">Auxiliar:</label>

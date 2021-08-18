@@ -14,7 +14,7 @@ function showModalDetails(id) {
     request.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             let record = JSON.parse(this.responseText);
-            document.getElementById("modalDetails_id").innerHTML = record.id_minutes;
+            document.getElementById("modalDetails_filename").innerHTML = record.filename;
             document.getElementById("modalDetails_channelling").innerHTML = record.dateChannelling;
             document.getElementById("modalDetails_assignment").innerHTML = record.dateAssignment;
             document.getElementById("modalDetails_department").innerHTML = record.departmentId.nameDepartment;
@@ -64,7 +64,7 @@ function showModalDetails(id) {
             }
             document.getElementById("modalDetails_viewForm").value = record.id_minutes;
             modalDetails.show();
-            document.getElementById("modalDelete_id").innerHTML = record.id_minutes;
+            document.getElementById("modalDelete_filename").innerHTML = record.filename;
             document.getElementById("modalDelete_formId").value = record.id_minutes;
             if (record.attended == 1) {
                 request.open("POST", context + "/Servlet", true);

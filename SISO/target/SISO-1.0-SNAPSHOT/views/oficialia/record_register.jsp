@@ -79,6 +79,7 @@
             <div class="card-body">
                 <form action="${context}/Gestión_de_Oficios" method="POST" enctype="multipart/form-data" id="mainForm" class="m-0">
                     <input type="hidden" name="action" value="createRecord">
+                    <input type="hidden" name="filename" id="filename">
                     <div class="row gy-3">
                         <div class="col-md-6 col-xl-4">
                             <label class="form-label">Departamento:</label>
@@ -116,7 +117,7 @@
                         </button>
                     </div>
                     <div class="p-1 col-md-4 col-xl-2">
-                        <button class="btn btn-verde w-100" id="submitButton">
+                        <button class="btn btn-verde w-100" id="submitButton" form="mainForm">
                             <svg class="feather">
                                 <use xlink:href="${context}/assets/icons/feather-sprite.svg#check" />
                             </svg>
@@ -176,18 +177,16 @@
 </c:if>
     <script src="${context}/assets/js/bootstrap.bundle.js"></script>
     <script>
-        document.getElementById("submitButton").onclick = () => {
+        document.getElementById("fileInput").onchange = () => {
             if (document.getElementById("fileInput").files[0].size > 5242880) {
                 document.getElementById("fileInput").setCustomValidity("El tamaño máximo es de 5MB");
             } else {
-                document.getElementById("fileInput").setCustomValidity("");
-            }
-
-
-            if (document.getElementById("mainForm").checkValidity()) {
-                document.getElementById("mainForm").submit();
-            } else {
-                document.getElementById("mainForm").reportValidity();
+                if (document.getElementById("fileInput").files[0].name.toUpperCase().slice(-3) != "PDF") {
+                    document.getElementById("fileInput").setCustomValidity("El archivo debe estar en formato PDF");
+                } else {
+                    document.getElementById("fileInput").setCustomValidity("");
+                    document.getElementById("filename").value = document.getElementById("fileInput").files[0].name.slice(0,-4);
+                }
             }
         }
     </script>

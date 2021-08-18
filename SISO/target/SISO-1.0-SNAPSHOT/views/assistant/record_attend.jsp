@@ -79,18 +79,19 @@
                 <div class="card-body">
                     <form action="${context}/Gestión_de_Oficios" method="POST" enctype="multipart/form-data" id="mainForm" class="m-0">
                         <input type="hidden" name="action" value="attendRecord">
-                        <input type="hidden" name="recordId" value="${recordId}">
+                        <input type="hidden" name="recordId" value="${record.id_minutes}">
                         <div class="row gy-3">
-                            <div class="col-12">
-                                <span class="fw-bold">Oficio No. ${recordId}</span>
-                            </div>
-                            <div class="col">
-                                <label class="form-label">Comentario:</label>
-                                <textarea name="commentInput" id="commentInput" class="form-control" rows="1" required  autocomplete="off" maxlength="120" required></textarea>
+                            <div class="col-md-6 col-xl-4">
+                                <label class="form-label">Nombre del archivo:</label>
+                                <input type="text" readonly class="form-control-plaintext fw-bold" value="${record.filename}">
                             </div>
                             <div class="col-md-6 col-xl-4">
                                 <label class="form-label">Archivos de respuesta (opcional):</label>
                                 <input type="file" class="form-control" name="filesInput" id="filesInput" multiple accept=".pdf">
+                            </div>
+                            <div class="col">
+                                <label class="form-label">Comentario:</label>
+                                <textarea name="commentInput" id="commentInput" class="form-control" rows="1" required  autocomplete="off" maxlength="120" required></textarea>
                             </div>
                         </div>
                     </form>
@@ -106,7 +107,7 @@
                             </button>
                         </div>
                         <div class="p-1 col-md-4 col-xl-2">
-                            <button type="button" class="btn btn-verde w-100" id="submitButton">
+                            <button type="submit" class="btn btn-verde w-100" id="submitButton" form="mainForm">
                                 <svg class="feather">
                                     <use xlink:href="${context}/assets/icons/feather-sprite.svg#check" />
                                 </svg>
@@ -165,30 +166,31 @@
     </c:if>
     <script src="${context}/assets/js/bootstrap.bundle.js"></script>
     <script>
-        document.getElementById("submitButton").onclick = () => {
+        document.getElementById("filesInput").onchange = () => {
             if (document.getElementById("filesInput").value != "") {
                 for (file of document.getElementById("filesInput").files) {
                     if (file.size > 5242880) {
-                        document.getElementById("filesInput").setCustomValidity("El tamaño máximo es de 5MB");
+                        document.getElementById("filesInput").setCustomValidity("El tamaño máximo por archivo es de 5MB");
+                        break;
                     } else {
-                        document.getElementById("filesInput").setCustomValidity("");
+                        if (document.getElementById("filesInput").files[0].name.toUpperCase().slice(-3) != "PDF") {
+                            document.getElementById("filesInput").setCustomValidity("Los archivos deben estar en formato PDF");
+                            break;
+                        } else {
+                            document.getElementById("filesInput").setCustomValidity("");
+                        }
                     }
                 }
             } else {
                 document.getElementById("filesInput").setCustomValidity("");
             }
+        }
 
+        document.getElementById("commentInput").onchange = () => {
             if (document.getElementById("commentInput").value.length > 0 && document.getElementById("commentInput").value.trim().length == 0) {
                 document.getElementById("commentInput").setCustomValidity("El campo no puede quedar en blanco");
             } else {
                 document.getElementById("commentInput").setCustomValidity("");
-            }
-
-
-            if (document.getElementById("mainForm").checkValidity()) {
-                document.getElementById("mainForm").submit();
-            } else {
-                document.getElementById("mainForm").reportValidity();
             }
         }
     </script>

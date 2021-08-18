@@ -9,7 +9,7 @@ function showModalDetails(id) {
     request.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             let record = JSON.parse(this.responseText);
-            document.getElementById("modalDetails_id").innerHTML = record.id_minutes;
+            document.getElementById("modalDetails_filename").innerHTML = record.filename;
             document.getElementById("modalDetails_channelling").innerHTML = record.dateChannelling;
             document.getElementById("modalDetails_assignment").innerHTML = record.dateAssignment;
             document.getElementById("modalDetails_department").innerHTML = record.departmentId.nameDepartment;

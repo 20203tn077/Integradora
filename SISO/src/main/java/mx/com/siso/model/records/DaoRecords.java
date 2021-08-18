@@ -54,7 +54,7 @@ public class DaoRecords {
                 beanRecords.setDepartmentId(beanDepartment);
                 beanRecords.setUserId(beanUsers);
                 beanRecords.setPriorityId(beanPriority);
-
+                beanRecords.setFilename(rs.getString("filename"));
 
                 listMinutes.add(beanRecords);
             }
@@ -101,6 +101,8 @@ public class DaoRecords {
                 beanRecords.setDepartmentId(beanDepartment);
                 beanRecords.setUserId(beanUsers);
                 beanRecords.setPriorityId(beanPriority);
+                beanRecords.setFilename(rs.getString("filename"));
+
                 listMinutes.add(beanRecords);
             }
         }catch (SQLException e){
@@ -114,12 +116,13 @@ public class DaoRecords {
         int[] resultado = new int[3];
         try {
             con = ConnectionMySQL.getConnection();
-            cstm = con.prepareCall("{call create_records(?,?,?,?,?)}");
+            cstm = con.prepareCall("{call create_records(?,?,?,?,?,?)}");
             cstm.setBlob(1, minute.getFileMinutes());
             cstm.setInt(2,minute.getDepartmentId().getIdDepartment());
             cstm.setInt(3,minute.getPriorityId().getIdPriority());
             cstm.registerOutParameter(4, java.sql.Types.INTEGER);
             cstm.registerOutParameter(5, java.sql.Types.INTEGER);
+            cstm.setString(6,minute.getFilename());
             cstm.execute();
             int errorDepartament = cstm.getInt(4);
             int errorPriority = cstm.getInt(5);
@@ -241,7 +244,7 @@ public class DaoRecords {
                 beanRecords.setDepartmentId(beanDepartment);
                 beanRecords.setUserId(beanUsers);
                 beanRecords.setPriorityId(beanPriority);
-
+                beanRecords.setFilename(rs.getString("filename"));
 
                 listMinutes.add(beanRecords);
             }
@@ -283,6 +286,7 @@ public class DaoRecords {
                 beanRecords.setDepartmentId(beanDepartment);
                 beanRecords.setUserId(beanUsers);
                 beanRecords.setPriorityId(beanPriority);
+                beanRecords.setFilename(rs.getString("filename"));
             }
         }catch (SQLException e){
             System.out.printf("Ha ocurrido un error: " + e.getMessage());

@@ -165,7 +165,7 @@ public class Servlet extends HttpServlet {
                         String redirect = request.getParameter("redirect") != "" ? request.getParameter("redirect") : "";
                         switch (redirect) {
                             case "recordAttend":
-                                request.setAttribute("recordId", request.getParameter("id"));
+                                request.setAttribute("record", new DaoRecords().findRecordById(Integer.parseInt(request.getParameter("id"))));
                                 redirect(request,response,"/views/assistant/record_attend.jsp");
                                 break;
                         }
@@ -176,7 +176,7 @@ public class Servlet extends HttpServlet {
                         BeanResponse_file beanResponse_file = null;
                         int idRecord = Integer.parseInt(request.getParameter("recordId")!= "" ? request.getParameter("recordId") : "");
                         String comment = request.getParameter("commentInput")!= "" ? request.getParameter("commentInput") : "";
-                        BeanRecords beanRecords = new BeanRecords(idRecord,null,0,null,null,null,comment,0,null,null,null);
+                        BeanRecords beanRecords = new BeanRecords(idRecord,null,0,null,null,null,comment,0,null,null,null,null);
                         beanResponse_file = new BeanResponse_file(0, "", beanRecords);
                         InputStream inputStream = null;
                         System.out.println(idRecord);
@@ -273,7 +273,7 @@ public class Servlet extends HttpServlet {
                         BeanUsers beanUsers = new BeanUsers();
                         beanUsers.setId_user(idAssistant);
                         String email2 = new DaoUsers().findUserById(idAssistant).getEmail();
-                        BeanRecords beanRecords = new BeanRecords(idRecord, null, 0, null, null, null, "", 0, null, beanUsers, null);
+                        BeanRecords beanRecords = new BeanRecords(idRecord, null, 0, null, null, null, "", 0, null, beanUsers, null,null);
                         try {
                             resultado3 = new DaoRecords().assignRecord(beanRecords);
                             if(resultado3[0] == 1) {
@@ -469,6 +469,7 @@ public class Servlet extends HttpServlet {
                         int priority = Integer.parseInt(request.getParameter("priorityInput")!= "" ? request.getParameter("priorityInput") : "0");
                         BeanDepartment beanDepartment = new BeanDepartment(department, "", "","",0);
                         BeanPriority beanPriority = new BeanPriority(priority, "");
+                        String filename = request.getParameter("filename");
                         InputStream inputStream = null;
                         System.out.println(department);
                         System.out.println(priority);
@@ -479,7 +480,7 @@ public class Servlet extends HttpServlet {
                                 System.out.println(filePart.getSize());
                                 System.out.println(filePart.getContentType());
                                 inputStream = filePart.getInputStream();
-                                BeanRecords beanRecords = new BeanRecords(0, inputStream, 0, null, null, null,"", 0, beanDepartment, null, beanPriority);
+                                BeanRecords beanRecords = new BeanRecords(0, inputStream, 0, null, null, null,"", 0, beanDepartment, null, beanPriority, filename);
                                 resultado2 = new DaoRecords().createRecord(beanRecords);
                                 if(resultado2[0] == 1){
                                     request.setAttribute("recordList1", new DaoRecords().findAllRecords(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)1));
