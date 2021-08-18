@@ -117,7 +117,7 @@
                         </button>
                     </div>
                     <div class="p-1 col-md-4 col-xl-2">
-                        <button class="btn btn-verde w-100" id="submitButton" form="mainForm">
+                        <button type="submit" class="btn btn-verde w-100" id="submitButton" form="mainForm">
                             <svg class="feather">
                                 <use xlink:href="${context}/assets/icons/feather-sprite.svg#check" />
                             </svg>

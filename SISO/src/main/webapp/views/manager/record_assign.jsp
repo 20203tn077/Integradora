@@ -111,7 +111,7 @@
                             </button>
                         </div>
                         <div class="p-1 col-md-4 col-xl-2">
-                            <button type="button" class="btn btn-verde w-100" id="submitButton">
+                            <button type="submit" class="btn btn-verde w-100" id="submitButton" form="mainForm">
                                 <svg class="feather">
                                     <use xlink:href="${context}/assets/icons/feather-sprite.svg#check" />
                                 </svg>
@@ -170,15 +170,6 @@
         </div>
     </c:if>
     <script src="${context}/assets/js/bootstrap.bundle.js"></script>
-    <script>
-        document.getElementById("submitButton").onclick = () => {
-            if (document.getElementById("mainForm").checkValidity()) {
-                document.getElementById("mainForm").submit();
-            } else {
-                document.getElementById("mainForm").reportValidity();
-            }
-        }
-    </script>
 </body>
 
 </html>

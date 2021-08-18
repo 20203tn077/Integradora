@@ -74,7 +74,7 @@
                       maxlength="10">
                   </div>
                   <div class="col-12">
-                    <button type="button" class="btn btn-verde" id="submitButton">
+                    <button type="submit" class="btn btn-verde" id="submitButton" form="mainForm">
                       <svg class="feather">
                         <use xlink:href="${context}/assets/icons/feather-sprite.svg#arrow-right" />
                       </svg>
@@ -100,20 +100,13 @@
 
 <script src="${context}/assets/js/bootstrap.bundle.js"></script>
 <script>
-  document.getElementById("submitButton").onclick = () => {
+  document.getElementById("tokenInput").oninput = () => {
     if (document.getElementById("tokenInput").value.length > 0 && document.getElementById("tokenInput").value.trim().length == 0) {
         document.getElementById("tokenInput").setCustomValidity("El campo no puede quedar en blanco");
     } else {
         document.getElementById("tokenInput").setCustomValidity("");
     }
-
-
-    if (document.getElementById("mainForm").checkValidity()) {
-        document.getElementById("mainForm").submit();
-    } else {
-        document.getElementById("mainForm").reportValidity();
-    }
-}
+  }
 </script>
 </body>
 

@@ -115,7 +115,7 @@
                         </button>
                     </div>
                     <div class="p-1 col-md-4 col-xl-2">
-                        <button class="btn btn-verde w-100" id="submitButton">
+                        <button class="btn btn-verde w-100" id="submitButton" form="mainForm">
                             <svg class="feather">
                                 <use xlink:href="${context}/assets/icons/feather-sprite.svg#check" />
                             </svg>
@@ -132,7 +132,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Descartar cambios</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="submit" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
@@ -174,15 +174,6 @@
   </div>
 </c:if>
     <script src="${context}/assets/js/bootstrap.bundle.js"></script>
-    <script>
-        document.getElementById("submitButton").onclick = () => {
-            if (document.getElementById("mainForm").checkValidity()) {
-                document.getElementById("mainForm").submit();
-            } else {
-                document.getElementById("mainForm").reportValidity();
-            }
-        }
-    </script>
 </body>
 
 </html>

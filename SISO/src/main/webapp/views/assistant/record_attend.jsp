@@ -186,7 +186,7 @@
             }
         }
 
-        document.getElementById("commentInput").onchange = () => {
+        document.getElementById("commentInput").oninput = () => {
             if (document.getElementById("commentInput").value.length > 0 && document.getElementById("commentInput").value.trim().length == 0) {
                 document.getElementById("commentInput").setCustomValidity("El campo no puede quedar en blanco");
             } else {

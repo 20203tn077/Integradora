@@ -281,9 +281,10 @@ public class Servlet extends HttpServlet {
                                 request.setAttribute("recordList2", new DaoRecords().findAllRecordsByManager(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)2));
                                 request.setAttribute("recordList3", new DaoRecords().findAllRecordsByManager(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)3));
                                 redirect(request,response,"/views/manager/record_list.jsp", (byte)2, "El oficio ha sido asignado de forma exitosa.");
+                                BeanRecords emailRecord = new DaoRecords().findRecordById(idRecord);
                                 ArrayList<String> emails = new ArrayList<String>();
                                 emails.add(email2);
-                                new Email(emails, "Nuevo oficio", "Le ha sido asignado el oficio con número " + idRecord + ".").start();
+                                new Email(emails, "Nuevo oficio", "Estimado(a) " + emailRecord.getUserId().getName() + ", se hace de su conocimiento que le ha sido asignado el oficio \"" + emailRecord.getFilename() + "\".").start();
                             }else{
                                 if (resultado3[1] == 1) {
                                     request.setAttribute("assistantList", new DaoUsers().findAllAssitant(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId")))));
@@ -355,7 +356,11 @@ public class Servlet extends HttpServlet {
                         String oldEmail = new DaoRecords().findRecordById(idRecord1).getUserId().getEmail();
                         int idAssistant1 = Integer.parseInt(request.getParameter("assistantInput"));
                         String newEmail = new DaoUsers().findUserById(idAssistant1).getEmail();
+                        BeanRecords emailRecord1 = new DaoRecords().findRecordById(idRecord1);
+
                         resultado5 = new DaoRecords().reassignRecord(idRecord1,idAssistant1);
+
+                        BeanRecords emailRecord2 = new DaoRecords().findRecordById(idRecord1);
 
                         if (resultado5[0] == 1){
                             request.setAttribute("recordList1", new DaoRecords().findAllRecordsByManager(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)1));
@@ -364,10 +369,10 @@ public class Servlet extends HttpServlet {
                             redirect(request,response,"/views/manager/record_list.jsp", (byte)2, "El oficio ha sido reasignado de forma exitosa.");
                             ArrayList<String> emails = new ArrayList<String>();
                             emails.add(oldEmail);
-                            new Email(emails, "Retiro de oficio", "El oficio con número " + idRecord1 + " ha sido reasignado a otro auxiliar y retirado de su bandeja.").start();
+                            new Email(emails, "Retiro de oficio", "Estimado(a) " + emailRecord1.getUserId().getName() + ", se hace de su conocimiento que el oficio \"" + emailRecord1.getFilename() + "\" ha sido reasignado a otro auxiliar y retirado de su bandeja.").start();
                             emails = new ArrayList<String>();
                             emails.add(newEmail);
-                            new Email(emails, "Nuevo oficio", "Le ha sido asignado el oficio con número " + idRecord1 + ".").start();
+                            new Email(emails, "Nuevo oficio", "Estimado(a) " + emailRecord2.getUserId().getName() + ", se hace de su conocimiento que le ha sido asignado el oficio \"" + emailRecord2.getFilename() + "\".").start();
                         }else {
                             if (resultado5[1] == 1){
                                 request.setAttribute("assistantList", new DaoUsers().findAllAssitant(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId")))));
@@ -449,17 +454,11 @@ public class Servlet extends HttpServlet {
                     case "redirect":
                         String redirect = request.getParameter("redirect") != "" ? request.getParameter("redirect") : "";
                         switch (redirect) {
-                            case "recordAssign":
-                                request.setAttribute("assistantList", new DaoUsers().findAllAssitant(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId")))));
-                                request.setAttribute("recordId", request.getParameter("id"));
-                                redirect(request,response,"/views/manager/record_assign.jsp");
-                                break;
                             case "recordRechannelling":
                                 request.setAttribute("departmentList", new DaoDepartment().findDepartment());
                                 int idRecord1 = Integer.parseInt(request.getParameter("id"));
                                 request.setAttribute("record", new DaoRecords().findRecordById(idRecord1));
                                 redirect(request,response,"/views/oficialia/record_rechannelling.jsp");
-                                new Email(new DaoUsers().findManagersEmailByDepartment(new DaoRecords().findRecordById(idRecord1).getDepartmentId().getIdDepartment()), "Retiro de oficio", "El oficio con número " + idRecord1 + " ha sido recanalizado a otro departamento y retirado de su bandeja.").start();
                                 break;
                         }
                         break;
@@ -508,10 +507,13 @@ public class Servlet extends HttpServlet {
                     case "rechannelRecord":
                         int idRecord = Integer.parseInt(request.getParameter("id"));
                         int idDepartment = Integer.parseInt(request.getParameter("departmentInput"));
+                        BeanRecords emailRecord = new DaoRecords().findRecordById(idRecord);
+                        ArrayList<String> emails = new DaoUsers().findManagersEmailByDepartment(new DaoRecords().findRecordById(idRecord).getDepartmentId().getIdDepartment());
                         if (new DaoRecords().changeDepartment(idRecord, idDepartment)){
                             request.setAttribute("recordList1", new DaoRecords().findAllRecords(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)1));
                             request.setAttribute("recordList2", new DaoRecords().findAllRecords(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId"))), (byte)2));
                             redirect(request,response,"/views/oficialia/record_list.jsp", (byte)2, "El oficio ha sido recanalizado de forma exitosa.");
+                            new Email(emails, "Retiro de oficio", "Estimado(a) responsable de departamento, se hace de su conocimiento que el oficio \"" + emailRecord.getFilename() + "\" ha sido recanalizado a otro departamento y retirado de su bandeja.").start();
                         }else {
                             request.setAttribute("departmentList", new DaoDepartment().findDepartment());
                             request.setAttribute("record", new DaoRecords().findRecordById(Integer.parseInt(request.getParameter("id"))));

@@ -107,7 +107,7 @@
                         </button>
                     </div>
                     <div class="p-1 col-md-4 col-xl-3">
-                        <button class="btn btn-verde w-100" id="submitButton">
+                        <button type="submit" class="btn btn-verde w-100" id="submitButton" form="mainForm">
                             <svg class="feather">
                                 <use xlink:href="${context}/assets/icons/feather-sprite.svg#check" />
                             </svg>
@@ -166,28 +166,25 @@
 </c:if>
     <script src="${context}/assets/js/bootstrap.bundle.js"></script>
     <script>
-        document.getElementById("submitButton").onclick = () => {
+        document.getElementById("nameInput").oninput = () => {
             if (document.getElementById("nameInput").value.length > 0 && document.getElementById("nameInput").value.trim().length == 0) {
                 document.getElementById("nameInput").setCustomValidity("El campo no puede quedar en blanco");
             } else {
                 document.getElementById("nameInput").setCustomValidity("");
             }
+        }
+        document.getElementById("descriptionInput").oninput = () => {
             if (document.getElementById("descriptionInput").value.length > 0 && document.getElementById("descriptionInput").value.trim().length == 0) {
                 document.getElementById("descriptionInput").setCustomValidity("El campo no puede quedar en blanco");
             } else {
                 document.getElementById("descriptionInput").setCustomValidity("");
             }
+        }
+        document.getElementById("phoneInput").oninput = () => {
             if (document.getElementById("phoneInput").validity.patternMismatch) {
                 document.getElementById("phoneInput").setCustomValidity("El número debe tener 10 dígitos sin espacios ni otros caracteres");
             } else {
                 document.getElementById("phoneInput").setCustomValidity("");
-            }
-
-
-            if (document.getElementById("mainForm").checkValidity()) {
-                document.getElementById("mainForm").submit();
-            } else {
-                document.getElementById("mainForm").reportValidity();
             }
         }
     </script>
