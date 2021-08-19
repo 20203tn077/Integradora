@@ -26,7 +26,7 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@MultipartConfig(maxFileSize = 5242880)
+@MultipartConfig(maxFileSize = 104857600)
 @WebServlet(name = "Servlet", urlPatterns = {"/Servlet", "/Gestión_de_Oficios", "/Gestión_de_Usuarios", "/Gestión_de_Auxiliares", "/Gestión_de_Departamentos", "/Modificar_Oficio", "/Modificar_Usuario", "/Modificar_Auxiliar", "/Modificar_Departamento", "/Nuevo_Oficio", "/Nuevo_Usuario", "/Nuevo_Auxiliar", "/Nuevo_Departamento", "/Perfil", "/Modificar_Datos", "/Canalizar_Oficio", "/Recanalizar_Oficio", "/Asignar_Oficio", "/Reasignar_Oficio", "/Atender_Oficio", "/Visualizar_Oficio", "/Visualizar_Archivo"})
 public class Servlet extends HttpServlet {
     @Override
@@ -243,7 +243,7 @@ public class Servlet extends HttpServlet {
                         switch (redirect) {
                             case "recordAssign":
                                 request.setAttribute("assistantList", new DaoUsers().findAllAssitant(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId")))));
-                                request.setAttribute("recordId", request.getParameter("id"));
+                                request.setAttribute("record", new DaoRecords().findRecordById(Integer.parseInt(request.getParameter("id"))));
                                 redirect(request,response,"/views/manager/record_assign.jsp");
                                 break;
                             case "recordReassign":
@@ -269,7 +269,7 @@ public class Servlet extends HttpServlet {
                     case "assignRecord":
                         int[] resultado3 = new int[4];
                         int idAssistant = request.getParameter("assistantInput") != "" ? Integer.parseInt(request.getParameter("assistantInput")) : 0;
-                        int idRecord = Integer.parseInt(request.getParameter("recordId") != "" ? request.getParameter("recordId") : "");
+                        int idRecord = Integer.parseInt(request.getParameter("id") != "" ? request.getParameter("id") : "");
                         BeanUsers beanUsers = new BeanUsers();
                         beanUsers.setId_user(idAssistant);
                         String email2 = new DaoUsers().findUserById(idAssistant).getEmail();
@@ -405,7 +405,7 @@ public class Servlet extends HttpServlet {
                         beanUsers2.setEmail(request.getParameter("emailInput"));
                         resultado4 = new DaoUsers().update(beanUsers2);
                         if(resultado4[0]==1){
-                            request.setAttribute("userList", new DaoUsers().findAllUsers());
+                            request.setAttribute("assistantList", new DaoUsers().findAllAssitant(Integer.parseInt(String.valueOf(request.getSession().getAttribute("sessionId")))));
                             redirect(request,response,"/views/manager/assistant_list.jsp", (byte)2, "Los datos del auxiliar han sido actualizados de forma exitosa.");
                         }else{
                             if(resultado4[1]==1){

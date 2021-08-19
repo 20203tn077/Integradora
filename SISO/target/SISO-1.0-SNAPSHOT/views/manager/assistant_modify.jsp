@@ -233,8 +233,15 @@
                 document.getElementById("passwordConfirmation").required = false;
                 document.getElementById("passwordConfirmation").value = "";
             }
-            if (document.getElementById("passwordConfirmation").value != document.getElementById("passwordInput").value) {
-                document.getElementById("passwordConfirmation").setCustomValidity("Ambas contraseñas deben coincidir");
+        }
+        document.getElementById("passwordConfirmation").oninput = () => {
+            if (document.getElementById("passwordInput").value.length > 0) {
+                if (document.getElementById("passwordConfirmation").value != document.getElementById("passwordInput").value) {
+                    document.getElementById("passwordConfirmation").setCustomValidity("Ambas contraseñas deben coincidir");
+                } else {
+                    document.getElementById("passwordConfirmation").setCustomValidity("");
+                }
+                document.getElementById("passwordConfirmation").required = true;
             } else {
                 document.getElementById("passwordConfirmation").setCustomValidity("");
             }

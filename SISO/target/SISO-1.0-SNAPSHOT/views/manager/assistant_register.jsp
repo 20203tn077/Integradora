@@ -218,16 +218,13 @@
             }
         }
         document.getElementById("passwordInput").oninput = () => {
-            if (document.getElementById("emailInput").value.length > 0 && document.getElementById("emailInput").value.trim().length == 0) {
-                document.getElementById("emailInput").setCustomValidity("El campo no puede quedar en blanco");
-            } else {
-                document.getElementById("emailInput").setCustomValidity("");
-            }
             if (document.getElementById("passwordInput").value.length > 0 && document.getElementById("passwordInput").value.trim().length == 0) {
                 document.getElementById("passwordInput").setCustomValidity("El campo no puede quedar en blanco");
             } else {
                 document.getElementById("passwordInput").setCustomValidity("");
             }
+        }
+        document.getElementById("passwordConfirmation").oninput = () => {
             if (document.getElementById("passwordConfirmation").value != document.getElementById("passwordInput").value) {
                 document.getElementById("passwordConfirmation").setCustomValidity("Ambas contraseñas deben coincidir");
             } else {

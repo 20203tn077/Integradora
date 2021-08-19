@@ -67,7 +67,7 @@
                             <div>
                                 <label for="passwordInput" class="form-label">Contraseña:</label>
                                 <input type="password" class="form-control" id="passwordInput" name="passwordInput"
-                                    required maxlength="30" minlength="8">
+                                    required maxlength="30">
                                 <div class="form-text">
                                     <a href="${context}/views/common/pswd_request.jsp" class="link-secondary">¿Ha olvidado su contraseña?</a>
                                 </div>

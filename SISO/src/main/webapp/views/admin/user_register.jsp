@@ -258,6 +258,8 @@
             } else {
                 document.getElementById("passwordInput").setCustomValidity("");
             }
+        }
+        document.getElementById("passwordConfirmation").oninput = () => {
             if (document.getElementById("passwordConfirmation").value != document.getElementById("passwordInput").value) {
                 document.getElementById("passwordConfirmation").setCustomValidity("Ambas contraseñas deben coincidir");
             } else {

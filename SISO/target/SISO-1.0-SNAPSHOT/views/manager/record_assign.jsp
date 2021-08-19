@@ -81,7 +81,6 @@
                 <div class="card-body">
                     <form action="${context}/Gestión_de_Oficios" method="POST" id="mainForm" class="m-0">
                         <input type="hidden" name="action" value="assignRecord">
-                        <input type="hidden" name="recordId" value="${recordId}">
                         <input type="hidden" name="id" value="${record.id_minutes}">
                         <div class="row gy-3">
                             <div class="col-md-6 col-xl-4">

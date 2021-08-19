@@ -109,7 +109,7 @@
                         </div>
                         <div class="col-md-6 col-xl-4">
                             <label class="form-label">Confimar contraseña:</label>
-                            <input type="password" class="form-control" id="passwordConfirm" autocomplete="off" maxlength="30" minlength="8">
+                            <input type="password" class="form-control" id="passwordConfirmation" autocomplete="off" maxlength="30" minlength="8">
                         </div>
                     </div>
                 </form>
@@ -220,23 +220,30 @@
             }
         }
         document.getElementById("passwordInput").oninput = () => {
-            if (document.getElementById("passwordInput").value.length > 0) {
-                if (document.getElementById("passwordInput").value.trim().length == 0) {
-                    document.getElementById("passwordInput").setCustomValidity("El campo no puede quedar en blanco");
+                if (document.getElementById("passwordInput").value.length > 0) {
+                    if (document.getElementById("passwordInput").value.trim().length == 0) {
+                        document.getElementById("passwordInput").setCustomValidity("El campo no puede quedar en blanco");
+                    } else {
+                        document.getElementById("passwordInput").setCustomValidity("");
+                    }
+                    document.getElementById("passwordConfirmation").required = true;
                 } else {
-                    document.getElementById("passwordInput").setCustomValidity("");
+                    document.getElementById("passwordConfirmation").required = false;
+                    document.getElementById("passwordConfirmation").value = "";
                 }
-                document.getElementById("passwordConfirmation").required = true;
-            } else {
-                document.getElementById("passwordConfirmation").required = false;
-                document.getElementById("passwordConfirmation").value = "";
             }
-            if (document.getElementById("passwordConfirmation").value != document.getElementById("passwordInput").value) {
-                document.getElementById("passwordConfirmation").setCustomValidity("Ambas contraseñas deben coincidir");
-            } else {
-                document.getElementById("passwordConfirmation").setCustomValidity("");
+            document.getElementById("passwordConfirmation").oninput = () => {
+                if (document.getElementById("passwordInput").value.length > 0) {
+                    if (document.getElementById("passwordConfirmation").value != document.getElementById("passwordInput").value) {
+                        document.getElementById("passwordConfirmation").setCustomValidity("Ambas contraseñas deben coincidir");
+                    } else {
+                        document.getElementById("passwordConfirmation").setCustomValidity("");
+                    }
+                    document.getElementById("passwordConfirmation").required = true;
+                } else {
+                    document.getElementById("passwordConfirmation").setCustomValidity("");
+                }
             }
-        }
     </script>
 </body>
 
